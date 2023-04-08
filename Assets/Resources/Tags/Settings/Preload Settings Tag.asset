@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb03fba391a640741a4c1c1708686ce5, type: 3}
+  m_Name: Preload Settings Tag
+  m_EditorClassIdentifier: 
+  PreloadPrefabs:
+  - {fileID: 8653688039684386951, guid: fbf55f6de784c5e4ebeb3309421c9858, type: 3}
