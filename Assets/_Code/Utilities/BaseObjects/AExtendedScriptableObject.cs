@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace Game.Utilities.BaseObjects
 {
@@ -10,5 +11,12 @@ namespace Game.Utilities.BaseObjects
 
         protected virtual void OnEnable() { }
         protected virtual void OnDisable() { }
+
+        public void MakeDirty()
+        {
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+#endif
+        }
     }
 }
