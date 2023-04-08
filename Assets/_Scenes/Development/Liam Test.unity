@@ -623,7 +623,7 @@ MonoBehaviour:
   raycastMask:
     serializedVersion: 2
     m_Bits: 8
-  showGridView: 1
+  showGridView: 0
 --- !u!4 &1239162944
 Transform:
   m_ObjectHideFlags: 0
