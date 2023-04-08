@@ -2,6 +2,7 @@
   "dependencies": {
     "com.marijnzwemmer.unity-toolbar-extender": "file:C:/Users/leema/Documents/Unity Packages/unity-toolbar-extender-master/unity-toolbar-extender-master",
     "com.unity.burst": "1.7.2",
+    "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "1.17.2",
     "com.unity.collections": "1.4.0",
     "com.unity.ide.rider": "3.0.15",
