@@ -68,7 +68,6 @@ namespace Game.Core.Managers
             //Invalid state
             if (!showGridView || gridData == null || gridData.WorldPositions == null)
             {
-                LogInformation("Cannot draw gizmos");
                 return;
             }
 
