@@ -1,24 +1,24 @@
-﻿using System;
+﻿using Game.Tags.Common.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Game.Tags.Common
 {
     [CreateAssetMenu(menuName = AssetMenuName + "Data/Grid Data", fileName = "Grid Data Tag")]
     [Serializable]
-    public class GridDataTag : ATag
+    public class GridDataTag : AGridDataProvider
     {
         [SerializeField]
         private Vector3[] _worldPositions = new Vector3[0];
-        public Vector3[] WorldPositions { get => _worldPositions; }
+        public override Vector3[] WorldPositions { get => _worldPositions; }
 
         /// <summary>
         /// Overrides the current world data for the new input
         /// </summary>
         /// <param name="positions">All valid world positions</param>
-        public void SetWorldPositions(IEnumerable<Vector3> positions)
+        public override void SetWorldPositions(IEnumerable<Vector3> positions)
         {
             _worldPositions = positions.ToArray();
             MakeDirty();
@@ -31,7 +31,7 @@ namespace Game.Tags.Common
         /// <param name="bestPosition">Best match to return through</param>
         /// <param name="maxDistance">Max distance for a match</param>
         /// <returns>If a match was found</returns>
-        public bool TryGetClosestGridPosition(Vector3 source, out Vector3 bestPosition, float maxDistance = 1f)
+        public override bool TryGetClosestGridPosition(Vector3 source, out Vector3 bestPosition, float maxDistance = 1f)
         {
             //Default data
             bestPosition = Vector3.zero;
