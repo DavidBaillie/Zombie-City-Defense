@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Utilities.BaseObjects
 {
@@ -15,7 +14,7 @@ namespace Game.Utilities.BaseObjects
         public void MakeDirty()
         {
 #if UNITY_EDITOR
-            EditorUtility.SetDirty(this);
+            UnityEditor.EditorUtility.SetDirty(this);
 #endif
         }
     }
