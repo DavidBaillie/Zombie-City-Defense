@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Tags.Common
@@ -7,10 +8,9 @@ namespace Game.Tags.Common
     public class GridDataTag : ATag
     {
         [SerializeField]
-        private Vector2[] _worldPositions = new Vector2[0];
-        public Vector2[] WorldPositions { get => _worldPositions; }
+        private Vector3[] _worldPositions = new Vector3[0];
+        public Vector3[] WorldPositions { get => _worldPositions; }
 
-        public void SetWorldPositions(List<Vector2> positions) => _worldPositions = positions.ToArray();
-        public void SetWorldPositions(Vector2[] worldPositions) => _worldPositions = worldPositions;
+        public void SetWorldPositions(IEnumerable<Vector3> positions) => _worldPositions = positions.ToArray();
     }
 }
