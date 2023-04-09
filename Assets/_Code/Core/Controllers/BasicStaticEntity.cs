@@ -23,6 +23,8 @@ namespace Game.Core.Controllers
         {
             base.Awake();
             currentHealth = unitStats.MaxHealth;
+
+            ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
         }
 
         /// <summary>

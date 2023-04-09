@@ -8,6 +8,13 @@ namespace Game.Core.Controllers
     public class BasicMovingEntity : AMovingEntity, IDamageReceiver, ILogicUpdateProcessor
     {
 
+        protected override void Start()
+        {
+            base.Start();
+
+            ALogicProcessor.Instance.RegisterLowPriorityProcessor(this);
+        }
+
         protected override void Update()
         {
             base.Update();
