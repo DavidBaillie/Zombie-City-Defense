@@ -11,10 +11,10 @@ namespace Game.Core.Controllers
         [SerializeField, Required, AssetsOnly]
         private GameObject entityToSpawn = null;
 
-        [SerializeField, Required, SceneObjectsOnly]
+        [SerializeField, RequiredIn(PrefabKind.InstanceInScene)]
         private Transform spawnPoint = null;
 
-        [SerializeField, Required]
+        [SerializeField, RequiredIn(PrefabKind.InstanceInScene)]
         private WaypointCollectionManager waypointManager = null;
 
 

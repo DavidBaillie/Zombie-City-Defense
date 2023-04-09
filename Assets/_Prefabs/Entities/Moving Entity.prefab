@@ -142,6 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 480c914c0ebd31d44b292df707bd069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  UnitStats: {fileID: 11400000, guid: e28278c25c538964da853dd56a2fd8f7, type: 2}
   PathIndex: 0
   AssignedPath: []

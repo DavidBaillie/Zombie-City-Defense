@@ -1,14 +1,14 @@
-﻿using Game.Utilities.BaseObjects;
+﻿using Game.Tags.Models;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Core.Abstract
 {
-    public abstract class AMovingEntity : AExtendedMonobehaviour
+    public abstract class AMovingEntity : AEntity
     {
-        [SerializeField, FoldoutGroup("Movement")]
-        private float movementSpeed = 1f;
+        [SerializeField, Required, InlineEditor]
+        protected MovingUnitStatsTag UnitStats = null;
 
         [SerializeField, ReadOnly, FoldoutGroup("Debug")]
         protected int PathIndex = 0;
@@ -40,7 +40,7 @@ namespace Game.Core.Abstract
             if (timeMultiplier < 0)
                 timeMultiplier = Time.deltaTime;
 
-            transform.position = Vector3.MoveTowards(transform.position, AssignedPath[PathIndex], movementSpeed * timeMultiplier);
+            transform.position = Vector3.MoveTowards(transform.position, AssignedPath[PathIndex], UnitStats.movementSpeed * timeMultiplier);
         }
     }
 }
