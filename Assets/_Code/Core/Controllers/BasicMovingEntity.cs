@@ -12,9 +12,20 @@ namespace Game.Core.Controllers
         {
             base.Update();
 
-            if (AssignedPath != null)
+
+            if (AssignedPath == null || PathIndex >= AssignedPath.Count)
+            {
+                Destroy(gameObject);
+                this.enabled = false;
+            }
+            else if (AssignedPath != null && PathIndex < AssignedPath.Count)
             {
                 MoveTowardsNextWaypoint();
+
+                if (Vector3.Distance(AssignedPath[PathIndex], transform.position) < 0.1f)
+                {
+                    PathIndex++;
+                }
             }
         }
 
