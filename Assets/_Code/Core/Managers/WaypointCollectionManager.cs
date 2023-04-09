@@ -16,6 +16,15 @@ namespace Game.Core.Managers
         private List<WaypointController> waypoints;
         private bool waypointsIsValid => !waypoints.Exists(x => x == null);
 
+        [SerializeField, FoldoutGroup("Debug")]
+        private float renderDuration = 3f;
+
+        [SerializeField, FoldoutGroup("Debug")]
+        private bool renderDebug = true;
+        [SerializeField, FoldoutGroup("Debug")]
+        private Color renderColour = Color.blue;
+
+
         /// <summary>
         /// Called when object created
         /// </summary>
@@ -50,7 +59,7 @@ namespace Game.Core.Managers
         {
             base.DrawGizmos();
 
-            if (waypoints != null && waypoints.Count > 1 )
+            if (renderDebug && waypoints != null && waypoints.Count > 1)
             {
                 try
                 {
@@ -63,6 +72,21 @@ namespace Game.Core.Managers
                 catch (System.Exception e)
                 {
                     //LogError($"Could not generate bounds of waypoint path because an exception arose [{e.GetType().Name}]");
+                }
+            }
+        }
+
+
+        [Button("Preview Path")]
+        private void PreviewPath()
+        {
+            var path = GeneratePath();
+
+            using (Draw.WithDuration(2))
+            {
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Draw.Line(path[i], path[i + 1], renderColour);
                 }
             }
         }
