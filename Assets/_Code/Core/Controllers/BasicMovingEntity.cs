@@ -1,4 +1,5 @@
-﻿using Game.Core.Abstract;
+﻿using Drawing;
+using Game.Core.Abstract;
 using Game.Core.Interfaces;
 using UnityEngine;
 
@@ -43,7 +44,10 @@ namespace Game.Core.Controllers
 
         public void ProcessLogic()
         {
-            
+            using (Draw.ingame.WithDuration(0.25f))
+            {
+                Draw.ingame.Ray(transform.position, Vector3.up * 3, Color.red);
+            }
         }
     }
 }

@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cadc5c4c9bfac07499bce7609dc40fdf, type: 3}
   m_Name: Static Entity Stats
   m_EditorClassIdentifier: 
-  attackDamage: 1
-  attackCooldown: 1
+  MaxHealth: 1
+  AttackDamage: 1
+  AttackCooldown: 1
+  maxRange: 5
+  validTargetLayers:
+    serializedVersion: 2
+    m_Bits: 64

@@ -22,9 +22,7 @@ namespace Game.Core.Managers
         [SerializeField, MinValue(1), SuffixLabel("count", Overlay = true), BoxGroup("Controls")]
         private int lowPriorityUpdateRate = 10;
 
-        [SerializeField, ReadOnly]
         private List<ILogicUpdateProcessor> highPriorityProcessors = null;
-        [SerializeField, ReadOnly]
         private List<ILogicUpdateProcessor> lowPriorityProcessors = null;
 
 
@@ -59,19 +57,46 @@ namespace Game.Core.Managers
         {
             base.Update();
 
-            //Process logic
-            for (int i = lastHighPriorityUpdateIndex; i < math.min(highPriorityUpdateRate, highPriorityProcessors.Count); i++)
-            {
-                try { highPriorityProcessors[i].ProcessLogic(); } catch { }
-            }
-            for (int j = lastLowPriorityUpdateIndex; j < math.min(lowPriorityUpdateRate, lowPriorityProcessors.Count); j++)
-            {
-                try { lowPriorityProcessors[j].ProcessLogic(); } catch { }
-            }
+            UpdateHighPriorityProcessors();
+            UpdateLowPriorityProcessors();
+        }
 
-            //Update index for next cycle
-            lastHighPriorityUpdateIndex = (lastHighPriorityUpdateIndex + 1) % highPriorityProcessors.Count;
-            lastLowPriorityUpdateIndex = (lastLowPriorityUpdateIndex + 1) % lowPriorityProcessors.Count;
+        private void UpdateHighPriorityProcessors()
+        {
+            if (highPriorityProcessors.Count > 0)
+            {
+                int lowerBound = math.min(highPriorityUpdateRate, highPriorityProcessors.Count);
+
+                for (int i = lastHighPriorityUpdateIndex; i < lastHighPriorityUpdateIndex + lowerBound; i++)
+                {
+                    try { highPriorityProcessors[i].ProcessLogic(); } catch { }
+                }
+
+                lastHighPriorityUpdateIndex = (lastHighPriorityUpdateIndex + lowerBound) % highPriorityProcessors.Count;
+            }
+            else
+            {
+                lastHighPriorityUpdateIndex = 0;
+            }
+        }
+
+        private void UpdateLowPriorityProcessors()
+        {
+            if (lowPriorityProcessors.Count > 0)
+            {
+                int lowerBound = math.min(lowPriorityUpdateRate, lowPriorityProcessors.Count);
+
+                for (int j = lastLowPriorityUpdateIndex; j < lastLowPriorityUpdateIndex + lowerBound; j++)
+                {
+                    try { lowPriorityProcessors[j].ProcessLogic(); } catch { }
+                }
+
+                lastLowPriorityUpdateIndex = (lastLowPriorityUpdateIndex + lowerBound) % lowPriorityProcessors.Count;
+            }
+            else
+            {
+                lastLowPriorityUpdateIndex = 0;
+            }
         }
 
 
