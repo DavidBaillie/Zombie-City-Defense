@@ -48,6 +48,11 @@ namespace Game.Core.Controllers
                 var instance = Instantiate(prefab);
                 DontDestroyOnLoad(instance);
             }
+
+            foreach (var tag in preloadSettings.InitializedTags)
+            {
+                try { tag.InitializeTag(); } catch { }
+            }
         }
     }
 }

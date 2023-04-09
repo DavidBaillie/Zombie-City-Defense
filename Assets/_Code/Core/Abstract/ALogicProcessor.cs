@@ -1,12 +1,12 @@
 ﻿using Game.Core.Interfaces;
-using Game.Utilities.BaseObjects;
+using Game.Tags.Common;
 
 namespace Game.Core.Abstract
 {
     /// <summary>
     /// Abstract definition for logic processors
     /// </summary>
-    public abstract class ALogicProcessor : AExtendedMonobehaviour
+    public abstract class ALogicProcessor : ATag
     {
         public static ALogicProcessor Instance;
 

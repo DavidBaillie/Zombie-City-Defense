@@ -1,5 +1,6 @@
 ﻿using Game.Core.Abstract;
 using Game.Core.Interfaces;
+using Game.Utilities.Worker;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Game.Core.Managers
     /// <summary>
     /// Class attached to persistent gameobject that allows for controller processing of logic in the game cycle
     /// </summary>
-    [SelectionBase]
+    [CreateAssetMenu(menuName = AssetMenuName + "Processors/Logic Processor")]
     public class LogicProcessingManager : ALogicProcessor
     {
         [SerializeField, MinValue(0), BoxGroup("Controls")]
@@ -33,9 +34,10 @@ namespace Game.Core.Managers
         /// <summary>
         /// Called when object created
         /// </summary>
-        protected override void Awake()
+        public override void InitializeTag()
         {
-            base.Awake();
+            base.InitializeTag();
+            UnityEventPassthrough.Instance.OnUpdate += Update;
 
             if (Instance == null)
             {
@@ -53,10 +55,8 @@ namespace Game.Core.Managers
         /// <summary>
         /// Called each frame
         /// </summary>
-        protected override void Update()
+        protected void Update()
         {
-            base.Update();
-
             UpdateHighPriorityProcessors();
             UpdateLowPriorityProcessors();
         }

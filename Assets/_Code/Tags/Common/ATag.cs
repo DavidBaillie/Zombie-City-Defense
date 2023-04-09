@@ -5,5 +5,10 @@ namespace Game.Tags.Common
     public abstract class ATag : AExtendedScriptableObject
     {
         protected const string AssetMenuName = "Game/Tags/";
+
+        /// <summary>
+        /// Called once when the game starts to initialize this tag
+        /// </summary>
+        public virtual void InitializeTag() { }
     }
 }
