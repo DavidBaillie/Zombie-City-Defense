@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb03fba391a640741a4c1c1708686ce5, type: 3}
   m_Name: Preload Settings Tag
   m_EditorClassIdentifier: 
-  PreloadPrefabs: []
+  PreloadPrefabs:
+  - {fileID: 8286575644331526069, guid: 682705bbd9ca1ba48913ed511d47dc00, type: 3}
