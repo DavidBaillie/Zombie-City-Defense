@@ -3,6 +3,7 @@ using Game.Core.Controllers;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Game.Core.Managers
@@ -12,6 +13,9 @@ namespace Game.Core.Managers
     /// </summary>
     public class WaypointCollectionManager : AExtendedMonobehaviour
     {
+        [SerializeField, Range(0.001f, 1f)]
+        private float waypointVariantThreshold = 0.15f;
+
         [SerializeField, ValidateInput(nameof(waypointsIsValid), "Waypoints cannot have empty/null values!")]
         private List<WaypointController> waypoints;
         private bool waypointsIsValid => !waypoints.Exists(x => x == null);
@@ -43,10 +47,14 @@ namespace Game.Core.Managers
         public List<Vector3> GeneratePath()
         {
             var path = new List<Vector3>(waypoints.Count);
+            float upper = 1, lower = -1;
+            float relativeValue = UnityEngine.Random.Range(lower, upper);
 
             for (int i = 0; i < waypoints.Count; i++)
             {
-                path.Add(waypoints[i].GetRandomPosition());
+                path.Add(waypoints[i].GetRandomPosition(out relativeValue, lower, upper));
+                lower = math.max(-1, relativeValue - math.abs(relativeValue * waypointVariantThreshold));
+                upper = math.min(1, relativeValue + math.abs(relativeValue * waypointVariantThreshold));
             }
 
             return path;
@@ -80,13 +88,15 @@ namespace Game.Core.Managers
         [Button("Preview Path")]
         private void PreviewPath()
         {
-            var path = GeneratePath();
-
-            using (Draw.WithDuration(2))
+            for (int x = 0; x < 50; x++)
             {
-                for (int i = 0; i < path.Count - 1; i++)
+                var path = GeneratePath();
+                using (Draw.WithDuration(2))
                 {
-                    Draw.Line(path[i], path[i + 1], renderColour);
+                    for (int i = 0; i < path.Count - 1; i++)
+                    {
+                        Draw.Line(path[i], path[i + 1], renderColour);
+                    }
                 }
             }
         }

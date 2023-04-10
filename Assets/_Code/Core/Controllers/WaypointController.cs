@@ -1,12 +1,14 @@
 ﻿using Drawing;
 using Game.Utilities.BaseObjects;
+using Sirenix.OdinInspector;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Game.Core.Controllers
 {
     public class WaypointController : AExtendedMonobehaviour
     {
-        [SerializeField]
+        [SerializeField, MinValue(0)]
         private float trackingWidth;
 
         /// <summary>
@@ -20,9 +22,31 @@ namespace Game.Core.Controllers
         }
 
         /// <summary>
-        /// Returns a valid position aling the waypoint line randomly between the min and max
+        /// Generates a a position for the waypoint within the bounds provided
         /// </summary>
-        public Vector3 GetRandomPosition() => transform.position + (transform.right.normalized * trackingWidth * Random.Range(-1f, 1f));
+        /// <param name="lowerBound">Lower bound of total width to generate point from</param>
+        /// <param name="upperBound">Upper bound of total width to generate point from</param>
+        /// <returns>A position on the waypoint</returns>
+        public Vector3 GetRandomPosition(float lowerBound = -1, float upperBound = 1)
+        {
+            return GetRandomPosition(out float value, lowerBound, upperBound);
+        }
+
+        /// <summary>
+        /// Generates a a position for the waypoint within the bounds provided
+        /// </summary>
+        /// <param name="lowerBound">Lower bound of total width to generate point from</param>
+        /// <param name="upperBound">Upper bound of total width to generate point from</param>
+        /// <returns>A position on the waypoint</returns>
+        public Vector3 GetRandomPosition(out float relativePosition, float lowerBound = -1, float upperBound = 1)
+        {
+            lowerBound = math.max(-1, lowerBound);
+            upperBound = math.min(1, upperBound);
+            relativePosition = UnityEngine.Random.Range(lowerBound, upperBound);
+
+            return transform.position + (transform.right.normalized * trackingWidth * relativePosition);
+        }
+
         /// <summary>
         /// Returns the maximum vector a valid position for this waypoint can return
         /// </summary>
