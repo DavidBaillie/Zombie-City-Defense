@@ -14,9 +14,18 @@ namespace Game.Tags.Models
         public float MovementSpeed = 5f;
 
         [SerializeField, MinValue(0)]
-        private float AttackDamage = 1f;
+        public float AttackDamage = 1f;
 
         [SerializeField, MinValue(0), SuffixLabel("seconds", Overlay = true)]
-        private float AttackCooldown = 1f;
+        public float AttackCooldown = 1f;
+
+        [SerializeField, MinValue(0), SuffixLabel("m", Overlay = true)]
+        public float attackRange = 0.5f;
+
+        [SerializeField, MinValue(0), SuffixLabel("m", Overlay = true)]
+        public float sightRange = 8f;
+
+        [SerializeField]
+        public LayerMask validTargetLayers;
     }
 }

@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86679341ff5b6ee46bd740d791671513, type: 3}
   m_Name: Moving Unit Stats
   m_EditorClassIdentifier: 
-  movementSpeed: 2.5
-  attackDamage: 1
-  attackCooldown: 1
+  MaxHealth: 1
+  MovementSpeed: 5
+  AttackDamage: 1
+  AttackCooldown: 1
+  attackRange: 0.7
+  sightRange: 8
+  validTargetLayers:
+    serializedVersion: 2
+    m_Bits: 128

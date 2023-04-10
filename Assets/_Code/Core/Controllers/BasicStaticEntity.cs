@@ -46,7 +46,7 @@ namespace Game.Core.Controllers
         {
             currentHealth -= damage;
 
-            if (currentHealth < 0)
+            if (currentHealth <= 0)
             {
                 Destroy(gameObject);
             }
@@ -67,7 +67,6 @@ namespace Game.Core.Controllers
                 var receiverComponent = collider.gameObject.GetComponent<IDamageReceiver>();
                 if (receiverComponent == null || !receiverComponent.IsHostile(TeamId))
                 {
-                    LogInformation($"Component: {receiverComponent} / Is Hostile: {(receiverComponent is null ? "NULL" : receiverComponent.IsHostile(TeamId))}");
                     continue;
                 }
 
@@ -101,7 +100,8 @@ namespace Game.Core.Controllers
         {
             base.DrawGizmos();
 
-            Draw.WireSphere(transform.position, unitStats.maxRange, Color.white);
+            if (GizmoContext.InSelection(this))
+                Draw.WireSphere(transform.position, unitStats.maxRange, Color.white);
         }
     }
 }
