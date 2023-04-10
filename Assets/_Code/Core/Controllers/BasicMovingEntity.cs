@@ -8,12 +8,28 @@ namespace Game.Core.Controllers
     [SelectionBase]
     public class BasicMovingEntity : AMovingEntity, IDamageReceiver, ILogicUpdateProcessor
     {
+        [SerializeField]
+        private float currentHealth = 1f;
 
-        protected override void Start()
+
+        /// <summary>
+        /// Called when scene starts
+        /// </summary>
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
 
             ALogicProcessor.Instance.RegisterLowPriorityProcessor(this);
+            currentHealth = UnitStats.MaxHealth;
+        }
+
+        /// <summary>
+        /// Called when object destroyed
+        /// </summary>
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ALogicProcessor.Instance.DeregisterLowPriorityProcessor(this);
         }
 
         protected override void Update()
@@ -39,15 +55,20 @@ namespace Game.Core.Controllers
 
         public void ApplyDamage(float damage)
         {
-            
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
 
         public void ProcessLogic()
         {
-            using (Draw.ingame.WithDuration(0.25f))
-            {
-                Draw.ingame.Ray(transform.position, Vector3.up * 3, Color.red);
-            }
+            //using (Draw.ingame.WithDuration(0.25f))
+            //{
+            //    Draw.ingame.Ray(transform.position, Vector3.up * 3, Color.red);
+            //}
         }
     }
 }

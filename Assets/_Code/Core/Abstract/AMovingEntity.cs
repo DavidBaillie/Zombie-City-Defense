@@ -40,7 +40,7 @@ namespace Game.Core.Abstract
             if (timeMultiplier < 0)
                 timeMultiplier = Time.deltaTime;
 
-            transform.position = Vector3.MoveTowards(transform.position, AssignedPath[PathIndex], UnitStats.movementSpeed * timeMultiplier);
+            transform.position = Vector3.MoveTowards(transform.position, AssignedPath[PathIndex], UnitStats.MovementSpeed * timeMultiplier);
         }
     }
 }

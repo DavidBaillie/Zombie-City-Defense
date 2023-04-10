@@ -1,4 +1,5 @@
-﻿using Game.Core.Abstract;
+﻿using Drawing;
+using Game.Core.Abstract;
 using Game.Core.Interfaces;
 using Game.Tags.Models;
 using Sirenix.OdinInspector;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 namespace Game.Core.Controllers
 {
+    [SelectionBase]
     public class BasicStaticEntity : AEntity, IDamageReceiver, ILogicUpdateProcessor
     {
         [SerializeField, Required, InlineEditor]
@@ -19,12 +21,21 @@ namespace Game.Core.Controllers
         /// <summary>
         /// Called when object created
         /// </summary>
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
+            
             currentHealth = unitStats.MaxHealth;
-
             ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
+        }
+
+        /// <summary>
+        /// Called when this object is destroyed
+        /// </summary>
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ALogicProcessor.Instance.DeregisterHighPriorityProcessor(this);
         }
 
         /// <summary>
@@ -49,17 +60,25 @@ namespace Game.Core.Controllers
             if (attackCooldown > 0)
                 return;
 
-            var collidersInRange = Physics.OverlapSphere(transform.position, unitStats.maxRange, unitStats.validTargetLayers, QueryTriggerInteraction.Ignore);
+            var collidersInRange = Physics.OverlapSphere(transform.position, unitStats.maxRange, unitStats.validTargetLayers);
             foreach (var collider in collidersInRange)
             {
                 //Check if this collider is a valid target
                 var receiverComponent = collider.gameObject.GetComponent<IDamageReceiver>();
-                if (receiverComponent == null || receiverComponent.IsHostile(TeamId))
+                if (receiverComponent == null || !receiverComponent.IsHostile(TeamId))
+                {
+                    LogInformation($"Component: {receiverComponent} / Is Hostile: {(receiverComponent is null ? "NULL" : receiverComponent.IsHostile(TeamId))}");
                     continue;
+                }
 
                 //Apply damage to target and reset cooldown
                 receiverComponent.ApplyDamage(unitStats.AttackDamage);
                 attackCooldown = unitStats.AttackCooldown;
+
+                using (Draw.ingame.WithDuration(0.15f))
+                {
+                    Draw.ingame.Line(transform.position, collider.gameObject.transform.position, Color.red);
+                }
                 break;
             }
         }
@@ -76,12 +95,13 @@ namespace Game.Core.Controllers
         }
 
         /// <summary>
-        /// Called when this object is destroyed
+        /// Debug gizmos drawer
         /// </summary>
-        protected override void OnDestroy()
+        public override void DrawGizmos()
         {
-            base.OnDestroy();
+            base.DrawGizmos();
 
+            Draw.WireSphere(transform.position, unitStats.maxRange, Color.white);
         }
     }
 }

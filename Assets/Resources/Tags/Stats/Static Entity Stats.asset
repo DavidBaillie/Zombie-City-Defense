@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 1
   AttackDamage: 1
-  AttackCooldown: 1
-  maxRange: 5
+  AttackCooldown: 0.1
+  maxRange: 8
   validTargetLayers:
     serializedVersion: 2
     m_Bits: 64
