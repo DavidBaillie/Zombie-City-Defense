@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Tags.Models
 {
-    [CreateAssetMenu(menuName = AssetMenuName + "Stats/Moving Unit", fileName = "Moving Unit Stats")]
+    [CreateAssetMenu(menuName = AssetMenuBaseName + "Stats/Moving Unit", fileName = "Moving Unit Stats")]
     public class MovingUnitStatsTag : ATag
     {
         [SerializeField, MinValue(1)]

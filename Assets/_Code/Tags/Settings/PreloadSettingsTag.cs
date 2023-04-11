@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace Game.Tags.Settings
 {
-    [CreateAssetMenu(menuName = AssetMenuName + "Settings/Preload Settings", fileName = "Preload Settings Tag")]
+    [CreateAssetMenu(menuName = AssetMenuBaseName + "Settings/Preload Settings", fileName = "Preload Settings Tag")]
     public class PreloadSettingsTag : ATag
     {
         [SerializeField, AssetsOnly]

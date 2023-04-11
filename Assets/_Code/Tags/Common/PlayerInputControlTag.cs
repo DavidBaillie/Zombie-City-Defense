@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Game.Tags.Common
 {
-    [CreateAssetMenu(menuName = AssetMenuName + "Input/Player Input Control")]
+    [CreateAssetMenu(menuName = AssetMenuBaseName + "Input/Player Input Control")]
     public class PlayerInputControlTag : ATag
     {
         [SerializeField, ReadOnly]

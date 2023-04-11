@@ -12,7 +12,7 @@ namespace Game.Core.Managers
     /// <summary>
     /// Class attached to persistent gameobject that allows for controller processing of logic in the game cycle
     /// </summary>
-    [CreateAssetMenu(menuName = AssetMenuName + "Processors/Logic Processor")]
+    [CreateAssetMenu(menuName = AssetMenuBaseName + "Processors/Logic Processor")]
     public class LogicProcessingManager : ALogicProcessor
     {
         [SerializeField, MinValue(0), BoxGroup("Controls")]

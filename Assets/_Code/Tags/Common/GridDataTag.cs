@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Tags.Common
 {
-    [CreateAssetMenu(menuName = AssetMenuName + "Data/Grid Data", fileName = "Grid Data Tag")]
+    [CreateAssetMenu(menuName = AssetMenuBaseName + "Data/Grid Data", fileName = "Grid Data Tag")]
     [Serializable]
     public class GridDataTag : AGridDataProvider
     {
