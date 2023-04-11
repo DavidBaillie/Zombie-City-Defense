@@ -1,26 +1,22 @@
-﻿using Game.Utilities.Worker;
+﻿using Assets.Core.Channels;
+using Assets.Core.Interfaces;
+using Game.Utilities.Worker;
 using Sirenix.OdinInspector;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.Tags.Common
 {
     [CreateAssetMenu(menuName = AssetMenuBaseName + "Input/Player Input Control")]
-    public class PlayerInputControlTag : ATag
+    public class PlayerInputControlTag : ATag, IInputController
     {
+        [SerializeField, Required]
+        private PlayerInputChannel channel;
+
         [SerializeField, ReadOnly]
         private PlayerInput inputController = null;
 
-
-        public event Action<Vector2> OnPlayerTappedScreen;
-        public event Action<Vector2> OnPlayerStartedDragging;
-        public event Action<Vector2> OnPlayerIsDragging;
-        public event Action<Vector2> OnPlayerStoppedDragging;
-
-
         private Vector2 touchPosition => inputController.Gameplay.TouchPosition.ReadValue<Vector2>();
-
         private bool startedDragging = false;
 
 
@@ -40,8 +36,7 @@ namespace Game.Tags.Common
             inputController.Gameplay.Drag.performed += PlayerStartedDragging;
             inputController.Gameplay.Drag.canceled += PlayerStoppedDragging;
 
-            //Temp
-            EnableInput();
+            channel.RegisterInputEnableCallback(this);
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace Game.Tags.Common
         /// <summary>
         /// Disables gameplay input for the game
         /// </summary>
-        public void DisableInput() => inputController.Disable();
+        public void DisableInput() => inputController.Disable(); 
 
         /// <summary>
         /// Called each frame while the game is active
@@ -61,7 +56,7 @@ namespace Game.Tags.Common
             //If the user is dragging, raise an event each frame for listeners
             if (startedDragging)
             {
-                OnPlayerIsDragging?.Invoke(touchPosition);
+                channel.RaiseOnPlayerIsDragging(touchPosition);
                 //LogInformation($"Dragging: {touchPosition}");
             }
         }
@@ -71,7 +66,7 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerTappedScreen(InputAction.CallbackContext context)
         {
-            OnPlayerTappedScreen?.Invoke(touchPosition);
+            channel.RaiseOnPlayerTappedScreen(touchPosition);
             //LogInformation($"Tapped Screen: {touchPosition}");
         }
 
@@ -80,7 +75,7 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerStartedDragging(InputAction.CallbackContext context)
         {
-            OnPlayerStartedDragging?.Invoke(touchPosition);
+            channel.RaiseOnPlayerStartedDragging(touchPosition);
             //LogInformation($"Started Dragging: {touchPosition}");
 
             startedDragging = true;
@@ -96,7 +91,7 @@ namespace Game.Tags.Common
 
             startedDragging = false;
 
-            OnPlayerStoppedDragging?.Invoke(touchPosition);
+            channel.RaiseOnPlayerStoppedDragging(touchPosition);
             //LogInformation($"Stopped Dragging: {touchPosition}");
         }
     }
