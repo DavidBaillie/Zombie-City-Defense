@@ -1,4 +1,4 @@
-﻿using Game.Tags.Common;
+﻿using Assets.Tags.Abstract;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 

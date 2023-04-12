@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Core.Abstract
+namespace Assets.Core.Abstract
 {
     public abstract class AMovingEntity : AEntity
     {

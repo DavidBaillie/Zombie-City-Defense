@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Game.Core.Controllers
+namespace Assets.Core.Controllers
 {
     public class WaypointController : AExtendedMonobehaviour
     {

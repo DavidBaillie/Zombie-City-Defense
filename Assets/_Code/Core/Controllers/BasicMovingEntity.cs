@@ -1,12 +1,13 @@
 ﻿using Drawing;
-using Game.Core.Abstract;
-using Game.Core.Interfaces;
+using Assets.Core.Abstract;
+using Assets.Core.Interfaces;
 using Sirenix.OdinInspector;
 using System;
 using UnityEditor;
 using UnityEngine;
+using Assets.Tags.Abstract;
 
-namespace Game.Core.Controllers
+namespace Assets.Core.Controllers
 {
     [SelectionBase]
     public class BasicMovingEntity : AMovingEntity, IDamageReceiver, ILogicUpdateProcessor

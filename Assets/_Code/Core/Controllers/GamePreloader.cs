@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Game.Core.Controllers
+namespace Assets.Core.Controllers
 {
     public class GamePreloader : AExtendedMonobehaviour
     {

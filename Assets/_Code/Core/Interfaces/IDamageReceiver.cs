@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Game.Core.Interfaces
+namespace Assets.Core.Interfaces
 {
     public interface IDamageReceiver
     {

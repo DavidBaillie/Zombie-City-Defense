@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Tags.Common.Abstract
+namespace Assets.Tags.Abstract
 {
     public abstract class AGridDataProvider : ATag
     {

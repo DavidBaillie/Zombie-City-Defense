@@ -1,12 +1,12 @@
 ﻿using Drawing;
-using Game.Core.Controllers;
+using Assets.Core.Controllers;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Game.Core.Managers
+namespace Assets.Core.Managers
 {
     /// <summary>
     /// Handles managing a collection of waypoints that an entity might path along

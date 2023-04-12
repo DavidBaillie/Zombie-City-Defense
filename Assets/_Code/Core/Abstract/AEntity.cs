@@ -1,6 +1,6 @@
 ﻿using Game.Utilities.BaseObjects;
 
-namespace Game.Core.Abstract
+namespace Assets.Core.Abstract
 {
     public abstract class AEntity : AExtendedMonobehaviour
     {

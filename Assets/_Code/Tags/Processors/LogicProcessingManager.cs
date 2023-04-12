@@ -1,13 +1,12 @@
-﻿using Game.Core.Abstract;
-using Game.Core.Interfaces;
+﻿using Assets.Core.Interfaces;
+using Assets.Tags.Abstract;
 using Game.Utilities.Worker;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Game.Core.Managers
+namespace Game.Tags.Core.Managers
 {
     /// <summary>
     /// Class attached to persistent gameobject that allows for controller processing of logic in the game cycle

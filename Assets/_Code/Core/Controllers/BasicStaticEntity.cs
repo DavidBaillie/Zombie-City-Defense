@@ -1,11 +1,12 @@
 ﻿using Drawing;
-using Game.Core.Abstract;
-using Game.Core.Interfaces;
+using Assets.Core.Abstract;
+using Assets.Core.Interfaces;
 using Game.Tags.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Assets.Tags.Abstract;
 
-namespace Game.Core.Controllers
+namespace Assets.Core.Controllers
 {
     [SelectionBase]
     public class BasicStaticEntity : AEntity, IDamageReceiver, ILogicUpdateProcessor

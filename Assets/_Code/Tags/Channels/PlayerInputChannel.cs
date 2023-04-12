@@ -1,10 +1,10 @@
-﻿using Assets.Core.Abstract;
-using Assets.Core.Interfaces;
+﻿using Assets.Core.Interfaces;
+using Assets.Tags.Abstract;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Core.Channels
+namespace Assets.Tags.Channels
 {
     [CreateAssetMenu(menuName = ChannelAssetBaseName + "Player Input", fileName = "Player Input Channel")]
     public class PlayerInputChannel : AChannel

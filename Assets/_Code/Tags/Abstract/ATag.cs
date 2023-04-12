@@ -1,6 +1,6 @@
 ﻿using Game.Utilities.BaseObjects;
 
-namespace Game.Tags.Common
+namespace Assets.Tags.Abstract
 {
     public abstract class ATag : AExtendedScriptableObject
     {

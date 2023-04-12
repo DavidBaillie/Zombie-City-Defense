@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Game.Core.Managers
+namespace Assets.Core.Managers
 {
     public class GridScanner : AExtendedMonobehaviour
     {

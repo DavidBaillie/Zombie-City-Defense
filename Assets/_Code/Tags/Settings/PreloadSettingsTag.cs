@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using Assets.Tags.Abstract;
 
 namespace Game.Tags.Settings
 {

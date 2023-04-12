@@ -1,10 +1,10 @@
-﻿using Game.Core.Managers;
+﻿using Assets.Core.Managers;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Core.Controllers
+namespace Assets.Core.Controllers
 {
     public class EntitySpawner : AExtendedMonobehaviour
     {

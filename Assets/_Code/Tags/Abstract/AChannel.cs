@@ -1,6 +1,6 @@
 ﻿using Game.Tags.Common;
 
-namespace Assets.Core.Abstract
+namespace Assets.Tags.Abstract
 {
     public abstract class AChannel : ATag
     {

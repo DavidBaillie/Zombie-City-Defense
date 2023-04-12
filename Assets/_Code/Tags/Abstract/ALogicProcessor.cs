@@ -1,7 +1,6 @@
-﻿using Game.Core.Interfaces;
-using Game.Tags.Common;
+﻿using Assets.Core.Interfaces;
 
-namespace Game.Core.Abstract
+namespace Assets.Tags.Abstract
 {
     /// <summary>
     /// Abstract definition for logic processors
