@@ -1524,6 +1524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132929767}
   - component: {fileID: 1132929766}
+  - component: {fileID: 1132929768}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -1585,6 +1586,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 75, y: -90, z: 0}
+--- !u!114 &1132929768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132929765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91116fceba73d6347b3708b9fe6c4e0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: {fileID: 11400000, guid: 2661598ce8a07cf42b5113e6ab4876d7, type: 2}
 --- !u!1 &1156055688
 GameObject:
   m_ObjectHideFlags: 0
