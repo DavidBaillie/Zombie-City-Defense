@@ -38,12 +38,27 @@ namespace Assets.Tags.Processors
             inputChannel.OnPlayerStoppedDragging += OnPlayerStoppedDragging;
         }
 
-        private void OnPlayerStoppedDragging(Vector2 screenPosition)
+        /// <summary>
+        /// Called when the player starts a drag event
+        /// </summary>
+        /// <param name="screenPosition">Screen position of the user touch touch</param>
+        private void OnPlayerStartedDragging(Vector2 screenPosition)
         {
-            playerStartedDragging = false;
-            sceneCamera = null;
+            //Try to find the current camera
+            if (!SceneObjectRegistry.TryGetObjectById(cameraId, out var cameraObject))
+                return;
+
+            //Grab initial data
+            sceneCamera = cameraObject;
+            playerStartedDragging = true;
+            playerStartDragScreenPosition = screenPosition;
+            playerStartCameraPosition = sceneCamera.transform.position;
         }
 
+        /// <summary>
+        /// Called each frame the user is dragging the screen
+        /// </summary>
+        /// <param name="screenPosition">Current touch position this frame</param>
         private void OnPlayerIsDragging(Vector2 screenPosition)
         {
             //Do nothing if a start event wasn't processed
@@ -64,19 +79,20 @@ namespace Assets.Tags.Processors
             sceneCamera.transform.position = playerStartCameraPosition + new Vector3(screenOffset.x, 0, screenOffset.y);
         }
 
-        private void OnPlayerStartedDragging(Vector2 screenPosition)
+        /// <summary>
+        /// Called when the user stops dragging the screen
+        /// </summary>
+        /// <param name="screenPosition">Touch position on screen</param>
+        private void OnPlayerStoppedDragging(Vector2 screenPosition)
         {
-            //Try to find the current camera
-            if (!SceneObjectRegistry.TryGetObjectById(cameraId, out var cameraObject))
-                return;
-
-            //Grab initial data
-            sceneCamera = cameraObject;
-            playerStartedDragging = true;
-            playerStartDragScreenPosition = screenPosition;
-            playerStartCameraPosition = sceneCamera.transform.position;
+            playerStartedDragging = false;
+            sceneCamera = null;
         }
 
+        /// <summary>
+        /// Called when the user taps the screen
+        /// </summary>
+        /// <param name="screenPosition">Position the user tapped</param>
         private void OnPlayerTappedScreen(Vector2 screenPosition)
         {
             //LogInformation("Tap");
