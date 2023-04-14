@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputChannel: {fileID: 11400000, guid: a3275bd02923e264e85147ae1821f59e, type: 2}
   cameraId: {fileID: 11400000, guid: 2661598ce8a07cf42b5113e6ab4876d7, type: 2}
-  cameraMovementSpeed: 10
+  cameraMovementSpeed: 75

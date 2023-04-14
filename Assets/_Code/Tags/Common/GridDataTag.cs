@@ -1,4 +1,6 @@
-﻿using Assets.Tags.Abstract;
+﻿using Assets.Core.Models;
+using Assets.Tags.Abstract;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,11 @@ namespace Game.Tags.Common
     [Serializable]
     public class GridDataTag : AGridDataProvider
     {
-        [SerializeField]
-        private Vector3[] _worldPositions = new Vector3[0];
-        public override Vector3[] WorldPositions { get => _worldPositions; }
+        [SerializeField, ReadOnly]
+        private Dictionary<Guid, Vector3> _worldPositions = new();
+        public override Vector3[] WorldPositionsArray { get => _worldPositions.Select(x => x.Value).ToArray(); }
+        public override List<Vector3> WorldPositionsList { get => _worldPositions.Select(x => x.Value).ToList(); }
+
 
         /// <summary>
         /// Overrides the current world data for the new input
@@ -20,7 +24,13 @@ namespace Game.Tags.Common
         /// <param name="positions">All valid world positions</param>
         public override void SetWorldPositions(IEnumerable<Vector3> positions)
         {
-            _worldPositions = positions.ToArray();
+            _worldPositions.Clear();
+
+            foreach (var pos in positions)
+            {
+                _worldPositions.Add(Guid.NewGuid(), pos);
+            }
+
             MakeDirty();
         }
 
@@ -31,40 +41,31 @@ namespace Game.Tags.Common
         /// <param name="bestPosition">Best match to return through</param>
         /// <param name="maxDistance">Max distance for a match</param>
         /// <returns>If a match was found</returns>
-        public override bool TryGetClosestGridPosition(Vector3 source, out Vector3 bestPosition, float maxDistance = 1f)
+        public override bool TryGetClosestGridPosition(Vector3 source, out WorldPosition bestPosition, float maxDistance = 1f)
         {
             //Default data
-            bestPosition = Vector3.zero;
-            if (WorldPositions == null || WorldPositions.Length < 1)
+            bestPosition = new(Guid.Empty, Vector3.zero);
+            if (_worldPositions == null || _worldPositions.Count < 1)
                 return false;
 
             //Tracking vars
-            Vector3? bestVector = null;
             float bestDistance = float.MinValue;
 
             //Check all coords
             foreach (var position in _worldPositions)
             {
-                float distance = Vector3.Distance(source, position);
+                float distance = Vector3.Distance(source, position.Value);
 
-                if (distance < bestDistance)
+                if (distance < bestDistance && distance < maxDistance)
                 {
                     bestDistance = distance;
-                    bestVector = position;
+                    
+                    bestPosition.Id = position.Key;
+                    bestPosition.Coordinate = position.Value;
                 }
             }
 
-            //Return state
-            if (bestVector == null)
-            {
-                bestPosition = Vector3.zero;
-                return false;
-            }
-            else
-            {
-                bestPosition = bestVector.Value;
-                return true;
-            }
+            return bestPosition.Id != Guid.Empty;
         }
 
         /// <summary>
@@ -74,18 +75,18 @@ namespace Game.Tags.Common
         /// <param name="gridPointsInRange">out param used to return data</param>
         /// <param name="range">Max range away from source for a grid point to be valid</param>
         /// <returns>If any grid points were found within range</returns>
-        public override bool TryGetGridPositionsWithinRange(Vector3 source, out List<Vector3> gridPointsInRange, float range)
+        public override bool TryGetGridPositionsWithinRange(Vector3 source, out List<WorldPosition> gridPointsInRange, float range)
         {
             //Default data
-            gridPointsInRange = new List<Vector3>((int)(range * range));
-            if (WorldPositions == null || WorldPositions.Length < 1)
+            gridPointsInRange = new List<WorldPosition>((int)(range * range));
+            if (_worldPositions == null || _worldPositions.Count < 1)
                 return false;
 
             //Check all coords
             foreach (var position in _worldPositions)
             {
-                if (Vector3.Distance(position, source) < range)
-                    gridPointsInRange.Add(position);
+                if (Vector3.Distance(position.Value, source) < range)
+                    gridPointsInRange.Add(new(position.Key, position.Value));
             }
 
             return gridPointsInRange.Count > 0;

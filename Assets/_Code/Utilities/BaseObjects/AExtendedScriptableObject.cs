@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Game.Utilities.BaseObjects
 {
-    public abstract class AExtendedScriptableObject : ScriptableObject
+    public abstract class AExtendedScriptableObject : SerializedScriptableObject
     {
         protected void LogInformation(string message, Object obj = null) => Debug.Log($"[Information] [{GetType().Name}]\n{message}", obj);
         protected void LogWarning(string message, Object obj = null) => Debug.LogWarning($"[Warning] [{GetType().Name}]\n{message}", obj);

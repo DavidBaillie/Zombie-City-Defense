@@ -66,7 +66,7 @@ namespace Assets.Core.Managers
         public override void DrawGizmos()
         {
             //Invalid state
-            if (!showGridView || gridData == null || gridData.WorldPositions == null)
+            if (!showGridView || gridData == null || gridData.WorldPositionsArray == null)
             {
                 return;
             }
@@ -74,7 +74,7 @@ namespace Assets.Core.Managers
             float boxSize = gridSize / 3;
 
             //Draw each valid point
-            foreach (var position in gridData.WorldPositions)
+            foreach (var position in gridData.WorldPositionsArray)
             {
                 Drawing.Draw.SolidBox(new float3(position.x, position.y, position.z), new float3(boxSize, boxSize, boxSize), Color.blue);
             }
