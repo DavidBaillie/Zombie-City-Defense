@@ -91,5 +91,25 @@ namespace Game.Tags.Common
 
             return gridPointsInRange.Count > 0;
         }
+
+        /// <summary>
+        /// Tries to find and return a world position associate with the provided Id value
+        /// </summary>
+        /// <param name="id">Coordinate ID</param>
+        /// <param name="coordinate">World position</param>
+        /// <returns>If a position was found</returns>
+        public override bool TryGetGridPositionById(Guid id, out WorldPosition coordinate)
+        {
+            if (_worldPositions.ContainsKey(id))
+            {
+                coordinate = new(id, _worldPositions[id]);
+                return true;
+            }
+            else
+            {
+                coordinate = new(Guid.Empty, Vector3.zero);
+                return false;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.Core.Models;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,5 +13,6 @@ namespace Assets.Tags.Abstract
         public abstract void SetWorldPositions(IEnumerable<Vector3> positions);
         public abstract bool TryGetClosestGridPosition(Vector3 source, out WorldPosition bestPosition, float maxDistance = 1f);
         public abstract bool TryGetGridPositionsWithinRange(Vector3 source, out List<WorldPosition> gridPointsInRange, float range);
+        public abstract bool TryGetGridPositionById(Guid id, out WorldPosition coordinate);
     }
 }
