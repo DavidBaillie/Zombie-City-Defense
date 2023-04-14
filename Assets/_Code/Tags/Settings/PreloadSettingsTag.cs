@@ -12,7 +12,7 @@ namespace Game.Tags.Settings
         [SerializeField, AssetsOnly]
         public List<GameObject> PreloadPrefabs = new List<GameObject>();
 
-        [SerializeField, AssetsOnly]
+        [SerializeField, AssetsOnly, InlineEditor]
         public List<ATag> InitializedTags = new List<ATag>();
     }
 }

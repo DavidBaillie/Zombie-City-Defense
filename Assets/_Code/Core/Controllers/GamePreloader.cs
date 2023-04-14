@@ -51,7 +51,7 @@ namespace Assets.Core.Controllers
 
             foreach (var tag in preloadSettings.InitializedTags)
             {
-                try { tag.InitializeTag(); } catch { }
+                try { tag.InitializeTag(); } catch (System.Exception e) { LogError($"Failed to initialize [{tag?.name}]: {e.GetType().Name}"); }
             }
         }
     }

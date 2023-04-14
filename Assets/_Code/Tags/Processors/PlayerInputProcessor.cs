@@ -2,8 +2,6 @@
 using Assets.Tags.Channels;
 using Assets.Tags.Common;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Tags.Processors
@@ -18,7 +16,7 @@ namespace Assets.Tags.Processors
         private ObjectTypeIdentifier cameraId = null;
 
         [SerializeField, MinValue(0)]
-        private float cameraMovementSpeed = 10f;
+        private float cameraMovementSpeed = 2f;
 
 
         private bool playerStartedDragging = false;
@@ -48,17 +46,28 @@ namespace Assets.Tags.Processors
 
         private void OnPlayerIsDragging(Vector2 screenPosition)
         {
-            
+            if (sceneCamera == null)
+            {
+                LogError($"No scene VCam has been registered, cannot move camera!");
+                return;
+            }
+
+            var screenOffset = playerStartDragScreenPosition - screenPosition;
+            screenOffset.x /= Screen.width;
+            screenOffset.y /= Screen.height;
+            screenOffset *= cameraMovementSpeed;
+
+            sceneCamera.transform.position = playerStartCameraPosition + new Vector3(screenOffset.x, 0, screenOffset.y);
         }
 
         private void OnPlayerStartedDragging(Vector2 screenPosition)
         {
             //Try to find the current camera
-            if (!SceneObjectRegistry.TryGetObjectsById(cameraId, out List<GameObject> options))
+            if (!SceneObjectRegistry.TryGetObjectById(cameraId, out var cameraObject))
                 return;
 
             //Grab initial data
-            sceneCamera = options.First();
+            sceneCamera = cameraObject;
             playerStartedDragging = true;
             playerStartDragScreenPosition = screenPosition;
             playerStartCameraPosition = sceneCamera.transform.position;
@@ -66,7 +75,7 @@ namespace Assets.Tags.Processors
 
         private void OnPlayerTappedScreen(Vector2 screenPosition)
         {
-
+            //LogInformation("Tap");
         }
     }
 }

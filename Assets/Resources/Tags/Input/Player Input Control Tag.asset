@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Player Input Control Tag
   m_EditorClassIdentifier: 
   channel: {fileID: 11400000, guid: a3275bd02923e264e85147ae1821f59e, type: 2}
+  enableLogging: 0

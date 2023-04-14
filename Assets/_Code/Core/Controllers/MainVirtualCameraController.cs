@@ -11,9 +11,9 @@ namespace Assets.Core.Controllers
         private ObjectTypeIdentifier id = null;
 
         ///Called when object created
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
 
             if (id != null)
             {

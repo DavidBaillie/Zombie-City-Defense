@@ -14,9 +14,11 @@ namespace Game.Tags.Common
         [SerializeField, Required]
         private PlayerInputChannel channel;
 
-        [SerializeField, ReadOnly]
-        private PlayerInput inputController = null;
+        [SerializeField]
+        private bool enableLogging = false;
 
+
+        private PlayerInput inputController = null;
         private Vector2 touchPosition => inputController.Gameplay.TouchPosition.ReadValue<Vector2>();
         private bool startedDragging = false;
 
@@ -57,8 +59,10 @@ namespace Game.Tags.Common
             //If the user is dragging, raise an event each frame for listeners
             if (startedDragging)
             {
+                if (enableLogging)
+                    LogInformation($"Dragging: {touchPosition}");
+
                 channel.RaiseOnPlayerIsDragging(touchPosition);
-                //LogInformation($"Dragging: {touchPosition}");
             }
         }
 
@@ -67,8 +71,10 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerTappedScreen(InputAction.CallbackContext context)
         {
+            if (enableLogging)
+                LogInformation($"Tapped Screen: {touchPosition}");
+
             channel.RaiseOnPlayerTappedScreen(touchPosition);
-            //LogInformation($"Tapped Screen: {touchPosition}");
         }
 
         /// <summary>
@@ -76,9 +82,10 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerStartedDragging(InputAction.CallbackContext context)
         {
+            if (enableLogging)
+                LogInformation($"Started Dragging: {touchPosition}");
+            
             channel.RaiseOnPlayerStartedDragging(touchPosition);
-            //LogInformation($"Started Dragging: {touchPosition}");
-
             startedDragging = true;
         }
 
@@ -89,11 +96,12 @@ namespace Game.Tags.Common
         {
             if (!startedDragging)
                 return;
+            
+            if (enableLogging)
+                LogInformation($"Stopped Dragging: {touchPosition}");
 
             startedDragging = false;
-
             channel.RaiseOnPlayerStoppedDragging(touchPosition);
-            //LogInformation($"Stopped Dragging: {touchPosition}");
         }
     }
 }

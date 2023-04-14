@@ -9,7 +9,7 @@ namespace Assets.Tags.Channels
     [CreateAssetMenu(menuName = ChannelAssetBaseName + "Player Input", fileName = "Player Input Channel")]
     public class PlayerInputChannel : AChannel
     {
-        private List<IInputController> inputControllers;
+        private List<IInputController> inputControllers = new();
 
         public event Action<Vector2> OnPlayerTappedScreen;
         public event Action<Vector2> OnPlayerStartedDragging;
