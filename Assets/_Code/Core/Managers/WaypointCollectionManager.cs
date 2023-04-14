@@ -77,7 +77,7 @@ namespace Assets.Core.Managers
                         Draw.Line(waypoints[i].GetMinPosition(), waypoints[i + 1].GetMinPosition(), Color.black);
                     }
                 }
-                catch (System.Exception e)
+                catch
                 {
                     //LogError($"Could not generate bounds of waypoint path because an exception arose [{e.GetType().Name}]");
                 }
@@ -91,7 +91,7 @@ namespace Assets.Core.Managers
             for (int x = 0; x < 50; x++)
             {
                 var path = GeneratePath();
-                using (Draw.WithDuration(2))
+                using (Draw.WithDuration(renderDuration))
                 {
                     for (int i = 0; i < path.Count - 1; i++)
                     {

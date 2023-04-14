@@ -46,6 +46,10 @@ namespace Assets.Tags.Processors
 
         private void OnPlayerIsDragging(Vector2 screenPosition)
         {
+            //Do nothing if a start event wasn't processed
+            if (!playerStartedDragging)
+                return;
+
             if (sceneCamera == null)
             {
                 LogError($"No scene VCam has been registered, cannot move camera!");
