@@ -1,7 +1,13 @@
 {
   "dependencies": {
+    "com.johannesmp.unityscenereference": {
+      "version": "file:../Tools/Unity Scene Reference/Assets/source",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.marijnzwemmer.unity-toolbar-extender": {
-      "version": "file:C:/Users/leema/Documents/Unity Packages/unity-toolbar-extender-master/unity-toolbar-extender-master",
+      "version": "file:../Tools/Unity Toolbar Extender",
       "depth": 0,
       "source": "local",
       "dependencies": {}
