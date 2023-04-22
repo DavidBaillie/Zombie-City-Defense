@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bda4bb6ed46bd2478696c4e807801ff, type: 3}
-  m_Name: Player Input Processor
+  m_Script: {fileID: 11500000, guid: 84013888dbdbc264bbd99c5850c29cbe, type: 3}
+  m_Name: Player Actions Channel
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,12 +21,3 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  inputChannel: {fileID: 11400000, guid: a3275bd02923e264e85147ae1821f59e, type: 2}
-  actionChannel: {fileID: 11400000, guid: 669deaa83ef84f4488da66190e5eaf04, type: 2}
-  cameraId: {fileID: 11400000, guid: 2661598ce8a07cf42b5113e6ab4876d7, type: 2}
-  gridData: {fileID: 11400000, guid: b9d296a87a628eb478d199b03e77f2a5, type: 2}
-  cameraMovementSpeed: 75
-  tapSelectionRange: 1
-  playspaceMask:
-    serializedVersion: 2
-    m_Bits: 8

@@ -1,6 +1,7 @@
 ﻿using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Common;
+using Game.Tags.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,14 +10,28 @@ namespace Assets.Tags.Processors
     [CreateAssetMenu(menuName = ProcessorAssetBaseName + "Input Processor")]
     public class PlayerInputProcessor : AProcessorTag
     {
-        [SerializeField, Required]
+        [SerializeField, Required, BoxGroup("Channels")]
         private PlayerInputChannel inputChannel = null;
 
-        [SerializeField, Required]
+        [SerializeField, Required, BoxGroup("Channels")]
+        private PlayerActionChannel actionChannel = null;
+
+
+        [SerializeField, Required, BoxGroup("Data")]
         private ObjectTypeIdentifier cameraId = null;
 
-        [SerializeField, MinValue(0)]
+        [SerializeField, Required, BoxGroup("Data")]
+        private GridDataTag gridData = null;
+
+
+        [SerializeField, MinValue(0), BoxGroup("Options")]
         private float cameraMovementSpeed = 2f;
+
+        [SerializeField, MinValue(0), BoxGroup("Options")]
+        private float tapSelectionRange = 1f;
+
+        [SerializeField]
+        private LayerMask playspaceMask;
 
 
         private bool playerStartedDragging = false;
@@ -95,7 +110,22 @@ namespace Assets.Tags.Processors
         /// <param name="screenPosition">Position the user tapped</param>
         private void OnPlayerTappedScreen(Vector2 screenPosition)
         {
-            //LogInformation("Tap");
+            //Check player tap, do nothing if missed floor
+            if (!Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
+            {
+                actionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
+                return;
+            }
+
+            //Player tapped floor, determine an action
+            if (gridData.TryGetClosestGridPosition(hit.point, out var worldPosition, tapSelectionRange))
+            {
+                actionChannel.RaiseOnPlayerSelectedWorldPosition(worldPosition);
+            }
+            else
+            {
+                actionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
+            }
         }
     }
 }

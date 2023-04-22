@@ -9,7 +9,7 @@ using Assets.Tags.Abstract;
 namespace Assets.Core.Controllers
 {
     [SelectionBase]
-    public class BasicStaticEntity : AEntity, IDamageReceiver, ILogicUpdateProcessor
+    public class BasicStaticEntity : AStaticEntity, IDamageReceiver, ILogicUpdateProcessor
     {
         [SerializeField, Required, InlineEditor]
         private StaticUnitStatsTag unitStats = null;
