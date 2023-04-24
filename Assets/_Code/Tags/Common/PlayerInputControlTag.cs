@@ -61,8 +61,6 @@ namespace Game.Tags.Common
             //If the user is dragging, raise an event each frame for listeners
             if (startedDragging)
             {
-                EventSystem.current.IsPositionOverElement(touchPosition);
-
                 if (enableLogging)
                     LogInformation($"Dragging: {touchPosition}");
 

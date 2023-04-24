@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d42f7da6ce41164d85fa4e6a2007d27, type: 3}
-  m_Name: Simple Zombie
+  m_Script: {fileID: 11500000, guid: 59df7af7b7f45f149b01a10e505b4fca, type: 3}
+  m_Name: s_MachineGunner
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2

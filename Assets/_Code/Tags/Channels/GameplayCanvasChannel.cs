@@ -9,17 +9,10 @@ namespace Assets.Tags.Channels
     [CreateAssetMenu(menuName = ChannelAssetBaseName + "Gameplay Canvas", fileName = "Gameplay Canvas Channel")]
     public class GameplayCanvasChannel : AChannel
     {
-        public event Action<WorldPosition> OnDisplayPlacementSelectionView;
-        public event Action<WorldPosition, StaticEntityIdentifier> OnUserSelectedStaticEntityPlacement;
-        public event Action OnUserClickedAway;
+        public event Action<StaticEntityIdentifier> OnUserSelectedStaticEntityPlacement;
 
 
-        public void RaiseOnDisplayPlacementSelectionView(WorldPosition placementPosition) 
-            => OnDisplayPlacementSelectionView?.Invoke(placementPosition);
-
-        public void RaiseOnUserSelectedStaticEntityPlacement(WorldPosition placementPosition, StaticEntityIdentifier entityIdentifier) 
-            => OnUserSelectedStaticEntityPlacement?.Invoke(placementPosition, entityIdentifier); 
-
-        public void RaiseOnUserClickedAway() => OnUserClickedAway?.Invoke();
+        public void RaiseOnUserSelectedStaticEntityPlacement(StaticEntityIdentifier entityIdentifier) 
+            => OnUserSelectedStaticEntityPlacement?.Invoke(entityIdentifier); 
     }
 }

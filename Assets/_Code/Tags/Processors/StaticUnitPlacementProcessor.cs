@@ -5,6 +5,7 @@ using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Collections;
 using Assets.Tags.Common;
+using Game.Tags.Settings;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -22,6 +23,13 @@ namespace Assets.Tags.Processors
         [SerializeField, Required]
         private EntityPrefabCollection prefabCollection = null;
 
+
+        private GameObject highlightVisual = null;
+
+        private StaticEntityIdentifier placementEntityId = null;
+        private WorldPosition? lastValidTapPosition = null;
+
+
         /// <summary>
         /// Called when the game is loaded to initialize state data
         /// </summary>
@@ -29,9 +37,21 @@ namespace Assets.Tags.Processors
         {
             base.InitializeTag();
 
-            actionChannel.OnPlayerSelectedWorldPosition += PlayerTappedOnWorldPosition;
+            highlightVisual = Instantiate(GlobalSettingsTag.Instance.userSelectedPositionPrefab, Vector3.zero, Quaternion.identity, null);
+            highlightVisual.SetActive(false);
+            DontDestroyOnLoad(highlightVisual);
 
+            actionChannel.OnPlayerSelectedWorldPosition += PlayerTappedOnWorldPosition;
             gameplayCanvasChannel.OnUserSelectedStaticEntityPlacement += OnUserSelectedStaticEntityPlacement;
+        }
+
+        /// <summary>
+        /// Called when the canvas selects a unit for placement
+        /// </summary>
+        /// <param name="entityId">Entity to be placed</param>
+        private void OnUserSelectedStaticEntityPlacement(StaticEntityIdentifier entityId)
+        {
+            placementEntityId = entityId;
         }
 
         /// <summary>
@@ -40,15 +60,36 @@ namespace Assets.Tags.Processors
         /// <param name="position">WorldPosition data selected</param>
         private void PlayerTappedOnWorldPosition(WorldPosition position)
         {
-            //If something is already at this point, ignore the action
-            if (StaticEntityTracker.TryGetEntityById(position.Id, out var entity))
-            {
-                return;
-            }
+            //Show the user where they selected
+            highlightVisual.SetActive(true);
+            highlightVisual.transform.position = position.Coordinate;
 
-            //Slot is empty, allow for placement
-            gameplayCanvasChannel.RaiseOnDisplayPlacementSelectionView(position);
+            //If something is already at this point, ignore the action
+            if (StaticEntityTracker.TryGetEntityById(position.Id, out _))
+                return;
+
+            //Show the 
         }
+
+        /// <summary>
+        /// Shows the highlight visual at the given world position
+        /// </summary>
+        /// <param name="position">Where to place the visual</param>
+        private void HighlightSelectedWorldPosition(WorldPosition position)
+        {
+            highlightVisual.SetActive(true);
+            highlightVisual.transform.position = position.Coordinate;
+        }
+
+        /// <summary>
+        /// Hides the highlight visual from view
+        /// </summary>
+        private void HideHighlightVisual()
+        {
+            highlightVisual.SetActive(false);
+        }
+
+
 
         /// <summary>
         /// Called when the gameplay canvas channel confirms an entity placement

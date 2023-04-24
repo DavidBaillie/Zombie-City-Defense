@@ -11,6 +11,9 @@ namespace Assets.Core.Controllers
     public class GameplayCanvasController : AExtendedMonobehaviour
     {
         [SerializeField, Required]
+        private CanvasGroup canvasContentsView = null;
+
+        [SerializeField, Required]
         private CanvasGroup unitPlacementSelectionView = null;
 
         [SerializeField, Required]
@@ -20,7 +23,7 @@ namespace Assets.Core.Controllers
         private PlayerActionChannel actionChannel = null;
 
 
-        private WorldPosition? lastReceivedPosition = null;
+        private bool isShowingUnitOptions = false;
 
 
         /// <summary>
@@ -30,20 +33,7 @@ namespace Assets.Core.Controllers
         {
             base.Awake();
 
-            //unitPlacementSelectionView.alpha = 0;
-
-            gameplayChannel.OnDisplayPlacementSelectionView += OnDisplayPlacementSelectionView;
-            actionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidPosition;
-        }
-
-        /// <summary>
-        /// Called when the user presses on a screen point that does not yield a valid world coordinate
-        /// </summary>
-        /// <param name="screenPosition">Where on the screen the user pressed</param>
-        private void OnPlayerSelectedInvalidPosition(Vector2 screenPosition)
-        {
-            lastReceivedPosition = null;
-            //unitPlacementSelectionView.alpha = 0;
+            unitPlacementSelectionView.alpha = 0;
         }
 
         /// <summary>
@@ -52,34 +42,52 @@ namespace Assets.Core.Controllers
         protected override void OnDestroy()
         {
             base.OnDestroy();
-
-            gameplayChannel.OnDisplayPlacementSelectionView -= OnDisplayPlacementSelectionView;
         }
 
         /// <summary>
-        /// Called via the gameplay channel when the static unit selection display needs to be shown
+        /// Shows all canvas contents
         /// </summary>
-        /// <param name="positionData">Where the unit will be placed</param>
-        private void OnDisplayPlacementSelectionView(WorldPosition positionData)
+        public void ShowCanvas()
         {
-            unitPlacementSelectionView.alpha = 1;
-            lastReceivedPosition = positionData;
+            canvasContentsView.alpha = 1;
+            canvasContentsView.blocksRaycasts = true;
+            canvasContentsView.interactable = true;
         }
 
         /// <summary>
-        /// Called by Canvas button when the user selects a unit to place
+        /// Hides all canvas contents
         /// </summary>
-        /// <param name="identifier"></param>
-        public void SubmitUnitPlacementSelection(StaticEntityIdentifier identifier)
+        public void HideCanvas()
         {
-            //Action was cancelled, don't process 
-            if (lastReceivedPosition == null)
+            canvasContentsView.alpha = 0;
+            canvasContentsView.blocksRaycasts = false;
+            canvasContentsView.interactable = false;
+        }
+
+
+        /// <summary>
+        /// Called via Unity when the user presses the "units" button
+        /// </summary>
+        public void OnClickUnitSelectionButton()
+        {
+            isShowingUnitOptions = !isShowingUnitOptions;
+            unitPlacementSelectionView.alpha = isShowingUnitOptions ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Called via Unity when the user presses one of the unit placement buttons
+        /// </summary>
+        /// <param name="id">Unit to place</param>
+        public void OnUserSelectedUnitToPlace(StaticEntityIdentifier id)
+        {
+            if (id == null)
+            {
+                LogError($"Could not process UI request to place a static entity because the provided id was null.");
                 return;
-                
-            //Select the unit for placement and reset
-            gameplayChannel.RaiseOnUserSelectedStaticEntityPlacement(lastReceivedPosition.Value, identifier);    
-            lastReceivedPosition = null;
-            unitPlacementSelectionView.alpha = 0;
+            }
+
+            OnClickUnitSelectionButton();
+            gameplayChannel.RaiseOnUserSelectedStaticEntityPlacement(id);
         }
     }
 }

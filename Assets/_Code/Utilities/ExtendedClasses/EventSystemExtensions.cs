@@ -7,35 +7,36 @@ namespace Assets.Utilities.ExtendedClasses
     public static class EventSystemExtensions
     {
         /// <summary>
-        /// Determines if the provided 
+        /// Determines if the provided screen position has a UI element under it
         /// </summary>
-        /// <param name="system"></param>
-        /// <param name="screenPosition"></param>
-        /// <returns></returns>
+        /// <param name="system">Event system to check with</param>
+        /// <param name="screenPosition">Position to check</param>
+        /// <param name="checkForGroupAlpha">Determines if a parent canvas group alpha value will affect the results</param>
+        /// <returns>If the position is over an active UI element</returns>
         public static bool IsPositionOverElement(this EventSystem system, Vector2 screenPosition, bool checkForGroupAlpha = true)
         {
+            //Build the UI state data
             PointerEventData pointer = new PointerEventData(system);
             pointer.position = screenPosition;
             List<RaycastResult> raycastResults = new List<RaycastResult>();
 
-            // UI Elements must have `picking mode` set to `position` to be hit
+            //Raycast elements to see what's under position
             system.RaycastAll(pointer, raycastResults);
 
-            if (raycastResults.Count > 0)
+            //Check state data on everything that came back
+            foreach (RaycastResult result in raycastResults)
             {
-                foreach (RaycastResult result in raycastResults)
-                {
-                    if (result.distance == 0 && result.isValid)
-                    {
-                        //Ignore group alpha, return valid
-                        if (!checkForGroupAlpha)
-                            return true;
+                //Check for invalid states
+                if (!result.isValid || result.displayIndex != 0)
+                    continue;
 
-                        //If there is a group to check, make sure it's alpha is zero
-                        var group = result.gameObject.GetComponentInParent<CanvasGroup>();
-                        return group == null && group.alpha <= 0;
-                    }
-                }
+                //Ignore group alpha, return valid
+                if (!checkForGroupAlpha)
+                    return true;
+
+                //If there is a group to check, make sure it's alpha is zero
+                var group = result.gameObject.GetComponentInParent<CanvasGroup>();
+                return group == null || group.alpha > 0;
             }
 
             return false;
