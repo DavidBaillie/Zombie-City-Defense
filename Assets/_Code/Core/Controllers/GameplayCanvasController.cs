@@ -4,6 +4,7 @@ using Assets.Tags.Common;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Core.Controllers
 {
@@ -29,7 +30,7 @@ namespace Assets.Core.Controllers
         {
             base.Awake();
 
-            unitPlacementSelectionView.alpha = 0;
+            //unitPlacementSelectionView.alpha = 0;
 
             gameplayChannel.OnDisplayPlacementSelectionView += OnDisplayPlacementSelectionView;
             actionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidPosition;
@@ -42,7 +43,7 @@ namespace Assets.Core.Controllers
         private void OnPlayerSelectedInvalidPosition(Vector2 screenPosition)
         {
             lastReceivedPosition = null;
-            unitPlacementSelectionView.alpha = 0;
+            //unitPlacementSelectionView.alpha = 0;
         }
 
         /// <summary>

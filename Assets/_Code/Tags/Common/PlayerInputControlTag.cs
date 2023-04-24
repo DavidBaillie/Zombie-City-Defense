@@ -4,7 +4,9 @@ using Assets.Tags.Channels;
 using Game.Utilities.Worker;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Assets.Utilities.ExtendedClasses;
 
 namespace Game.Tags.Common
 {
@@ -59,6 +61,8 @@ namespace Game.Tags.Common
             //If the user is dragging, raise an event each frame for listeners
             if (startedDragging)
             {
+                EventSystem.current.IsPositionOverElement(touchPosition);
+
                 if (enableLogging)
                     LogInformation($"Dragging: {touchPosition}");
 
@@ -71,6 +75,9 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerTappedScreen(InputAction.CallbackContext context)
         {
+            if (EventSystem.current.IsPositionOverElement(touchPosition))
+                return;
+
             if (enableLogging)
                 LogInformation($"Tapped Screen: {touchPosition}");
 
@@ -82,6 +89,9 @@ namespace Game.Tags.Common
         /// </summary>
         private void PlayerStartedDragging(InputAction.CallbackContext context)
         {
+            if (EventSystem.current.IsPositionOverElement(touchPosition))
+                return;
+
             if (enableLogging)
                 LogInformation($"Started Dragging: {touchPosition}");
             
