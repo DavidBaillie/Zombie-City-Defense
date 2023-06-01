@@ -1,8 +1,8 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.DataTracking;
 using Assets.Core.Models;
+using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
-using Assets.Tags.Channels;
 using Assets.Tags.Collections;
 using Assets.Tags.Common;
 using Game.Tags.Settings;
@@ -14,12 +14,6 @@ namespace Assets.Tags.Processors
     [CreateAssetMenu(menuName = ProcessorAssetBaseName + "Static Unit Placement")]
     public class StaticUnitPlacementProcessor : AProcessorTag
     {
-        [SerializeField, Required]
-        private PlayerActionChannel actionChannel = null;
-
-        [SerializeField, Required]
-        private GameplayCanvasChannel gameplayCanvasChannel = null;
-
         [SerializeField, Required]
         private EntityPrefabCollection prefabCollection = null;
 
@@ -41,8 +35,8 @@ namespace Assets.Tags.Processors
             highlightVisual.SetActive(false);
             DontDestroyOnLoad(highlightVisual);
 
-            actionChannel.OnPlayerSelectedWorldPosition += PlayerTappedOnWorldPosition;
-            gameplayCanvasChannel.OnUserSelectedStaticEntityPlacement += OnUserSelectedStaticEntityPlacement;
+            PlayerActionChannel.OnPlayerSelectedWorldPosition += PlayerTappedOnWorldPosition;
+            GameplayCanvasChannel.OnUserSelectedStaticEntityPlacement += OnUserSelectedStaticEntityPlacement;
         }
 
         /// <summary>

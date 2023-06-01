@@ -1,21 +1,17 @@
 ﻿using Assets.Core.Interfaces;
 using Assets.Tags.Abstract;
-using Assets.Tags.Channels;
 using Game.Utilities.Worker;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Assets.Utilities.ExtendedClasses;
+using Assets.Core.StaticChannels;
 
 namespace Game.Tags.Common
 {
     [CreateAssetMenu(menuName = AssetMenuBaseName + "Input/Player Input Control")]
     public class PlayerInputControlTag : ATag, IInputController
     {
-        [SerializeField, Required]
-        private PlayerInputChannel channel;
-
         [SerializeField]
         private bool enableLogging = false;
 
@@ -41,7 +37,7 @@ namespace Game.Tags.Common
             inputController.Gameplay.Drag.performed += PlayerStartedDragging;
             inputController.Gameplay.Drag.canceled += PlayerStoppedDragging;
 
-            channel.RegisterInputEnableCallback(this);
+            GameplayInputChannel.RegisterInputEnableCallback(this);
         }
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace Game.Tags.Common
                 if (enableLogging)
                     LogInformation($"Dragging: {touchPosition}");
 
-                channel.RaiseOnPlayerIsDragging(touchPosition);
+                GameplayInputChannel.RaiseOnPlayerIsDragging(touchPosition);
             }
         }
 
@@ -79,7 +75,7 @@ namespace Game.Tags.Common
             if (enableLogging)
                 LogInformation($"Tapped Screen: {touchPosition}");
 
-            channel.RaiseOnPlayerTappedScreen(touchPosition);
+            GameplayInputChannel.RaiseOnPlayerTappedScreen(touchPosition);
         }
 
         /// <summary>
@@ -92,8 +88,8 @@ namespace Game.Tags.Common
 
             if (enableLogging)
                 LogInformation($"Started Dragging: {touchPosition}");
-            
-            channel.RaiseOnPlayerStartedDragging(touchPosition);
+
+            GameplayInputChannel.RaiseOnPlayerStartedDragging(touchPosition);
             startedDragging = true;
         }
 
@@ -109,7 +105,7 @@ namespace Game.Tags.Common
                 LogInformation($"Stopped Dragging: {touchPosition}");
 
             startedDragging = false;
-            channel.RaiseOnPlayerStoppedDragging(touchPosition);
+            GameplayInputChannel.RaiseOnPlayerStoppedDragging(touchPosition);
         }
     }
 }

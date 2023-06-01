@@ -1,6 +1,5 @@
-﻿using Assets.Tags.Channels;
+﻿using Assets.Core.StaticChannels;
 using Game.Utilities.BaseObjects;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Assets.Core.Managers
@@ -11,9 +10,6 @@ namespace Assets.Core.Managers
     [SelectionBase]
     public class GameplayManager : AExtendedMonobehaviour
     {
-        [SerializeField, Required]
-        private PlayerInputChannel inputChannel = null;
-
         /// <summary>
         /// Called when the scene starts
         /// </summary>
@@ -21,7 +17,7 @@ namespace Assets.Core.Managers
         {
             base.Start();
 
-            inputChannel.EnableInput();
+            GameplayInputChannel.EnableInput();
         }
     }
 }

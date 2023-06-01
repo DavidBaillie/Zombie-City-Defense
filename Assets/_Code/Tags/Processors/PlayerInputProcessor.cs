@@ -1,5 +1,5 @@
-﻿using Assets.Tags.Abstract;
-using Assets.Tags.Channels;
+﻿using Assets.Core.StaticChannels;
+using Assets.Tags.Abstract;
 using Assets.Tags.Common;
 using Game.Tags.Common;
 using Sirenix.OdinInspector;
@@ -10,13 +10,6 @@ namespace Assets.Tags.Processors
     [CreateAssetMenu(menuName = ProcessorAssetBaseName + "Input Processor")]
     public class PlayerInputProcessor : AProcessorTag
     {
-        [SerializeField, Required, BoxGroup("Channels")]
-        private PlayerInputChannel inputChannel = null;
-
-        [SerializeField, Required, BoxGroup("Channels")]
-        private PlayerActionChannel actionChannel = null;
-
-
         [SerializeField, Required, BoxGroup("Data")]
         private ObjectTypeIdentifier cameraId = null;
 
@@ -47,10 +40,10 @@ namespace Assets.Tags.Processors
         {
             base.InitializeTag();
 
-            inputChannel.OnPlayerTappedScreen += OnPlayerTappedScreen;
-            inputChannel.OnPlayerStartedDragging += OnPlayerStartedDragging;
-            inputChannel.OnPlayerIsDragging += OnPlayerIsDragging;
-            inputChannel.OnPlayerStoppedDragging += OnPlayerStoppedDragging;
+            GameplayInputChannel.OnPlayerTappedScreen += OnPlayerTappedScreen;
+            GameplayInputChannel.OnPlayerStartedDragging += OnPlayerStartedDragging;
+            GameplayInputChannel.OnPlayerIsDragging += OnPlayerIsDragging;
+            GameplayInputChannel.OnPlayerStoppedDragging += OnPlayerStoppedDragging;
         }
 
         /// <summary>
@@ -113,18 +106,18 @@ namespace Assets.Tags.Processors
             //Check player tap, do nothing if missed floor
             if (!Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
             {
-                actionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
+                PlayerActionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
                 return;
             }
 
             //Player tapped floor, determine an action
             if (gridData.TryGetClosestGridPosition(hit.point, out var worldPosition, tapSelectionRange))
             {
-                actionChannel.RaiseOnPlayerSelectedWorldPosition(worldPosition);
+                PlayerActionChannel.RaiseOnPlayerSelectedWorldPosition(worldPosition);
             }
             else
             {
-                actionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
+                PlayerActionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
             }
         }
     }

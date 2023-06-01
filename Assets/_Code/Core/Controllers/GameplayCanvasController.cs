@@ -1,10 +1,8 @@
-﻿using Assets.Core.Models;
-using Assets.Tags.Channels;
+﻿using Assets.Core.StaticChannels;
 using Assets.Tags.Common;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Assets.Core.Controllers
 {
@@ -17,10 +15,7 @@ namespace Assets.Core.Controllers
         private CanvasGroup unitPlacementSelectionView = null;
 
         [SerializeField, Required]
-        private GameplayCanvasChannel gameplayChannel = null;
-
-        [SerializeField, Required]
-        private PlayerActionChannel actionChannel = null;
+        private GameObject unitCardPrefab = null;
 
 
         private bool isShowingUnitOptions = false;
@@ -87,7 +82,7 @@ namespace Assets.Core.Controllers
             }
 
             OnClickUnitSelectionButton();
-            gameplayChannel.RaiseOnUserSelectedStaticEntityPlacement(id);
+            GameplayCanvasChannel.RaiseOnUserSelectedStaticEntityPlacement(id);
         }
     }
 }
