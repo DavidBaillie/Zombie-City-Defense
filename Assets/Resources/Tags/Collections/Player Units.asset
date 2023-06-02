@@ -15,7 +15,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -27,16 +28,34 @@ MonoBehaviour:
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 1|Assets.Core.Models.RiflemanUnitInstance, Assembly-CSharp
+    - Name: DisplayName
+      Entry: 1
+      Data: Gary
     - Name: RiflemanBaseData
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 0
     - Name: Level
       Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|Assets.Core.Models.RiflemanUnitInstance, Assembly-CSharp
+    - Name: DisplayName
+      Entry: 1
+      Data: Jack
+    - Name: RiflemanBaseData
+      Entry: 10
       Data: 0
+    - Name: Level
+      Entry: 3
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -46,3 +65,4 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  fileSaveName: survivalModeUnits

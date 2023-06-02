@@ -7,6 +7,8 @@ namespace Assets.Tags.Abstract
     /// </summary>
     public abstract class AGameMode : ATag
     {
+        public static AGameMode ActiveInstance;
+
         protected const string AssetMenuGameModeName = AssetMenuBaseName + "GameMode/";
 
         /// <summary>

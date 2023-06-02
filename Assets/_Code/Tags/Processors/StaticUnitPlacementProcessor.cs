@@ -36,16 +36,6 @@ namespace Assets.Tags.Processors
             DontDestroyOnLoad(highlightVisual);
 
             PlayerActionChannel.OnPlayerSelectedWorldPosition += PlayerTappedOnWorldPosition;
-            GameplayCanvasChannel.OnUserSelectedStaticEntityPlacement += OnUserSelectedStaticEntityPlacement;
-        }
-
-        /// <summary>
-        /// Called when the canvas selects a unit for placement
-        /// </summary>
-        /// <param name="entityId">Entity to be placed</param>
-        private void OnUserSelectedStaticEntityPlacement(StaticEntityIdentifier entityId)
-        {
-            placementEntityId = entityId;
         }
 
         /// <summary>

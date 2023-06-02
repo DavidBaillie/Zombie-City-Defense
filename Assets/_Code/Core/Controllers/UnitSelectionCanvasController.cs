@@ -14,6 +14,7 @@ namespace Assets.Core.Controllers
         public void AssignUnit(AStaticUnitInstance unit)
         {
             //TODO - build unit visual here
+            fieldText.text = unit.DisplayName;
         }
 
         public void OnPressed()

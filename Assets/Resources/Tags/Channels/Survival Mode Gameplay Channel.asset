@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84013888dbdbc264bbd99c5850c29cbe, type: 3}
-  m_Name: Player Actions Channel
+  m_Script: {fileID: 11500000, guid: e454b622fb34851419d96e114a91a791, type: 3}
+  m_Name: Survival Mode Gameplay Channel
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2

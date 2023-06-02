@@ -1,8 +1,14 @@
-﻿namespace Assets.Core.Abstract
+﻿using UnityEngine;
+
+namespace Assets.Core.Abstract
 {
     /// <summary>
     /// Abstract representation of the instance data associated with a player accessible static unit
     /// </summary>
     [System.Serializable]
-    public abstract class AStaticUnitInstance { }
+    public abstract class AStaticUnitInstance
+    {
+        [SerializeField]
+        public string DisplayName = "";
+    }
 }

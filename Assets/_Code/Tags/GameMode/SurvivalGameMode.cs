@@ -1,7 +1,10 @@
-﻿using Assets.Tags.Abstract;
+﻿using Assets.Core.Controllers;
+using Assets.Tags.Abstract;
+using Assets.Tags.Channels;
+using Assets.Tags.Models;
+using Assets.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Tags.GameMode
 {
@@ -11,7 +14,14 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, AssetsOnly]
         private GameObject gameplayCanvas = null;
 
-        private GameObject canvasInstance = null;
+        [SerializeField, Required]
+        private PlayerUnitCollectionTag playerUnitCollection = null;
+
+        [SerializeField, Required]
+        private SurvivalGameplayChannelTag gameplayChannel = null;
+
+
+        private GameplayCanvasController canvasControllerInstance = null;
 
         /// <summary>
         /// Sets up the game mode
@@ -19,9 +29,19 @@ namespace Assets.Tags.GameMode
         /// <param name="context">Scene that started the initialization</param>
         public override void InitializeGameMode(GameObject context)
         {
-            canvasInstance = Instantiate(gameplayCanvas);
+            //Try to setup the canvas
+            if (!Instantiate(gameplayCanvas).TryGetComponent(out canvasControllerInstance))
+            {
+                LogError($"Failed to set up the gameplay canvas, could not find a component of type {nameof(GameplayCanvasController)}!");
+            }
+
+            //Setup data
+            canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
+            playerUnitCollection.TryLoadUnitsFromStorage();
 
             LogInformation($"Started Game Mode [{name}]");
+
+            gameplayChannel.RaiseOnGameModeSetupComplete(this);
         }
 
         /// <summary>
@@ -29,7 +49,10 @@ namespace Assets.Tags.GameMode
         /// </summary>
         public override void EndGameMode()
         {
-            Destroy(canvasInstance);
+            Destroy(canvasControllerInstance);
+            playerUnitCollection.TrySaveUnitsToStorage();
+
+            gameplayChannel.RaiseOnGameModeCleanupComplete(this);
 
             LogInformation($"Ended Game Mode [{name}]");
         }

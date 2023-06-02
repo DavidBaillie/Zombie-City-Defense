@@ -1,6 +1,5 @@
-﻿using Assets.Core.StaticChannels;
-using Assets.Tags.Common;
-using Assets.Tags.Models;
+﻿using Assets.Tags.Models;
+using Assets.Utilities.Extensions;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -10,12 +9,6 @@ namespace Assets.Core.Controllers
     public class GameplayCanvasController : AExtendedMonobehaviour
     {
         [SerializeField, Required]
-        private PlayerUnitCollectionTag playerUnitCollection = null;
-
-        [SerializeField, Required]
-        private CanvasGroup canvasContentsView = null;
-
-        [SerializeField, Required]
         private CanvasGroup unitPlacementSelectionView = null;
 
         [SerializeField, Required]
@@ -23,6 +16,7 @@ namespace Assets.Core.Controllers
 
 
         private bool isShowingUnitOptions = false;
+        private PlayerUnitCollectionTag UnitCollection = null;
 
 
         /// <summary>
@@ -32,7 +26,7 @@ namespace Assets.Core.Controllers
         {
             base.Awake();
 
-            unitPlacementSelectionView.alpha = 0;
+            unitPlacementSelectionView.alpha = 1;
         }
 
         /// <summary>
@@ -43,50 +37,23 @@ namespace Assets.Core.Controllers
             base.OnDestroy();
         }
 
-        /// <summary>
-        /// Shows all canvas contents
-        /// </summary>
-        public void ShowCanvas()
-        {
-            canvasContentsView.alpha = 1;
-            canvasContentsView.blocksRaycasts = true;
-            canvasContentsView.interactable = true;
-        }
 
-        /// <summary>
-        /// Hides all canvas contents
-        /// </summary>
-        public void HideCanvas()
+        public void SetupUnitCollection(PlayerUnitCollectionTag collection)
         {
-            canvasContentsView.alpha = 0;
-            canvasContentsView.blocksRaycasts = false;
-            canvasContentsView.interactable = false;
-        }
+            UnitCollection = collection;
+            UnitSelectionCanvasController controller = null;
 
-
-        /// <summary>
-        /// Called via Unity when the user presses the "units" button
-        /// </summary>
-        public void OnClickUnitSelectionButton()
-        {
-            isShowingUnitOptions = !isShowingUnitOptions;
-            unitPlacementSelectionView.alpha = isShowingUnitOptions ? 1 : 0;
-        }
-
-        /// <summary>
-        /// Called via Unity when the user presses one of the unit placement buttons
-        /// </summary>
-        /// <param name="id">Unit to place</param>
-        public void OnUserSelectedUnitToPlace(StaticEntityIdentifier id)
-        {
-            if (id == null)
+            foreach (var unit in collection.availableUnits)
             {
-                LogError($"Could not process UI request to place a static entity because the provided id was null.");
-                return;
+                if (Instantiate(unitCardPrefab, unitPlacementSelectionView.transform).TryGetComponent(out controller))
+                {
+                    controller.AssignUnit(unit);
+                }
+                else
+                {
+                    LogError($"Gameplay canvas failed to spawn a card the a given unit because the prefab is missing the {nameof(UnitSelectionCanvasController)} component");
+                }
             }
-
-            OnClickUnitSelectionButton();
-            GameplayCanvasChannel.RaiseOnUserSelectedStaticEntityPlacement(id);
         }
     }
 }
