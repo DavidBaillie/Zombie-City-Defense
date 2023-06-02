@@ -1,5 +1,6 @@
 ﻿using Assets.Core.StaticChannels;
 using Assets.Tags.Common;
+using Assets.Tags.Models;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -8,6 +9,9 @@ namespace Assets.Core.Controllers
 {
     public class GameplayCanvasController : AExtendedMonobehaviour
     {
+        [SerializeField, Required]
+        private PlayerUnitCollectionTag playerUnitCollection = null;
+
         [SerializeField, Required]
         private CanvasGroup canvasContentsView = null;
 

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b439a2e4461a2354b895a2656df4e7d9, type: 3}
-  m_Name: Static Unit Placement Processor
+  m_Script: {fileID: 11500000, guid: 9e463019db40f63488808098b46e6db2, type: 3}
+  m_Name: Survival Game Mode Tag
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,7 +21,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  actionChannel: {fileID: 11400000, guid: 669deaa83ef84f4488da66190e5eaf04, type: 2}
-  gameplayCanvasChannel: {fileID: 11400000, guid: 5f5805a15e7348a40b44f48acb8a0b0a,
-    type: 2}
-  prefabCollection: {fileID: 11400000, guid: 2b4f8a59abd3fd74c9a72f5f77189890, type: 2}
+  gameplayCanvas: {fileID: 3620808488191258086, guid: 58c5167b16c2b314680cc165a3a28282,
+    type: 3}

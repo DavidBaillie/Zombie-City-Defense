@@ -129,7 +129,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasContentsView: {fileID: 658020984181906534}
   unitPlacementSelectionView: {fileID: 3620808488422218407}
-  actionChannel: {fileID: 11400000, guid: 669deaa83ef84f4488da66190e5eaf04, type: 2}
+  unitCardPrefab: {fileID: 4093084290322032495, guid: 6fdc468bdb840ed47a0d7679d673b550,
+    type: 3}
 --- !u!1 &3620808488422218408
 GameObject:
   m_ObjectHideFlags: 0

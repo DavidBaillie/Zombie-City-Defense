@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cadc5c4c9bfac07499bce7609dc40fdf, type: 3}
-  m_Name: Static Entity Stats
+  m_Script: {fileID: 11500000, guid: add4a65c2e782194a80be2769d4b0430, type: 3}
+  m_Name: Logic Processing Manager Tag
   m_EditorClassIdentifier: 
-  MaxHealth: 3
-  AttackDamage: 2
-  AttackCooldown: 0.6
-  maxRange: 8
-  validTargetLayers:
-    serializedVersion: 2
-    m_Bits: 64
+  collectionPreallocationSize: 1000
+  highPriorityUpdateRate: 50
+  lowPriorityUpdateRate: 1

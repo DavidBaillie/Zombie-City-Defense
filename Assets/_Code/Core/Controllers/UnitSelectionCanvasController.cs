@@ -1,4 +1,5 @@
-﻿using Game.Utilities.BaseObjects;
+﻿using Assets.Core.Abstract;
+using Game.Utilities.BaseObjects;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Assets.Core.Controllers
         private TextMeshProUGUI fieldText;
 
 
-        public void AssignUnit()
+        public void AssignUnit(AStaticUnitInstance unit)
         {
             //TODO - build unit visual here
         }
