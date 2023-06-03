@@ -11,10 +11,14 @@ namespace Assets.Core.Controllers
         private TextMeshProUGUI fieldText;
 
 
-        public void AssignUnit(AStaticUnitInstance unit)
+        private GameplayCanvasController parentController = null;
+
+
+        public void AssignUnit(AStaticUnitInstance unit, GameplayCanvasController parent)
         {
             //TODO - build unit visual here
             fieldText.text = unit.DisplayName;
+            parentController = parent;
         }
 
         public void OnPressed()

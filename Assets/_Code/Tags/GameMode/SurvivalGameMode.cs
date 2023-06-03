@@ -1,4 +1,7 @@
-﻿using Assets.Core.Controllers;
+﻿using Assets.Core.Abstract;
+using Assets.Core.Controllers;
+using Assets.Core.Models;
+using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
@@ -23,6 +26,11 @@ namespace Assets.Tags.GameMode
 
         private GameplayCanvasController canvasControllerInstance = null;
 
+        private AStaticUnitInstance selectedUnit = null;
+        private WorldPosition? selectedWorldPosition = null;
+
+
+
         /// <summary>
         /// Sets up the game mode
         /// </summary>
@@ -39,8 +47,13 @@ namespace Assets.Tags.GameMode
             canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
             playerUnitCollection.TryLoadUnitsFromStorage();
 
-            LogInformation($"Started Game Mode [{name}]");
+            //Register events
+            gameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
+            PlayerActionChannel.OnPlayerSelectedWorldPosition += OnPlayerSelectedWorldPosition;
+            PlayerActionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidWorldPosition;
 
+            //Let others know we've set up
+            LogInformation($"Started Game Mode [{name}]");
             gameplayChannel.RaiseOnGameModeSetupComplete(this);
         }
 
@@ -52,9 +65,49 @@ namespace Assets.Tags.GameMode
             Destroy(canvasControllerInstance);
             playerUnitCollection.TrySaveUnitsToStorage();
 
-            gameplayChannel.RaiseOnGameModeCleanupComplete(this);
+            //Deregister events
+            gameplayChannel.OnUserSelectedEntityInGui -= OnUserSelectedEntityInGui;
+            PlayerActionChannel.OnPlayerSelectedWorldPosition -= OnPlayerSelectedWorldPosition;
+            PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
 
+            //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");
+            gameplayChannel.RaiseOnGameModeCleanupComplete(this);
+        }
+
+        /// <summary>
+        /// Called when the user taps on a unit in the GUI
+        /// </summary>
+        /// <param name="unit">Unit selected</param>
+        private void OnUserSelectedEntityInGui(AStaticUnitInstance unit)
+        {
+            selectedUnit = unit;
+        }
+
+        /// <summary>
+        /// Called when the player selects a valid world coordinate
+        /// </summary>
+        /// <param name="position">Coordinate about where they tapped</param>
+        private void OnPlayerSelectedWorldPosition(WorldPosition position)
+        {
+            //Clicked the same spot twice
+            if (selectedWorldPosition != null && selectedWorldPosition.Value == position)
+            {
+
+            }
+            else
+            {
+                selectedWorldPosition = position;
+            }
+        }
+
+        /// <summary>
+        /// Called when the player selected an invalid world position
+        /// </summary>
+        /// <param name="screenPoint">Where on the screen they tapped</param>
+        private void OnPlayerSelectedInvalidWorldPosition(Vector2 screenPoint)
+        {
+            selectedWorldPosition = null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Assets.Tags.Abstract;
+﻿using Assets.Core.Abstract;
+using Assets.Tags.Abstract;
 using Assets.Tags.GameMode;
 using Assets.Tags.Models;
 using System;
@@ -22,9 +23,15 @@ namespace Assets.Tags.Channels
         /// </summary>
         public event Action<SurvivalGameMode> OnGameModeCleanupComplete;
 
+        /// <summary>
+        /// Raised when the player has selected a unit from their UI to interact with
+        /// </summary>
+        public event Action<AStaticUnitInstance> OnUserSelectedEntityInGui;
+
 
 
         public void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
         public void RaiseOnGameModeCleanupComplete(SurvivalGameMode mode) => OnGameModeCleanupComplete?.Invoke(mode);
+        public void RaiseOnUserSelectedEntityInGui(AStaticUnitInstance instance) => OnUserSelectedEntityInGui?.Invoke(instance);
     }
 }

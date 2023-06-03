@@ -47,7 +47,7 @@ namespace Assets.Core.Controllers
             {
                 if (Instantiate(unitCardPrefab, unitPlacementSelectionView.transform).TryGetComponent(out controller))
                 {
-                    controller.AssignUnit(unit);
+                    controller.AssignUnit(unit, this);
                 }
                 else
                 {
