@@ -57,21 +57,30 @@ namespace Assets.Core.Managers
             }
 
             var validWorldPositions = new List<Vector3>(100);
-            var min = new Vector2(-scanArea.x / 2, -scanArea.y / 2);
-            var max = new Vector2(scanArea.x / 2, scanArea.y / 2);
+            var minVector = new Vector2(-scanArea.x / 2, -scanArea.y / 2);
+            var maxVector = new Vector2(scanArea.x / 2, scanArea.y / 2);
 
-            for (float x = min.x; x <= max.x; x += gridSize)
+            using (Draw.WithDuration(2))
             {
-                for (float y = min.y; y <= max.y; y += gridSize)
+                for (float x = transform.position.x + minVector.x; x <= transform.position.x + maxVector.x; x += gridSize)
                 {
-                    if (Physics.Raycast(new Vector3(x, raycastOffset, y), Vector3.down, out var hit, float.MaxValue, raycastMask, QueryTriggerInteraction.Ignore))
+                    for (float z = transform.position.z + minVector.y; z <= transform.position.z + maxVector.y; z += gridSize)
                     {
-                        validWorldPositions.Add(hit.point);
+                        if (Physics.Raycast(new Vector3(x, raycastOffset, z), Vector3.down,
+                            out var hit, float.MaxValue, raycastMask, QueryTriggerInteraction.Ignore))
+                        {
+                            validWorldPositions.Add(hit.point);
+                            Draw.Ray(new Vector3(x, 0, z), Vector3.up * 2, Color.blue);
+                        }
+                        else
+                        {
+                            Draw.Ray(new Vector3(x, 0, z), Vector3.up * 2, Color.red);
+                        }
                     }
                 }
             }
 
-            LogInformation($"Generated {validWorldPositions.Count} positions.", gameObject);
+                LogInformation($"Generated {validWorldPositions.Count} positions.", gameObject);
             gridData.SetWorldPositions(validWorldPositions);
         }
 
@@ -80,7 +89,7 @@ namespace Assets.Core.Managers
         /// </summary>
         public override void DrawGizmos()
         {
-            Drawing.Draw.WireRectangleXZ(Vector3.zero, scanArea, Color.blue);
+            Drawing.Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
 
             //Invalid state
             if (!showGridView || gridData == null || gridData.WorldPositionsArray == null)
@@ -88,12 +97,12 @@ namespace Assets.Core.Managers
                 return;
             }
 
-            float boxSize = gridSize / 3;
+            float boxSize = gridSize / 3f;
 
             //Draw each valid point
             foreach (var position in gridData.WorldPositionsArray)
             {
-                Drawing.Draw.SolidBox(new float3(position.x, position.y, position.z), new float3(boxSize, boxSize, boxSize), Color.blue);
+                Draw.SolidBox(new Vector3(position.x, position.y, position.z), new Vector3(boxSize, boxSize, boxSize), Color.blue);
             }
         }
     }
