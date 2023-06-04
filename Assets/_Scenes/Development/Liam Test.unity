@@ -1936,7 +1936,7 @@ GameObject:
   - component: {fileID: 1239162944}
   - component: {fileID: 1239162943}
   m_Layer: 0
-  m_Name: Grid Scanner
+  m_Name: GRID SCANNER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1955,14 +1955,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridData: {fileID: 11400000, guid: b9d296a87a628eb478d199b03e77f2a5, type: 2}
-  minGridPosition: {x: -100, y: -100}
-  maxGridPosition: {x: 100, y: 100}
+  scanArea: {x: 57.3, y: 115.5}
   gridSize: 1
   raycastOffset: 100
   raycastMask:
     serializedVersion: 2
     m_Bits: 8
-  showGridView: 0
+  showGridView: 1
 --- !u!4 &1239162944
 Transform:
   m_ObjectHideFlags: 0
@@ -1971,7 +1970,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239162942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 0.5, z: 40.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2217,6 +2216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameMode: {fileID: 11400000, guid: 9f4272f1cb8834b46b05fdd8e57894b7, type: 2}
+  sceneGridData: {fileID: 11400000, guid: b9d296a87a628eb478d199b03e77f2a5, type: 2}
 --- !u!4 &1638070707
 Transform:
   m_ObjectHideFlags: 0

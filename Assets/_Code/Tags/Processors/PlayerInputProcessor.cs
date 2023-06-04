@@ -1,7 +1,6 @@
 ﻿using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
 using Assets.Tags.Common;
-using Game.Tags.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,15 +12,8 @@ namespace Assets.Tags.Processors
         [SerializeField, Required, BoxGroup("Data")]
         private ObjectTypeIdentifier cameraId = null;
 
-        [SerializeField, Required, BoxGroup("Data")]
-        private GridDataTag gridData = null;
-
-
         [SerializeField, MinValue(0), BoxGroup("Options")]
         private float cameraMovementSpeed = 2f;
-
-        [SerializeField, MinValue(0), BoxGroup("Options")]
-        private float tapSelectionRange = 1f;
 
         [SerializeField]
         private LayerMask playspaceMask;
@@ -103,18 +95,12 @@ namespace Assets.Tags.Processors
         /// <param name="screenPosition">Position the user tapped</param>
         private void OnPlayerTappedScreen(Vector2 screenPosition)
         {
-            //Check player tap, do nothing if missed floor
-            if (!Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
+            //Raycast from tap to world, if hit a collider then it's a valid tap
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
             {
-                PlayerActionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);
-                return;
+                PlayerActionChannel.RaiseOnPlayerSelectedWorldPosition(hit.point);
             }
-
-            //Player tapped floor, determine an action
-            if (gridData.TryGetClosestGridPosition(hit.point, out var worldPosition, tapSelectionRange))
-            {
-                PlayerActionChannel.RaiseOnPlayerSelectedWorldPosition(worldPosition);
-            }
+            //Hit nothing, tap is invalid
             else
             {
                 PlayerActionChannel.RaiseOnPlayerSelectedInvalidPosition(screenPosition);

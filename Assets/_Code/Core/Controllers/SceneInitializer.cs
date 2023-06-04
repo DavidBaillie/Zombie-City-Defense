@@ -1,5 +1,6 @@
 ﻿using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
+using Game.Tags.Common;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Assets.Core.Controllers
         [SerializeField, Required]
         private AGameMode gameMode = null;
 
+        [SerializeField, Required]
+        private AGridDataProvider sceneGridData = null;
+
         /// <summary>
         /// Called when the GameObject is created
         /// </summary>
@@ -23,6 +27,7 @@ namespace Assets.Core.Controllers
             base.Awake();
             GameplayInputChannel.EnableInput();
             gameMode.InitializeGameMode(gameObject);
+            AGridDataProvider.SetActiveDataProvider(sceneGridData);
         }
 
         /// <summary>
@@ -33,6 +38,7 @@ namespace Assets.Core.Controllers
             base.OnDestroy();
             GameplayInputChannel.DisableInput();
             gameMode.EndGameMode();
+            AGridDataProvider.SetActiveDataProvider(null);
         }
     }
 }

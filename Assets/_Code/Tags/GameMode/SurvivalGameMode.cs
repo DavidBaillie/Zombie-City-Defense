@@ -1,11 +1,12 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Controllers;
+using Assets.Core.Managers.Static;
 using Assets.Core.Models;
 using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
-using Assets.Utilities.Extensions;
+using Assets.Tags.Processors;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,10 +18,16 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, AssetsOnly]
         private GameObject gameplayCanvas = null;
 
-        [SerializeField, Required]
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
         private PlayerUnitCollectionTag playerUnitCollection = null;
 
-        [SerializeField, Required]
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
+        private GridVisualsProcessorTag gridVisuals = null;
+
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
+        private StaticUnitPlacementProcessorTag unitPlacementProcessor = null;
+
+        [SerializeField, Required, FoldoutGroup("Channels")]
         private SurvivalGameplayChannelTag gameplayChannel = null;
 
 
@@ -47,6 +54,10 @@ namespace Assets.Tags.GameMode
             canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
             playerUnitCollection.TryLoadUnitsFromStorage();
 
+            //Setup Tags
+            gridVisuals.InitializeTag();
+            unitPlacementProcessor.InitializeTag();
+
             //Register events
             gameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
             PlayerActionChannel.OnPlayerSelectedWorldPosition += OnPlayerSelectedWorldPosition;
@@ -70,6 +81,10 @@ namespace Assets.Tags.GameMode
             PlayerActionChannel.OnPlayerSelectedWorldPosition -= OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
 
+            //Cleanup tags
+            gridVisuals.CleanupTag();
+            unitPlacementProcessor.CleanupTag();
+
             //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");
             gameplayChannel.RaiseOnGameModeCleanupComplete(this);
@@ -88,16 +103,33 @@ namespace Assets.Tags.GameMode
         /// Called when the player selects a valid world coordinate
         /// </summary>
         /// <param name="position">Coordinate about where they tapped</param>
-        private void OnPlayerSelectedWorldPosition(WorldPosition position)
+        private void OnPlayerSelectedWorldPosition(Vector3 position)
         {
-            //Clicked the same spot twice
-            if (selectedWorldPosition != null && selectedWorldPosition.Value == position)
+            if (AGridDataProvider.ActiveInstance == null)
             {
-
+                LogWarning($"Survival Game Mode could not process the player selecting a valid world position because no grid data provider has been registered!");
+                return;
             }
+
+            //Tap point isn't close to any coordinate, cancel actions
+            if (!AGridDataProvider.ActiveInstance.TryGetClosestGridPosition(position, out WorldPosition closestPosition, GameSettings.InputSettings.TapSelectionRange))
+            {
+                gridVisuals.HideVisual();
+                selectedWorldPosition = null;
+            }
+
+            //Clicked the same spot twice
+            if (selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
+            {
+                gridVisuals.HideVisual();
+
+                //TODO - Place unit
+            }
+            //Player clicked a new location
             else
             {
-                selectedWorldPosition = position;
+                selectedWorldPosition = closestPosition;
+                gridVisuals.ShowVisual(closestPosition.Coordinate);
             }
         }
 
@@ -108,6 +140,7 @@ namespace Assets.Tags.GameMode
         private void OnPlayerSelectedInvalidWorldPosition(Vector2 screenPoint)
         {
             selectedWorldPosition = null;
+            gridVisuals.HideVisual();
         }
     }
 }

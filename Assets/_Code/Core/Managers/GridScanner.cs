@@ -1,4 +1,5 @@
-﻿using Game.Tags.Common;
+﻿using Drawing;
+using Game.Tags.Common;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
@@ -9,14 +10,11 @@ namespace Assets.Core.Managers
 {
     public class GridScanner : AExtendedMonobehaviour
     {
-        [SerializeField, Required]
+        [SerializeField, Required, InlineEditor]
         private GridDataTag gridData = null;
 
         [SerializeField, BoxGroup("Grid Size")]
-        private Vector2 minGridPosition = new(-100, -100);
-
-        [SerializeField, BoxGroup("Grid Size")]
-        private Vector2 maxGridPosition = new(100, 100);
+        private Vector2 scanArea = new Vector2(100, 100);
 
         [SerializeField, MinValue(0.001), BoxGroup("Grid Size")]
         private float gridSize = 1;
@@ -30,11 +28,26 @@ namespace Assets.Core.Managers
         [SerializeField, BoxGroup("Grid Settings")]
         private bool showGridView = false;
 
+        /// <summary>
+        /// Clears data stashed in the grid tag
+        /// </summary>
+        [ResponsiveButtonGroup]
+        public void ClearData()
+        {
+            if (gridData == null)
+            {
+                LogError($"Cannot generate grid data because the provided data container is empty!");
+                return;
+            }
+
+            gridData.ClearData();
+        }
+
 
         /// <summary>
         /// Allows devs in the editor to trigger a grid calculation event
         /// </summary>
-        [Button("Generate Grid Data")]
+        [ResponsiveButtonGroup]
         public void GenerateGridData()
         {
             if (gridData == null)
@@ -43,11 +56,13 @@ namespace Assets.Core.Managers
                 return;
             }
 
-            List<Vector3> validWorldPositions = new List<Vector3>(100);
+            var validWorldPositions = new List<Vector3>(100);
+            var min = new Vector2(-scanArea.x / 2, -scanArea.y / 2);
+            var max = new Vector2(scanArea.x / 2, scanArea.y / 2);
 
-            for (float x = minGridPosition.x; x <= maxGridPosition.x; x += gridSize)
+            for (float x = min.x; x <= max.x; x += gridSize)
             {
-                for (float y = minGridPosition.y; y <= maxGridPosition.y; y += gridSize)
+                for (float y = min.y; y <= max.y; y += gridSize)
                 {
                     if (Physics.Raycast(new Vector3(x, raycastOffset, y), Vector3.down, out var hit, float.MaxValue, raycastMask, QueryTriggerInteraction.Ignore))
                     {
@@ -65,6 +80,8 @@ namespace Assets.Core.Managers
         /// </summary>
         public override void DrawGizmos()
         {
+            Drawing.Draw.WireRectangleXZ(Vector3.zero, scanArea, Color.blue);
+
             //Invalid state
             if (!showGridView || gridData == null || gridData.WorldPositionsArray == null)
             {

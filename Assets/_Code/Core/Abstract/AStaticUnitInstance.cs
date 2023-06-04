@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Tags.Common;
+using Game.Tags.Models;
+using UnityEngine;
 
 namespace Assets.Core.Abstract
 {
@@ -10,5 +12,14 @@ namespace Assets.Core.Abstract
     {
         [SerializeField]
         public string DisplayName = "";
+
+        [SerializeField]
+        public int Level = 1;
+
+        [SerializeField]
+        public StaticUnitStatsTag unitStats = null;
+
+        [SerializeField]
+        public StaticEntityIdentifier unitType = null;
     }
 }

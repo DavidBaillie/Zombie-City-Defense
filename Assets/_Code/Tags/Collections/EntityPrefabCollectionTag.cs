@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Tags.Collections
 {
     [CreateAssetMenu(menuName = CollectionTagAssetMenu + "Entity Prefabs", fileName = "Entity Prefab Collection")]
-    public class EntityPrefabCollection : ACollectionTag
+    public class EntityPrefabCollectionTag : ACollectionTag
     {
         [SerializeField]
         private Dictionary<StaticEntityIdentifier, GameObject> staticEntities = new Dictionary<StaticEntityIdentifier, GameObject>();

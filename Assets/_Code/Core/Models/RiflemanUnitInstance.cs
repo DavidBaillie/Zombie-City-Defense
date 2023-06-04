@@ -8,13 +8,6 @@ namespace Assets.Core.Models
     /// </summary>
     public class RiflemanUnitInstance : AStaticUnitInstance
     {
-        public StaticUnitStatsTag RiflemanBaseData = null;
-        public int Level = 1;
 
-        public RiflemanUnitInstance(StaticUnitStatsTag riflemanBaseData, int level)
-        {
-            RiflemanBaseData = riflemanBaseData;
-            Level = level;
-        }
     }
 }

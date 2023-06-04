@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b439a2e4461a2354b895a2656df4e7d9, type: 3}
-  m_Name: Static Unit Placement Processor Tag
+  m_Script: {fileID: 11500000, guid: 81c3a9a52ee0c4f409842c4532108f33, type: 3}
+  m_Name: Input Settings Tag
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,4 +21,4 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  prefabCollection: {fileID: 11400000, guid: 2b4f8a59abd3fd74c9a72f5f77189890, type: 2}
+  TapSelectionRange: 1

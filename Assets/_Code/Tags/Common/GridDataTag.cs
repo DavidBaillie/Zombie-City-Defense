@@ -17,6 +17,12 @@ namespace Game.Tags.Common
         public override Vector3[] WorldPositionsArray { get => _worldPositions.Select(x => x.Value).ToArray(); }
         public override List<Vector3> WorldPositionsList { get => _worldPositions.Select(x => x.Value).ToList(); }
 
+        /// <summary>
+        /// Clears stashed data in the tag
+        /// </summary>
+        [Button]
+        public void ClearData() => _worldPositions.Clear();
+
 
         /// <summary>
         /// Overrides the current world data for the new input
@@ -24,7 +30,7 @@ namespace Game.Tags.Common
         /// <param name="positions">All valid world positions</param>
         public override void SetWorldPositions(IEnumerable<Vector3> positions)
         {
-            _worldPositions.Clear();
+            ClearData();
 
             foreach (var pos in positions)
             {

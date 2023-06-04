@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb03fba391a640741a4c1c1708686ce5, type: 3}
   m_Name: Preload Settings Tag
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   PreloadPrefabs:
   - {fileID: 8286575644331526069, guid: 682705bbd9ca1ba48913ed511d47dc00, type: 3}
   InitializedTags:
   - {fileID: 11400000, guid: 293cd3b49f6e7664fac831e09bcf7a52, type: 2}
   - {fileID: 11400000, guid: 14fa33d2f1d7fe040a4d281e8c7932a7, type: 2}
   - {fileID: 11400000, guid: 054775f3475271f4cb785b64ba8c2f86, type: 2}
+  - {fileID: 11400000, guid: 29a91beaf64ca1743ab6a5990f38fef6, type: 2}
