@@ -2,6 +2,7 @@
 using Assets.Core.DataTracking;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
+using Assets.Tags.Channels;
 using Assets.Tags.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace Assets.Tags.Processors
         /// <param name="position">Where to place the entity</param>
         /// <param name="entity">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity)
+        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, SurvivalGameplayChannelTag unitChannel)
         {
             //Check the spot is free
             if (StaticEntityTracker.EntityExistsAtPosition(position.Id))
@@ -47,9 +48,9 @@ namespace Assets.Tags.Processors
 
             //Spawn the prefab at the position and run it's startup
             var instance = Instantiate(prefab, position.Coordinate, prefab.transform.rotation, null);
-            var staticController = instance.GetComponent<AStaticEntity>();
+            var staticController = instance.GetComponent<AStaticEntityController>();
 
-            staticController?.AssignWorldPositionId(position.Id);
+            staticController.AssignStateData(entity, position.Id, unitChannel);
             return true;
         }
     }

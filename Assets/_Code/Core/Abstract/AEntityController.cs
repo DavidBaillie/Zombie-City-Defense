@@ -2,7 +2,7 @@
 
 namespace Assets.Core.Abstract
 {
-    public abstract class AEntity : AExtendedMonobehaviour
+    public abstract class AEntityController : AExtendedMonobehaviour
     {
         public int TeamId = 0;
 

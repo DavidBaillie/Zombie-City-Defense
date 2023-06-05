@@ -55,7 +55,7 @@ namespace Game.Tags.Common
                 return false;
 
             //Tracking vars
-            float bestDistance = float.MinValue;
+            float bestDistance = float.MaxValue;
 
             //Check all coords
             foreach (var position in _worldPositions)

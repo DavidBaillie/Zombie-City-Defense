@@ -9,14 +9,14 @@ using Assets.Tags.Abstract;
 namespace Assets.Core.Controllers
 {
     [SelectionBase]
-    public class BasicStaticEntity : AStaticEntity, IDamageReceiver, ILogicUpdateProcessor
+    public class BasicStaticEntityController : AStaticEntityController, IDamageReceiver, ILogicUpdateProcessor
     {
-        [SerializeField, Required, InlineEditor]
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Stats")]
         private StaticUnitStatsTag unitStats = null;
 
-        [SerializeField, ReadOnly]
+        [SerializeField, ReadOnly, FoldoutGroup("Stats")]
         private float currentHealth;
-        [SerializeField, ReadOnly]
+        [SerializeField, ReadOnly, FoldoutGroup("Stats")]
         private float attackCooldown;
 
         /// <summary>
@@ -40,6 +40,16 @@ namespace Assets.Core.Controllers
         }
 
         /// <summary>
+        /// Handles cleaning up the entity
+        /// </summary>
+        protected override void OnEntityDeath()
+        {
+            base.OnEntityDeath();
+
+            GameplayChannel.RaiseOnStaticUnitDeath(this, LocalInstance);
+        }
+
+        /// <summary>
         /// Applies damage to the entity
         /// </summary>
         /// <param name="damage">Damage to take</param>
@@ -48,9 +58,7 @@ namespace Assets.Core.Controllers
             currentHealth -= damage;
 
             if (currentHealth <= 0)
-            {
-                Destroy(gameObject);
-            }
+                OnEntityDeath();
         }
 
         /// <summary>

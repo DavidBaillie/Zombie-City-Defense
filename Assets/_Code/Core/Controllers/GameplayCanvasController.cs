@@ -1,4 +1,5 @@
-﻿using Assets.Tags.Models;
+﻿using Assets.Tags.Channels;
+using Assets.Tags.Models;
 using Assets.Utilities.Extensions;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
@@ -13,6 +14,9 @@ namespace Assets.Core.Controllers
 
         [SerializeField, Required]
         private GameObject unitCardPrefab = null;
+
+        [SerializeField, Required]
+        private SurvivalGameplayChannelTag gameplayChannel = null;
 
 
         private bool isShowingUnitOptions = false;

@@ -28,10 +28,22 @@ namespace Assets.Tags.Channels
         /// </summary>
         public event Action<AStaticUnitInstance> OnUserSelectedEntityInGui;
 
+        /// <summary>
+        /// Raised when a static entity has been spawned into the game world during gameplay
+        /// </summary>
+        public event Action<AStaticEntityController, AStaticUnitInstance> OnStaticEntitySpawned;
+
+        /// <summary>
+        /// Raised when an instanced unit has died during gameplay
+        /// </summary>
+        public event Action<AStaticEntityController, AStaticUnitInstance> OnStaticUnitDeath;
+
 
 
         public void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
         public void RaiseOnGameModeCleanupComplete(SurvivalGameMode mode) => OnGameModeCleanupComplete?.Invoke(mode);
         public void RaiseOnUserSelectedEntityInGui(AStaticUnitInstance instance) => OnUserSelectedEntityInGui?.Invoke(instance);
+        public void RaiseOnStaticEntitySpawned(AStaticEntityController entity, AStaticUnitInstance instance) => OnStaticEntitySpawned?.Invoke(entity, instance);
+        public void RaiseOnStaticUnitDeath(AStaticEntityController spawnedEntity, AStaticUnitInstance unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
     }
 }

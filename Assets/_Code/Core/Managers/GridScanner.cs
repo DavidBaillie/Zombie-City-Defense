@@ -89,7 +89,10 @@ namespace Assets.Core.Managers
         /// </summary>
         public override void DrawGizmos()
         {
-            Drawing.Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
+            if (!GizmoContext.InSelection(transform))
+                return;
+
+            Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
 
             //Invalid state
             if (!showGridView || gridData == null || gridData.WorldPositionsArray == null)

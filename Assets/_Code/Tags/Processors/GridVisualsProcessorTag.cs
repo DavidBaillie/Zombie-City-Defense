@@ -23,6 +23,7 @@ namespace Assets.Tags.Processors
             base.InitializeTag();
 
             positionVisualInstance = Instantiate(selectedPositionVisual);
+            positionVisualInstance.SetActive(false);  
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Core.Abstract
 {
-    public abstract class AMovingEntity : AEntity
+    public abstract class AMovingEntity : AEntityController
     {
         [SerializeField, Required, InlineEditor]
         protected MovingUnitStatsTag UnitStats = null;

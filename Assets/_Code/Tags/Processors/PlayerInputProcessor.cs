@@ -98,6 +98,7 @@ namespace Assets.Tags.Processors
             //Raycast from tap to world, if hit a collider then it's a valid tap
             if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
             {
+                LogInformation($"Player touched screen position {screenPosition} which related to world position {hit.point}");
                 PlayerActionChannel.RaiseOnPlayerSelectedWorldPosition(hit.point);
             }
             //Hit nothing, tap is invalid

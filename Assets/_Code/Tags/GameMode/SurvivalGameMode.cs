@@ -1,5 +1,6 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Controllers;
+using Assets.Core.DataTracking;
 using Assets.Core.Managers.Static;
 using Assets.Core.Models;
 using Assets.Core.StaticChannels;
@@ -96,7 +97,16 @@ namespace Assets.Tags.GameMode
         /// <param name="unit">Unit selected</param>
         private void OnUserSelectedEntityInGui(AStaticUnitInstance unit)
         {
-            selectedUnit = unit;
+            //Entity has been spawned into the game world
+            if (StaticEntityTracker.TryGetPositionByInstance(unit, out var position))
+            {
+
+            }
+            //Entity has not been spawned into game world
+            else
+            {
+                selectedUnit = unit;
+            }
         }
 
         /// <summary>
@@ -114,20 +124,23 @@ namespace Assets.Tags.GameMode
             //Tap point isn't close to any coordinate, cancel actions
             if (!AGridDataProvider.ActiveInstance.TryGetClosestGridPosition(position, out WorldPosition closestPosition, GameSettings.InputSettings.TapSelectionRange))
             {
+                //LogInformation($"Tapped position is not close enough to any coordinate");
                 gridVisuals.HideVisual();
                 selectedWorldPosition = null;
             }
-
             //Clicked the same spot twice
-            if (selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
+            else if (selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 gridVisuals.HideVisual();
-
+                //LogInformation($"Player tapped a second time");
                 //TODO - Place unit
+
+                selectedWorldPosition = null;
             }
             //Player clicked a new location
             else
             {
+                //LogInformation($"Player tapped {closestPosition}");
                 selectedWorldPosition = closestPosition;
                 gridVisuals.ShowVisual(closestPosition.Coordinate);
             }
