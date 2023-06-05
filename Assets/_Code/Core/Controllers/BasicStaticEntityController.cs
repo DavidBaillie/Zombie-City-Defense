@@ -8,6 +8,9 @@ using Assets.Tags.Abstract;
 
 namespace Assets.Core.Controllers
 {
+    /// <summary>
+    /// Component class that represents a unit in the game world. Contains the minimum logic for the entity to fight and act in the world.
+    /// </summary>
     [SelectionBase]
     public class BasicStaticEntityController : AStaticEntityController, IDamageReceiver, ILogicUpdateProcessor
     {

@@ -1,4 +1,6 @@
-﻿using Game.Editor.Tools;
+﻿using Assets.Debug;
+using Game.Editor.Tools;
+using Game.Tags.Settings;
 using UnityEditor;
 using UnityEngine;
 using UnityToolbarExtender;
@@ -9,7 +11,7 @@ namespace Assets.Editor.Tools
     {
         public static GUIStyle BranchLabelStyle;
         public static GUIStyle CommandButtonStyle;
-        public static GUILayoutOption CommandButtonSpacing => GUILayout.Width(60);
+        public static GUILayoutOption CommandButtonSpacing => GUILayout.Width(70);
 
 
         static ToolbarStyles()
@@ -26,7 +28,7 @@ namespace Assets.Editor.Tools
                 alignment = TextAnchor.MiddleCenter,
                 imagePosition = ImagePosition.ImageAbove,
                 fontStyle = FontStyle.Bold,
-                fixedWidth = 50,
+                fixedWidth = 65,
                 stretchWidth = true
             };
         }
@@ -57,6 +59,20 @@ namespace Assets.Editor.Tools
                 ToolbarStyles.CommandButtonStyle, ToolbarStyles.CommandButtonSpacing))
             {
                 EditorPreloader.ShouldPreload = !appSetting;
+            }
+
+            bool enableDebugLines = GlobalSettingsTag.DevInstance.DrawDebugLines;
+            if (enableDebugLines != GUILayout.Toggle(enableDebugLines, new GUIContent("Debug Lines", "Toggle Debug View"),
+                ToolbarStyles.CommandButtonStyle, ToolbarStyles.CommandButtonSpacing))
+            {
+                GlobalSettingsTag.DevInstance.DrawDebugLines = !enableDebugLines;
+            }
+
+            bool enableDebugText = GlobalSettingsTag.DevInstance.DrawDebugText;
+            if (enableDebugText != GUILayout.Toggle(enableDebugText, new GUIContent("Debug Text", "Toggle Debug View"),
+                ToolbarStyles.CommandButtonStyle, ToolbarStyles.CommandButtonSpacing))
+            {
+                GlobalSettingsTag.DevInstance.DrawDebugText = !enableDebugText;
             }
         }
     }

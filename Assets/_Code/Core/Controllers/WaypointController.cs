@@ -1,4 +1,5 @@
-﻿using Drawing;
+﻿using Assets.Debug;
+using Drawing;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using Unity.Mathematics;
@@ -11,14 +12,27 @@ namespace Assets.Core.Controllers
         [SerializeField, MinValue(0)]
         private float trackingWidth;
 
+        protected override void Update()
+        {
+            base.Update();
+            DrawDebug();
+        }
+
         /// <summary>
         /// Draws debug data in the game
         /// </summary>
         public override void DrawGizmos()
         {
             base.DrawGizmos();
+            DrawDebug();
+        }
 
-            Draw.Line(GetMaxPosition(), GetMinPosition(), Color.red);
+        /// <summary>
+        /// Handles drawing debug data in development builds
+        /// </summary>
+        private void DrawDebug()
+        {
+            GameplayDebugHandler.HandleRenderCall(() => Draw.Line(GetMaxPosition(), GetMinPosition(), Color.red), true, false);
         }
 
         /// <summary>

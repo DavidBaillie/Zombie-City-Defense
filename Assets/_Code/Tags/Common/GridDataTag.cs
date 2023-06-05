@@ -1,5 +1,7 @@
 ﻿using Assets.Core.Models;
+using Assets.Debug;
 using Assets.Tags.Abstract;
+using Drawing;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -70,6 +72,19 @@ namespace Game.Tags.Common
                     bestPosition.Coordinate = position.Value;
                 }
             }
+
+            //Debug stuff
+            Vector3? debugPos = bestPosition.Id == Guid.Empty ? null : bestPosition.Coordinate;
+            GameplayDebugHandler.HandleRenderCall(() => 
+            { 
+                using (Draw.WithDuration(1.5f)) 
+                { 
+                    Draw.Ray(source, Vector3.up, Color.black); 
+                    Draw.CircleXZ(source, maxDistance, Color.black);
+                    if (debugPos != null) Draw.Ray(debugPos.Value, Vector3.up, Color.green);
+                } 
+            }, true, false);
+
 
             return bestPosition.Id != Guid.Empty;
         }

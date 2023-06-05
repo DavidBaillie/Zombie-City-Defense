@@ -5,12 +5,15 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using System.Linq;
+using Assets.Debug;
 
 namespace Assets.Core.Managers
 {
     /// <summary>
     /// Handles managing a collection of waypoints that an entity might path along
     /// </summary>
+    [SelectionBase]
     public class WaypointCollectionManager : AExtendedMonobehaviour
     {
         [SerializeField, Range(0.001f, 1f)]
@@ -22,11 +25,6 @@ namespace Assets.Core.Managers
 
         [SerializeField, FoldoutGroup("Debug")]
         private float renderDuration = 3f;
-
-        [SerializeField, FoldoutGroup("Debug")]
-        private bool renderDebug = true;
-        [SerializeField, FoldoutGroup("Debug")]
-        private Color renderColour = Color.blue;
 
 
         /// <summary>
@@ -41,6 +39,15 @@ namespace Assets.Core.Managers
         }
 
         /// <summary>
+        /// Called each frame
+        /// </summary>
+        protected override void Update()
+        {
+            base.Update();
+            DrawDebug();
+        }
+
+        /// <summary>
         /// Generates a path for the caller given the current waypoint collection
         /// </summary>
         /// <returns>A path through the waypoints</returns>
@@ -48,11 +55,10 @@ namespace Assets.Core.Managers
         {
             var path = new List<Vector3>(waypoints.Count);
             float upper = 1, lower = -1;
-            float relativeValue = UnityEngine.Random.Range(lower, upper);
 
             for (int i = 0; i < waypoints.Count; i++)
             {
-                path.Add(waypoints[i].GetRandomPosition(out relativeValue, lower, upper));
+                path.Add(waypoints[i].GetRandomPosition(out float relativeValue, lower, upper));
                 lower = math.max(-1, relativeValue - math.abs(relativeValue * waypointVariantThreshold));
                 upper = math.min(1, relativeValue + math.abs(relativeValue * waypointVariantThreshold));
             }
@@ -66,22 +72,32 @@ namespace Assets.Core.Managers
         public override void DrawGizmos()
         {
             base.DrawGizmos();
+            DrawDebug();   
+        }
 
-            if (renderDebug && waypoints != null && waypoints.Count > 1)
+        /// <summary>
+        /// Handles drawing debug data for dev builds
+        /// </summary>
+        private void DrawDebug()
+        {
+            GameplayDebugHandler.HandleRenderCall(() =>
             {
-                try
+                if (waypoints != null && waypoints.Any())
                 {
-                    for (int i = 0; i < waypoints.Count - 1; i++)
+                    try
                     {
-                        Draw.Line(waypoints[i].GetMaxPosition(), waypoints[i + 1].GetMaxPosition(), Color.black);
-                        Draw.Line(waypoints[i].GetMinPosition(), waypoints[i + 1].GetMinPosition(), Color.black);
+                        for (int i = 0; i < waypoints.Count - 1; i++)
+                        {
+                            Draw.Line(waypoints[i].GetMaxPosition(), waypoints[i + 1].GetMaxPosition(), Color.black);
+                            Draw.Line(waypoints[i].GetMinPosition(), waypoints[i + 1].GetMinPosition(), Color.black);
+                        }
+                    }
+                    catch
+                    {
+                        //LogError($"Could not generate bounds of waypoint path because an exception arose [{e.GetType().Name}]");
                     }
                 }
-                catch
-                {
-                    //LogError($"Could not generate bounds of waypoint path because an exception arose [{e.GetType().Name}]");
-                }
-            }
+            }, true, false);
         }
 
 
@@ -95,7 +111,7 @@ namespace Assets.Core.Managers
                 {
                     for (int i = 0; i < path.Count - 1; i++)
                     {
-                        Draw.Line(path[i], path[i + 1], renderColour);
+                        Draw.Line(path[i], path[i + 1], Color.blue);
                     }
                 }
             }

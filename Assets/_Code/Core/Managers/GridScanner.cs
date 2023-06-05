@@ -1,9 +1,10 @@
-﻿using Drawing;
+﻿using Assets.Debug;
+using Assets.Utilities.Definitions;
+using Drawing;
 using Game.Tags.Common;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Assets.Core.Managers
@@ -42,7 +43,6 @@ namespace Assets.Core.Managers
 
             gridData.ClearData();
         }
-
 
         /// <summary>
         /// Allows devs in the editor to trigger a grid calculation event
@@ -85,28 +85,38 @@ namespace Assets.Core.Managers
         }
 
         /// <summary>
+        /// Called each frame
+        /// </summary>
+        protected override void Update()
+        {
+            base.Update();
+            DrawDebug();
+        }
+
+        /// <summary>
         /// Called in editor to draw debug view
         /// </summary>
-        public override void DrawGizmos()
+        public override void DrawGizmos() => DrawDebug();
+
+        private void DrawDebug()
         {
-            if (!GizmoContext.InSelection(transform))
-                return;
-
-            Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
-
-            //Invalid state
-            if (!showGridView || gridData == null || gridData.WorldPositionsArray == null)
+            GameplayDebugHandler.HandleRenderCall(() =>
             {
-                return;
-            }
+                //Only draw the box in editor when selected
+                if (GizmoContext.InSelection(transform))
+                {
+                    Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
+                }
 
-            float boxSize = gridSize / 3f;
-
-            //Draw each valid point
-            foreach (var position in gridData.WorldPositionsArray)
-            {
-                Draw.SolidBox(new Vector3(position.x, position.y, position.z), new Vector3(boxSize, boxSize, boxSize), Color.blue);
-            }
+                //Draw nodes based on local data
+                if (gridData != null || gridData.WorldPositionsArray != null)
+                {
+                    foreach (var position in gridData.WorldPositionsArray)
+                    {
+                        Draw.WireRectangleXZ(position, gridSize, CustomColours.SoftBlue);
+                    }
+                }
+            }, true, false);
         }
     }
 }

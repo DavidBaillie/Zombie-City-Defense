@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Assets.Core.Abstract
 {
+    /// <summary>
+    /// Component class instanced into the gameplay scene responsible for representing a unit in the game
+    /// </summary>
     public abstract class AStaticEntityController : AEntityController
     {
         [ShowInInspector, ReadOnly, FoldoutGroup("General")]

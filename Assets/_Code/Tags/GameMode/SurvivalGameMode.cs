@@ -34,7 +34,7 @@ namespace Assets.Tags.GameMode
 
         private GameplayCanvasController canvasControllerInstance = null;
 
-        private AStaticUnitInstance selectedUnit = null;
+        private AStaticUnitInstance selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
 
@@ -100,12 +100,12 @@ namespace Assets.Tags.GameMode
             //Entity has been spawned into the game world
             if (StaticEntityTracker.TryGetPositionByInstance(unit, out var position))
             {
-
+                //TODO - Player tapped a unit that has already been spawned
             }
             //Entity has not been spawned into game world
             else
             {
-                selectedUnit = unit;
+                selectedUnitFromCanvas = unit;
             }
         }
 
