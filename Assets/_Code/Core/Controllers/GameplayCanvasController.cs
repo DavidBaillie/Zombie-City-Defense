@@ -1,4 +1,5 @@
-﻿using Assets.Tags.Channels;
+﻿using Assets.Core.Abstract;
+using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Assets.Utilities.Extensions;
 using Game.Utilities.BaseObjects;
@@ -15,12 +16,10 @@ namespace Assets.Core.Controllers
         [SerializeField, Required]
         private GameObject unitCardPrefab = null;
 
-        [SerializeField, Required]
-        private SurvivalGameplayChannelTag gameplayChannel = null;
-
 
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
+        private SurvivalGameplayChannelTag gameplayChannel = null;
 
 
         /// <summary>
@@ -41,7 +40,19 @@ namespace Assets.Core.Controllers
             base.OnDestroy();
         }
 
+        /// <summary>
+        /// Assigns a provided gameplay channel to this Canvas 
+        /// </summary>
+        /// <param name="channel">Channel to use</param>
+        public void SetupReferences(SurvivalGameplayChannelTag channel)
+        {
+            this.gameplayChannel = channel;
+        }
 
+        /// <summary>
+        /// Takes the input collection of units and builds a visual representation of them in the UI with callbacks
+        /// </summary>
+        /// <param name="collection">Collection to represent</param>
         public void SetupUnitCollection(PlayerUnitCollectionTag collection)
         {
             UnitCollection = collection;
@@ -58,6 +69,15 @@ namespace Assets.Core.Controllers
                     LogError($"Gameplay canvas failed to spawn a card the a given unit because the prefab is missing the {nameof(UnitSelectionCanvasController)} component");
                 }
             }
+        }
+
+        /// <summary>
+        /// Called from the sub-controller when a unit is selected
+        /// </summary>
+        /// <param name="unit">Unit user selected</param>
+        public void OnUserPressedUnitButton(AStaticUnitInstance unit)
+        {
+            gameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }
     }
 }

@@ -12,18 +12,20 @@ namespace Assets.Core.Controllers
 
 
         private GameplayCanvasController parentController = null;
+        private AStaticUnitInstance unit = null;
 
 
         public void AssignUnit(AStaticUnitInstance unit, GameplayCanvasController parent)
         {
             //TODO - build unit visual here
+            this.unit = unit;
             fieldText.text = unit.DisplayName;
             parentController = parent;
         }
 
         public void OnPressed()
         {
-
+            parentController?.OnUserPressedUnitButton(unit);
         }
     }
 }

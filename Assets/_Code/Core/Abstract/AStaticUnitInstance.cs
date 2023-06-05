@@ -27,5 +27,15 @@ namespace Assets.Core.Abstract
 
         [SerializeField]
         public StaticEntityIdentifier unitType = null;
+
+
+        public AStaticUnitInstance()
+        {
+            Id = Guid.Empty;
+            DisplayName = string.Empty;
+            Level = -1;
+            unitStats = null;
+            unitType = null;
+        }
     }
 }

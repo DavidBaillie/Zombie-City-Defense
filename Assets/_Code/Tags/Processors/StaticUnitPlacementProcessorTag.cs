@@ -5,6 +5,7 @@ using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Collections;
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 
 namespace Assets.Tags.Processors
@@ -30,8 +31,28 @@ namespace Assets.Tags.Processors
         /// <param name="position">Where to place the entity</param>
         /// <param name="entity">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, SurvivalGameplayChannelTag unitChannel)
+        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, SurvivalGameplayChannelTag unitChannel, 
+            out AStaticEntityController controller)
         {
+            controller = null;
+
+            if (entity == null)
+            {
+                LogError($"Cannot try to place a unit at the world positon when a null entity was passed!");
+                return false;
+            }
+
+            if (entity.unitType == null)
+            {
+                LogError($"Cannot try to place entity [{entity.DisplayName}] because it has no identifier!");
+            }
+
+            if (unitChannel == null)
+            {
+                LogError($"Cannot place a unit for entity {entity.DisplayName} because no channel was provided for the unit.");
+                return false;
+            }
+
             //Check the spot is free
             if (StaticEntityTracker.EntityExistsAtPosition(position.Id))
             {
@@ -48,9 +69,17 @@ namespace Assets.Tags.Processors
 
             //Spawn the prefab at the position and run it's startup
             var instance = Instantiate(prefab, position.Coordinate, prefab.transform.rotation, null);
-            var staticController = instance.GetComponent<AStaticEntityController>();
+            controller = instance.GetComponent<AStaticEntityController>();
 
-            staticController.AssignStateData(entity, position.Id, unitChannel);
+            if (controller == null)
+            {
+                LogError($"Static unit placement processor placed a unit that has no controller on it, please check prefab!", instance);
+            }
+            else
+            {
+                controller.AssignStateData(entity, position.Id, unitChannel);
+            }
+
             return true;
         }
     }

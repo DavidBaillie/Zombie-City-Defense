@@ -9,6 +9,7 @@ using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Assets.Tags.Processors;
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 
 namespace Assets.Tags.GameMode
@@ -31,9 +32,7 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, FoldoutGroup("Channels")]
         private SurvivalGameplayChannelTag gameplayChannel = null;
 
-
         private GameplayCanvasController canvasControllerInstance = null;
-
         private AStaticUnitInstance selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
@@ -52,8 +51,10 @@ namespace Assets.Tags.GameMode
             }
 
             //Setup data
-            canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
             playerUnitCollection.TryLoadUnitsFromStorage();
+
+            canvasControllerInstance.SetupReferences(gameplayChannel);
+            canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
 
             //Setup Tags
             gridVisuals.InitializeTag();
@@ -129,13 +130,24 @@ namespace Assets.Tags.GameMode
                 selectedWorldPosition = null;
             }
             //Clicked the same spot twice
-            else if (selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
+            else if (selectedUnitFromCanvas != null && selectedUnitFromCanvas.Id != Guid.Empty 
+                && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 gridVisuals.HideVisual();
-                //LogInformation($"Player tapped a second time");
-                //TODO - Place unit
+                
+                if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, gameplayChannel, out var controller))
+                {
+                    //Reset data
+                    selectedWorldPosition = null;
+                    selectedUnitFromCanvas = null;
 
-                selectedWorldPosition = null;
+                    //Raise event
+                    gameplayChannel.RaiseOnStaticEntitySpawned(controller, selectedUnitFromCanvas);
+                }
+                else
+                {
+                    LogWarning($"A unit could be placed at world coordinate [{selectedWorldPosition.Value.Coordinate}] when attemtping placement.");
+                }
             }
             //Player clicked a new location
             else

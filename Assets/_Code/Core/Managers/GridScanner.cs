@@ -96,18 +96,21 @@ namespace Assets.Core.Managers
         /// <summary>
         /// Called in editor to draw debug view
         /// </summary>
-        public override void DrawGizmos() => DrawDebug();
+        public override void DrawGizmos()
+        {
+            //Only draw the box in editor when selected
+            if (GizmoContext.InSelection(transform))
+            {
+                Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
+            }
+
+            DrawDebug();
+        }
 
         private void DrawDebug()
         {
             GameplayDebugHandler.HandleRenderCall(() =>
             {
-                //Only draw the box in editor when selected
-                if (GizmoContext.InSelection(transform))
-                {
-                    Draw.WireRectangleXZ(transform.position, scanArea, Color.blue);
-                }
-
                 //Draw nodes based on local data
                 if (gridData != null || gridData.WorldPositionsArray != null)
                 {

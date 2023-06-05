@@ -24,6 +24,9 @@ namespace Assets.Tags.Collections
         /// <returns>If a prefab was found</returns>
         public bool TryGetEntityPrefab(StaticEntityIdentifier identifier, out GameObject prefab)
         {
+            if (identifier == null)
+                throw new System.ArgumentNullException("Prefab collection cannot generate a GameObject because the provided identifier is null!");
+
             if (staticEntities.ContainsKey(identifier))
             {
                 prefab = staticEntities[identifier];
