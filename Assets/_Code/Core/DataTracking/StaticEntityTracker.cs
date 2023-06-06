@@ -104,7 +104,7 @@ namespace Assets.Core.DataTracking
 
             foreach (var pair in staticEntities)
             {
-                if (pair.Value.LocalInstance.Id == instance.Id)
+                if (pair.Value.LocalInstance.Id != Guid.Empty && pair.Value.LocalInstance.Id == instance.Id)
                 {
                     position = pair.Key;
                     return true;

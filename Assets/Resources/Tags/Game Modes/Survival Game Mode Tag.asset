@@ -15,12 +15,16 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: interfac
+      Entry: 10
+      Data: 0
   gameplayCanvas: {fileID: 3620808488191258086, guid: 58c5167b16c2b314680cc165a3a28282,
     type: 3}
   playerUnitCollection: {fileID: 11400000, guid: ca3715b213f8f9c4abcfb78bada22551,

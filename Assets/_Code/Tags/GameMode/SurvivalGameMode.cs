@@ -10,7 +10,9 @@ using Assets.Tags.Models;
 using Assets.Tags.Processors;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using static Assets.Tags.GameMode.SurvivalGameMode;
 
 namespace Assets.Tags.GameMode
 {
@@ -32,9 +34,16 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, FoldoutGroup("Channels")]
         private SurvivalGameplayChannelTag gameplayChannel = null;
 
+        [ShowInInspector]
+        private string selectedUnit { get => selectedUnitFromCanvas == null ? "null" : selectedUnitFromCanvas.DisplayName; }
+        [ShowInInspector]
+        private string selectedPosition { get => selectedWorldPosition == null || selectedWorldPosition.Value.Id == Guid.Empty ? "null" : selectedWorldPosition.Value.Coordinate.ToString(); }
+
         private GameplayCanvasController canvasControllerInstance = null;
         private AStaticUnitInstance selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
+
+        private HashSet<Guid> spawnedUnits = new();
 
 
 
@@ -55,6 +64,10 @@ namespace Assets.Tags.GameMode
 
             canvasControllerInstance.SetupReferences(gameplayChannel);
             canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
+
+            selectedUnitFromCanvas = null;
+            selectedWorldPosition = null;
+            spawnedUnits = new();
 
             //Setup Tags
             gridVisuals.InitializeTag();
@@ -101,11 +114,13 @@ namespace Assets.Tags.GameMode
             //Entity has been spawned into the game world
             if (StaticEntityTracker.TryGetPositionByInstance(unit, out var position))
             {
+                LogInformation($"User selected a unit that has already been spawned -> {unit.DisplayName}");
                 //TODO - Player tapped a unit that has already been spawned
             }
             //Entity has not been spawned into game world
             else
             {
+                LogInformation($"User selected a unit that can be placed -> {unit.DisplayName}");
                 selectedUnitFromCanvas = unit;
             }
         }
@@ -138,6 +153,7 @@ namespace Assets.Tags.GameMode
                 if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, gameplayChannel, out var controller))
                 {
                     //Reset data
+                    spawnedUnits.Add(selectedUnitFromCanvas.Id);
                     selectedWorldPosition = null;
                     selectedUnitFromCanvas = null;
 

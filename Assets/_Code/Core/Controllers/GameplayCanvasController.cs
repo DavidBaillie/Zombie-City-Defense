@@ -4,6 +4,8 @@ using Assets.Tags.Models;
 using Assets.Utilities.Extensions;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
@@ -20,6 +22,8 @@ namespace Assets.Core.Controllers
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
         private SurvivalGameplayChannelTag gameplayChannel = null;
+
+        private Dictionary<Guid, UnitSelectionCanvasController> loadedControllers = new();
 
 
         /// <summary>
@@ -47,6 +51,20 @@ namespace Assets.Core.Controllers
         public void SetupReferences(SurvivalGameplayChannelTag channel)
         {
             this.gameplayChannel = channel;
+            channel.OnStaticEntitySpawned += OnEntitySpawned;
+        }
+
+        /// <summary>
+        /// Called when a unit is spawned into the game world
+        /// </summary>
+        /// <param name="sceneController">Scene controller for unit</param>
+        /// <param name="unitData">Base data for the spawned unit</param>
+        private void OnEntitySpawned(AStaticEntityController sceneController, AStaticUnitInstance unitData)
+        {
+            if (!loadedControllers.ContainsKey(unitData.Id))
+                return;
+
+            loadedControllers[unitData.Id].MarkVisualAsUsed();
         }
 
         /// <summary>
@@ -63,6 +81,7 @@ namespace Assets.Core.Controllers
                 if (Instantiate(unitCardPrefab, unitPlacementSelectionView.transform).TryGetComponent(out controller))
                 {
                     controller.AssignUnit(unit, this);
+                    loadedControllers.Add(unit.Id, controller);
                 }
                 else
                 {
@@ -79,5 +98,8 @@ namespace Assets.Core.Controllers
         {
             gameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }
+
+
+
     }
 }

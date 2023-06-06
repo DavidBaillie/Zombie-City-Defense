@@ -15,61 +15,19 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
-    - {fileID: 11400000, guid: 19069086a5806c34cbc2e217513f7989, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: availableUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[Assets.Core.Abstract.AStaticUnitInstance,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 1|Assets.Core.Models.RiflemanUnitInstance, Assembly-CSharp
-    - Name: DisplayName
-      Entry: 1
-      Data: Gary
-    - Name: Level
-      Entry: 3
-      Data: 1
-    - Name: unitStats
-      Entry: 10
-      Data: 0
-    - Name: unitType
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 2|Assets.Core.Models.RiflemanUnitInstance, Assembly-CSharp
-    - Name: DisplayName
-      Entry: 1
-      Data: Jack
-    - Name: Level
-      Entry: 3
-      Data: 3
-    - Name: unitStats
-      Entry: 10
-      Data: 0
-    - Name: unitType
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   fileSaveName: survivalModeUnits
+  availableUnits:
+  - DisplayName: Jack
+    Level: 1
+    unitStats: {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
+    unitType: {fileID: 11400000, guid: 19069086a5806c34cbc2e217513f7989, type: 2}
+  - DisplayName: Ryan
+    Level: 2
+    unitStats: {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
+    unitType: {fileID: 11400000, guid: 19069086a5806c34cbc2e217513f7989, type: 2}

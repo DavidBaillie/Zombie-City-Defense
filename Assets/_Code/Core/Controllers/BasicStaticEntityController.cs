@@ -50,6 +50,7 @@ namespace Assets.Core.Controllers
             base.OnEntityDeath();
 
             GameplayChannel.RaiseOnStaticUnitDeath(this, LocalInstance);
+            Destroy(gameObject);
         }
 
         /// <summary>

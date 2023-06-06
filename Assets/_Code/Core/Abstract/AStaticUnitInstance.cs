@@ -13,7 +13,7 @@ namespace Assets.Core.Abstract
     [System.Serializable]
     public class AStaticUnitInstance
     {
-        [SerializeField, ReadOnly]
+        [ShowInInspector, Required]
         public Guid Id = Guid.NewGuid();
 
         [SerializeField]
@@ -27,15 +27,5 @@ namespace Assets.Core.Abstract
 
         [SerializeField]
         public StaticEntityIdentifier unitType = null;
-
-
-        public AStaticUnitInstance()
-        {
-            Id = Guid.Empty;
-            DisplayName = string.Empty;
-            Level = -1;
-            unitStats = null;
-            unitType = null;
-        }
     }
 }
