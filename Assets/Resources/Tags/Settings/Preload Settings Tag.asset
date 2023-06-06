@@ -20,12 +20,16 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Id
+      Entry: 2
+      Data: 30c98a17116a4b649bb0e88a978a9e52
   MainGameScene:
     sceneAsset: {fileID: 102900000, guid: 7dcd9f1e6b9ed974abe52cce57777def, type: 3}
     scenePath: Assets/_Scenes/Main Hub.unity
   PreloadPrefabs:
   - {fileID: 8286575644331526069, guid: 682705bbd9ca1ba48913ed511d47dc00, type: 3}
+  - {fileID: 4770887385681108654, guid: 077289e289cbf9e4d8a2cbac6fbbaa02, type: 3}
   InitializedTags:
   - {fileID: 11400000, guid: 58263ee142ffc7f4aafed32ec663f287, type: 2}
   - {fileID: 11400000, guid: 29a91beaf64ca1743ab6a5990f38fef6, type: 2}

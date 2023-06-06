@@ -34,6 +34,8 @@ namespace Assets.Tags.GameMode
         public override void EndGameMode()
         {
             GameplayInputChannel.DisableInput();
+
+            Destroy(canvasController.gameObject);
         }
     }
 }

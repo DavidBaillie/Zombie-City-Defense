@@ -15,6 +15,12 @@ namespace Assets.Utilities.ExtendedClasses
         /// <returns>If the position is over an active UI element</returns>
         public static bool IsPositionOverElement(this EventSystem system, Vector2 screenPosition, bool checkForGroupAlpha = true)
         {
+            if (system == null)
+            {
+                Utilities.Worker.Logger.LogError(nameof(EventSystemExtensions), $"Could no check if point is over a UI element because the event system was null!");
+                return false;
+            }
+
             //Build the UI state data
             PointerEventData pointer = new PointerEventData(system);
             pointer.position = screenPosition;
