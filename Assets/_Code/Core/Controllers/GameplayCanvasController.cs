@@ -6,6 +6,7 @@ using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
@@ -42,6 +43,9 @@ namespace Assets.Core.Controllers
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
+            if (gameplayChannel != null)
+                gameplayChannel.OnStaticEntitySpawned -= OnEntitySpawned;
         }
 
         /// <summary>
@@ -61,10 +65,24 @@ namespace Assets.Core.Controllers
         /// <param name="unitData">Base data for the spawned unit</param>
         private void OnEntitySpawned(AStaticEntityController sceneController, AStaticUnitInstance unitData)
         {
-            if (!loadedControllers.ContainsKey(unitData.Id))
+            if (sceneController == null)
+            {
+                LogError($"Gameplay canvas controller failed to process entity spawn event because a null value was passed!:\n" +
+                    $"Scene Controller: {sceneController}\nUnit Instance: {unitData}");
                 return;
+            }
 
-            loadedControllers[unitData.Id].MarkVisualAsUsed();
+            LogInformation($"Detected entity spawn on the canvas for unit {unitData.DisplayName}");
+
+            if (!loadedControllers.ContainsKey(unitData.Id))
+            {
+                LogWarning($"Could not find a unit canvas controller for the provided unit!");
+                return;
+            }
+
+            var controller = loadedControllers[unitData.Id];
+            LogInformation($"Marking visual as used for controller {controller}");
+            controller.MarkVisualAsUsed();
         }
 
         /// <summary>

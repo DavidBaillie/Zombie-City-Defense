@@ -1,5 +1,4 @@
-﻿using Assets.Debug;
-using Game.Editor.Tools;
+﻿using Game.Editor.Tools;
 using Game.Tags.Settings;
 using UnityEditor;
 using UnityEngine;
@@ -66,6 +65,7 @@ namespace Assets.Editor.Tools
                 ToolbarStyles.CommandButtonStyle, ToolbarStyles.CommandButtonSpacing))
             {
                 GlobalSettingsTag.DevInstance.DrawDebugLines = !enableDebugLines;
+                EditorUtility.SetDirty(GlobalSettingsTag.DevInstance);
             }
 
             bool enableDebugText = GlobalSettingsTag.DevInstance.DrawDebugText;
@@ -73,6 +73,7 @@ namespace Assets.Editor.Tools
                 ToolbarStyles.CommandButtonStyle, ToolbarStyles.CommandButtonSpacing))
             {
                 GlobalSettingsTag.DevInstance.DrawDebugText = !enableDebugText;
+                EditorUtility.SetDirty(GlobalSettingsTag.DevInstance);
             }
         }
     }

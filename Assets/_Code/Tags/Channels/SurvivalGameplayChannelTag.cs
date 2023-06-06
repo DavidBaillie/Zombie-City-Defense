@@ -38,6 +38,11 @@ namespace Assets.Tags.Channels
         /// </summary>
         public event Action<AStaticEntityController, AStaticUnitInstance> OnStaticUnitDeath;
 
+        /// <summary>
+        /// Raised when the player takes an action that will reset any selected unit they previous interacted with
+        /// </summary>
+        public event Action OnPlayerResetUnitSelection;
+
 
 
         public void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
@@ -45,5 +50,6 @@ namespace Assets.Tags.Channels
         public void RaiseOnUserSelectedEntityInGui(AStaticUnitInstance instance) => OnUserSelectedEntityInGui?.Invoke(instance);
         public void RaiseOnStaticEntitySpawned(AStaticEntityController entity, AStaticUnitInstance instance) => OnStaticEntitySpawned?.Invoke(entity, instance);
         public void RaiseOnStaticUnitDeath(AStaticEntityController spawnedEntity, AStaticUnitInstance unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
+        public void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();  
     }
 }

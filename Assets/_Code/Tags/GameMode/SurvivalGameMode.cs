@@ -34,16 +34,17 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, FoldoutGroup("Channels")]
         private SurvivalGameplayChannelTag gameplayChannel = null;
 
-        [ShowInInspector]
-        private string selectedUnit { get => selectedUnitFromCanvas == null ? "null" : selectedUnitFromCanvas.DisplayName; }
-        [ShowInInspector]
+        [ShowInInspector, ReadOnly]
+        private string selectedUnit { get => selectedUnitFromCanvas == null ? "null" : 
+                (string.IsNullOrEmpty(selectedUnitFromCanvas.DisplayName) ? selectedUnitFromCanvas.Id.ToString() : selectedUnitFromCanvas.DisplayName); }
+        [ShowInInspector, ReadOnly]
         private string selectedPosition { get => selectedWorldPosition == null || selectedWorldPosition.Value.Id == Guid.Empty ? "null" : selectedWorldPosition.Value.Coordinate.ToString(); }
 
         private GameplayCanvasController canvasControllerInstance = null;
         private AStaticUnitInstance selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
-        private HashSet<Guid> spawnedUnits = new();
+        private Dictionary<Guid, Tuple<AStaticUnitInstance, AStaticEntityController>> spawnedUnits = new();
 
 
 
@@ -143,32 +144,34 @@ namespace Assets.Tags.GameMode
                 //LogInformation($"Tapped position is not close enough to any coordinate");
                 gridVisuals.HideVisual();
                 selectedWorldPosition = null;
+                gameplayChannel.RaiseOnPlayerResetUnitSelection();
             }
             //Clicked the same spot twice
             else if (selectedUnitFromCanvas != null && selectedUnitFromCanvas.Id != Guid.Empty 
                 && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
-                gridVisuals.HideVisual();
-                
+                //Try to place the unit and process data if it could be placed
                 if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, gameplayChannel, out var controller))
                 {
-                    //Reset data
-                    spawnedUnits.Add(selectedUnitFromCanvas.Id);
-                    selectedWorldPosition = null;
-                    selectedUnitFromCanvas = null;
-
-                    //Raise event
+                    //Process event
+                    spawnedUnits.Add(selectedUnitFromCanvas.Id, new(selectedUnitFromCanvas, controller));
                     gameplayChannel.RaiseOnStaticEntitySpawned(controller, selectedUnitFromCanvas);
                 }
+                //Couldn't place the unit for some reason
                 else
                 {
                     LogWarning($"A unit could be placed at world coordinate [{selectedWorldPosition.Value.Coordinate}] when attemtping placement.");
                 }
+
+                //Reset data
+                selectedWorldPosition = null;
+                selectedUnitFromCanvas = null;
+                gridVisuals.HideVisual();
+                gameplayChannel.RaiseOnPlayerResetUnitSelection();
             }
             //Player clicked a new location
             else
             {
-                //LogInformation($"Player tapped {closestPosition}");
                 selectedWorldPosition = closestPosition;
                 gridVisuals.ShowVisual(closestPosition.Coordinate);
             }

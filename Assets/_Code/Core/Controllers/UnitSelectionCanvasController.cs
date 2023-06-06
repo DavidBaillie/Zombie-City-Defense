@@ -1,16 +1,21 @@
 ﻿using Assets.Core.Abstract;
 using Game.Utilities.BaseObjects;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Core.Controllers
 {
+    /// <summary>
+    /// Controller class used to handle the state data on individual unit buttons
+    /// </summary>
+    [SelectionBase]
     public class UnitSelectionCanvasController : AExtendedMonobehaviour
     {
-        [SerializeField]
+        [SerializeField, Required]
         private TextMeshProUGUI fieldText = null;
-        [SerializeField]
+        [SerializeField, Required]
         private Button button = null;
 
 
@@ -24,11 +29,21 @@ namespace Assets.Core.Controllers
             this.unit = unit;
             fieldText.text = unit.DisplayName;
             parentController = parent;
+
+            LogInformation($"Button state -> {button} on {gameObject}");
         }
 
         public void MarkVisualAsUsed()
         {
-            button.interactable = false;
+            if (button == null)
+            {
+                LogError($"Unit selection controller failed to process marked visual, button has not been assigned.");
+            }
+            else
+            {
+                button.interactable = false;
+                LogInformation($"Set button as disabled -> {gameObject}");
+            }
         }
 
         public void OnPressed()
