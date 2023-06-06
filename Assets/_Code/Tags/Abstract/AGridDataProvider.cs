@@ -26,6 +26,28 @@ namespace Assets.Tags.Abstract
         }
 
         /// <summary>
+        /// Handles clearing the data provider if it matches the current instance
+        /// </summary>
+        /// <param name="provider">Provider to check, null indicates override</param>
+        public static void ClearActiveDataProvider(AGridDataProvider provider = null)
+        {
+            //Make the current data provider null, it matches expected data
+            if (provider == null || ActiveInstance == provider)
+            {
+                try { ProviderChanged?.Invoke(ActiveInstance, null); }
+                catch (Exception e)
+                { Utilities.Worker.Logger.LogError(nameof(AGridDataProvider), $"Failed to raise event during instance clearing: {e}"); }
+
+                ActiveInstance = null;
+            }
+            //Someone else assigned data in the mean time, don't clear
+            else
+            {
+                Utilities.Worker.Logger.LogInformation(nameof(AGridDataProvider), $"Provider was asked to clear data with a mismatch, skipping data wipe!");
+            }
+        }
+
+        /// <summary>
         /// Raised when the current data provider has been changed by an external body
         /// < Old / New >
         /// </summary>

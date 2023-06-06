@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcc9ae85b489ad345b6f873e343ef832, type: 3}
-  m_Name: Grid Data Tag
+  m_Name: Liam Test - Grid Data
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2

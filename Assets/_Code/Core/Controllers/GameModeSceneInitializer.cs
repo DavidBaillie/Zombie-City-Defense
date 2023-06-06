@@ -1,33 +1,24 @@
-﻿using Assets.Core.StaticChannels;
-using Assets.Tags.Abstract;
-using Game.Tags.Common;
-using Game.Utilities.BaseObjects;
+﻿using Assets.Tags.Abstract;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
 {
     /// <summary>
-    /// Initializer class used to start the required gamemode in the associated scene
+    /// Scene initializer to start a gamemode when the scene begins
     /// </summary>
-    [SelectionBase]
-    public class SceneInitializer : AExtendedMonobehaviour
+    public class GameModeSceneInitializer : ASceneInitializer
     {
         [SerializeField, Required]
         private AGameMode gameMode = null;
-
-        [SerializeField, Required]
-        private AGridDataProvider sceneGridData = null;
 
         /// <summary>
         /// Called when the GameObject is created
         /// </summary>
         protected override void Awake()
-        {
+        { 
             base.Awake();
-            GameplayInputChannel.EnableInput();
             gameMode.InitializeGameMode(gameObject);
-            AGridDataProvider.SetActiveDataProvider(sceneGridData);
         }
 
         /// <summary>
@@ -36,9 +27,7 @@ namespace Assets.Core.Controllers
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            GameplayInputChannel.DisableInput();
             gameMode.EndGameMode();
-            AGridDataProvider.SetActiveDataProvider(null);
         }
     }
 }

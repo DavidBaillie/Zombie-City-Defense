@@ -1,9 +1,14 @@
 ﻿using Game.Utilities.BaseObjects;
+using Sirenix.OdinInspector;
+using System;
 
 namespace Assets.Tags.Abstract
 {
     public abstract class ATag : AExtendedScriptableObject
     {
+        [ShowInInspector, ReadOnly]
+        public Guid Id = Guid.NewGuid();
+
         protected const string AssetMenuBaseName = "Game/Tags/";
 
         /// <summary>

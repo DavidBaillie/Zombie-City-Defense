@@ -54,6 +54,8 @@ namespace Assets.Tags.GameMode
         /// <param name="context">Scene that started the initialization</param>
         public override void InitializeGameMode(GameObject context)
         {
+            GameplayInputChannel.EnableInput();
+
             //Try to setup the canvas
             if (!Instantiate(gameplayCanvas).TryGetComponent(out canvasControllerInstance))
             {
@@ -89,6 +91,8 @@ namespace Assets.Tags.GameMode
         /// </summary>
         public override void EndGameMode()
         {
+            GameplayInputChannel.DisableInput();
+
             Destroy(canvasControllerInstance);
             playerUnitCollection.TrySaveUnitsToStorage();
 
