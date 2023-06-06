@@ -10,7 +10,7 @@ namespace Assets.Core.Controllers
     {
         public static string DevModeScene = string.Empty;
 
-        [SerializeField, Required]
+        [SerializeField, Required, InlineEditor(InlineEditorModes.FullEditor)]
         private PreloadSettingsTag preloadSettings = null;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Assets.Core.Controllers
 
             if (string.IsNullOrWhiteSpace(DevModeScene))
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(preloadSettings.MainGameScene);
             }
             else
             {
