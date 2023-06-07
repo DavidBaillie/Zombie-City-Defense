@@ -88,8 +88,8 @@ namespace Assets.Core.Managers
                     {
                         for (int i = 0; i < waypoints.Count - 1; i++)
                         {
-                            Draw.Line(waypoints[i].GetMaxPosition(), waypoints[i + 1].GetMaxPosition(), Color.black);
-                            Draw.Line(waypoints[i].GetMinPosition(), waypoints[i + 1].GetMinPosition(), Color.black);
+                            Draw.ingame.Line(waypoints[i].GetMaxPosition(), waypoints[i + 1].GetMaxPosition(), Color.black);
+                            Draw.ingame.Line(waypoints[i].GetMinPosition(), waypoints[i + 1].GetMinPosition(), Color.black);
                         }
                     }
                     catch

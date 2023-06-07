@@ -79,9 +79,9 @@ namespace Game.Tags.Common
             { 
                 using (Draw.WithDuration(1.5f)) 
                 { 
-                    Draw.Ray(source, Vector3.up, Color.black); 
-                    Draw.CircleXZ(source, maxDistance, Color.black);
-                    if (debugPos != null) Draw.Ray(debugPos.Value, Vector3.up, Color.green);
+                    Draw.ingame.Ray(source, Vector3.up, Color.black); 
+                    Draw.ingame.CircleXZ(source, maxDistance, Color.black);
+                    if (debugPos != null) Draw.ingame.Ray(debugPos.Value, Vector3.up, Color.green);
                 } 
             }, true, false);
 

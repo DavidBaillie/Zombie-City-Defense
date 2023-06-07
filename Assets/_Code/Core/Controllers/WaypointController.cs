@@ -32,7 +32,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         private void DrawDebug()
         {
-            GameplayDebugHandler.HandleRenderCall(() => Draw.Line(GetMaxPosition(), GetMinPosition(), Color.red), true, false);
+            GameplayDebugHandler.HandleRenderCall(() => Draw.ingame.Line(GetMaxPosition(), GetMinPosition(), Color.red), true, false);
         }
 
         /// <summary>

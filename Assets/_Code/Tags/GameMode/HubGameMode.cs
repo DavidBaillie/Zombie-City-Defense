@@ -9,8 +9,12 @@ namespace Assets.Tags.GameMode
     [CreateAssetMenu(menuName = AssetMenuGameModeName + "Hub", fileName = "Hub Game Mode")]
     public class HubGameMode : AGameMode
     {
-        [SerializeField, Required, AssetsOnly]
+        [SerializeField, Required, AssetsOnly, FoldoutGroup("References")]
         private GameObject hubCanvas = null;
+
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Tags")]
+        private AInputProcessor inputProcessor = null;
+
 
         private HubCanvasController canvasController = null;
 
@@ -26,6 +30,8 @@ namespace Assets.Tags.GameMode
             {
                 LogError($"Failed to Instanciate the hub canvas, please check that controller component exists on the prefab");
             }
+
+            inputProcessor.InitializeTag();
         }
 
         /// <summary>
@@ -35,7 +41,10 @@ namespace Assets.Tags.GameMode
         {
             GameplayInputChannel.DisableInput();
 
-            Destroy(canvasController.gameObject);
+            if (canvasController != null )
+                Destroy(canvasController.gameObject);
+
+            inputProcessor.CleanupTag();
         }
     }
 }

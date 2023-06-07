@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: add4a65c2e782194a80be2769d4b0430, type: 3}
-  m_Name: Logic Processing Manager Tag
+  m_Name: Logic Processing Manager
   m_EditorClassIdentifier: 
   collectionPreallocationSize: 1000
   highPriorityUpdateRate: 50

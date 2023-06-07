@@ -14,4 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Development/Liam Test.unity
     guid: a47a6f34cc4182549ad8838ce34ca5d1
+  - enabled: 1
+    path: Assets/_Scenes/Combat Spaces/Liam Test 1.unity
+    guid: c6363dda2c5db2742a74713754d3a304
+  - enabled: 1
+    path: Assets/_Scenes/Combat Spaces/Liam Test.unity
+    guid: b7d9a0cbd2b7f954e994f6e89b27fbc9
+  - enabled: 1
+    path: Assets/_Scenes/Combat Spaces/Liam Test 2.unity
+    guid: 3754615d364b28a4b8bcef9e6c671c43
+  - enabled: 1
+    path: Assets/_Scenes/Combat Spaces/Liam Test 3.unity
+    guid: d9a2de577acf64f4689acb68a92724b0
   m_configObjects: {}

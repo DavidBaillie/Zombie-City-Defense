@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cecad87f2cb0d9e478e53b93047aa3c2, type: 3}
-  m_Name: Hub Game Mode
+  m_Script: {fileID: 11500000, guid: 3f4c008c34a8c56468da8784f51465ad, type: 3}
+  m_Name: Combat Space 1
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,7 +23,8 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Id
       Entry: 2
-      Data: f308a9b80a3a439da063c0be8b532878
-  hubCanvas: {fileID: 3620808488191258086, guid: 6d2f99eb12858f7409625fd79d70a65e,
-    type: 3}
-  inputProcessor: {fileID: 11400000, guid: 8e73d538201f4ab47adb12fde6148b9a, type: 2}
+      Data: 985614829d554ac4860e6ecf245f1187
+  combatScene:
+    sceneAsset: {fileID: 102900000, guid: b7d9a0cbd2b7f954e994f6e89b27fbc9, type: 3}
+    scenePath: Assets/_Scenes/Combat Spaces/Liam Test.unity
+  DisplayName: Combat 1

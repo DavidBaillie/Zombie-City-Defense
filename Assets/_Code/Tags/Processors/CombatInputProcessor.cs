@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Assets.Tags.Processors
 {
-    [CreateAssetMenu(menuName = ProcessorAssetBaseName + "Input Processor")]
-    public class PlayerInputProcessor : AProcessorTag
+    [CreateAssetMenu(menuName = InputProcessorAssetMenuBaseName + "Combat Processor")]
+    public class CombatInputProcessor : AInputProcessor
     {
         [SerializeField, Required, BoxGroup("Data")]
         private ObjectTypeIdentifier cameraId = null;
@@ -15,7 +15,7 @@ namespace Assets.Tags.Processors
         [SerializeField, MinValue(0), BoxGroup("Options")]
         private float cameraMovementSpeed = 2f;
 
-        [SerializeField]
+        [SerializeField, BoxGroup("Options")]
         private LayerMask playspaceMask;
 
 
@@ -98,7 +98,6 @@ namespace Assets.Tags.Processors
             //Raycast from tap to world, if hit a collider then it's a valid tap
             if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
             {
-                //LogInformation($"Player touched screen position {screenPosition} which related to world position {hit.point}");
                 PlayerActionChannel.RaiseOnPlayerSelectedWorldPosition(hit.point);
             }
             //Hit nothing, tap is invalid

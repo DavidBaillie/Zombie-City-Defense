@@ -11,6 +11,7 @@ using Assets.Tags.Processors;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Assets.Tags.GameMode.SurvivalGameMode;
 
@@ -31,14 +32,19 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
         private StaticUnitPlacementProcessorTag unitPlacementProcessor = null;
 
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
+        private AInputProcessor inputProcessor = null;
+
         [SerializeField, Required, FoldoutGroup("Channels")]
         private SurvivalGameplayChannelTag gameplayChannel = null;
+
 
         [ShowInInspector, ReadOnly]
         private string selectedUnit { get => selectedUnitFromCanvas == null ? "null" : 
                 (string.IsNullOrEmpty(selectedUnitFromCanvas.DisplayName) ? selectedUnitFromCanvas.Id.ToString() : selectedUnitFromCanvas.DisplayName); }
         [ShowInInspector, ReadOnly]
         private string selectedPosition { get => selectedWorldPosition == null || selectedWorldPosition.Value.Id == Guid.Empty ? "null" : selectedWorldPosition.Value.Coordinate.ToString(); }
+
 
         private GameplayCanvasController canvasControllerInstance = null;
         private AStaticUnitInstance selectedUnitFromCanvas = null;
@@ -75,6 +81,7 @@ namespace Assets.Tags.GameMode
             //Setup Tags
             gridVisuals.InitializeTag();
             unitPlacementProcessor.InitializeTag();
+            inputProcessor.InitializeTag();
 
             //Register events
             gameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
@@ -104,6 +111,7 @@ namespace Assets.Tags.GameMode
             //Cleanup tags
             gridVisuals.CleanupTag();
             unitPlacementProcessor.CleanupTag();
+            inputProcessor.CleanupTag();
 
             //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");

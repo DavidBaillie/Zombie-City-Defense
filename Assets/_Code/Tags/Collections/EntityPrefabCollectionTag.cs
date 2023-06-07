@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Tags.Collections
 {
-    [CreateAssetMenu(menuName = CollectionTagAssetMenu + "Entity Prefabs", fileName = "Entity Prefab Collection")]
+    [CreateAssetMenu(menuName = CollectionAssetMenuBaseName + "Entity Prefabs", fileName = "Entity Prefab Collection")]
     public class EntityPrefabCollectionTag : ACollectionTag
     {
         [SerializeField]

@@ -4,6 +4,6 @@ namespace Assets.Tags.Abstract
 {
     public abstract class ACollectionTag : ATag
     {
-        protected const string CollectionTagAssetMenu = AssetMenuBaseName + "Collections/";        
+        protected const string CollectionAssetMenuBaseName = AssetMenuBaseName + "Collections/";        
     }
 }

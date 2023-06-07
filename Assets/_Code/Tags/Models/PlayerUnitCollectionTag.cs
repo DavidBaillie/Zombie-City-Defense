@@ -9,7 +9,7 @@ namespace Assets.Tags.Models
     /// <summary>
     /// Class represents the collection of user owned units they have access to during gameplay
     /// </summary>
-    [CreateAssetMenu(menuName = CollectionTagAssetMenu + "Player Units", fileName = "Player Units")]
+    [CreateAssetMenu(menuName = CollectionAssetMenuBaseName + "Player Units", fileName = "Player Units")]
     public class PlayerUnitCollectionTag : ACollectionTag
     {
         [SerializeField, ValidateInput(nameof(fileNameIsInvalid), "Must provide a file name to save under")]

@@ -116,7 +116,7 @@ namespace Assets.Core.Managers
                 {
                     foreach (var position in gridData.WorldPositionsArray)
                     {
-                        Draw.WireRectangleXZ(position, gridSize, CustomColours.SoftBlue);
+                        Draw.ingame.WireRectangleXZ(position, gridSize, CustomColours.SoftBlue);
                     }
                 }
             }, true, false);
