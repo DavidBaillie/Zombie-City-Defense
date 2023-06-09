@@ -25,8 +25,8 @@ MonoBehaviour:
       Entry: 2
       Data: 30c98a17116a4b649bb0e88a978a9e52
   MainGameScene:
-    sceneAsset: {fileID: 102900000, guid: a47a6f34cc4182549ad8838ce34ca5d1, type: 3}
-    scenePath: Assets/_Scenes/Development/Liam Test.unity
+    sceneAsset: {fileID: 102900000, guid: 7dcd9f1e6b9ed974abe52cce57777def, type: 3}
+    scenePath: Assets/_Scenes/Main Hub.unity
   PreloadPrefabs:
   - {fileID: 8286575644331526069, guid: 682705bbd9ca1ba48913ed511d47dc00, type: 3}
   - {fileID: 4770887385681108654, guid: 077289e289cbf9e4d8a2cbac6fbbaa02, type: 3}

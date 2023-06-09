@@ -27,3 +27,4 @@ MonoBehaviour:
   hubCanvas: {fileID: 3620808488191258086, guid: 6d2f99eb12858f7409625fd79d70a65e,
     type: 3}
   inputProcessor: {fileID: 11400000, guid: 8e73d538201f4ab47adb12fde6148b9a, type: 2}
+  gameplayChannel: {fileID: 11400000, guid: 41b309a53c0e2d24aaac9b9c19c8a429, type: 2}

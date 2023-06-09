@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using Assets.Core.Controllers;
+using Game.Tags.Settings;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
@@ -37,16 +39,18 @@ namespace Game.Editor.Tools
         {
             if (!EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode)
             {
-                //Grab the currently open scene and ask if the user wants to save
                 PreviousScene = SceneManager.GetActiveScene().path;
+
+                //Grab the currently open scene and ask if the user wants to save
                 if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 {
                     //Try to open the preload scene and then switch back to this one
                     try
                     {
+                        if (!PreviousScene.EndsWith("Preload.unity"))
+                            GlobalSettingsTag.DevInstance.DevSceneOverride = PreviousScene;
+
                         EditorSceneManager.OpenScene("Assets/_Scenes/Preload.unity"); 
-                        Scene mainScene = EditorSceneManager.OpenScene(PreviousScene, OpenSceneMode.Additive);
-                        SceneManager.SetActiveScene(mainScene);
                     }
                     catch (System.Exception e)
                     {

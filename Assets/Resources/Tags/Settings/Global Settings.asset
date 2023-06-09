@@ -24,5 +24,6 @@ MonoBehaviour:
     - Name: Id
       Entry: 2
       Data: 28134f7e231a4c42ad34108f3ec7ce50
-  DrawDebugLines: 1
+  DevSceneOverride: 
+  DrawDebugLines: 0
   DrawDebugText: 1

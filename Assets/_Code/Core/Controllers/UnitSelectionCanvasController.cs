@@ -29,8 +29,6 @@ namespace Assets.Core.Controllers
             this.unit = unit;
             fieldText.text = unit.DisplayName;
             parentController = parent;
-
-            LogInformation($"Button state -> {button} on {gameObject}");
         }
 
         public void MarkVisualAsUsed()
@@ -42,7 +40,6 @@ namespace Assets.Core.Controllers
             else
             {
                 button.interactable = false;
-                LogInformation($"Set button as disabled -> {gameObject}");
             }
         }
 

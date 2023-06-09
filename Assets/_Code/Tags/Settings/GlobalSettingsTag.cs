@@ -39,8 +39,13 @@ namespace Game.Tags.Settings
             }
         }
 
+        [SerializeField, ReadOnly]
+        public string DevSceneOverride = "";
 
+        [SerializeField]
         public bool DrawDebugLines = false;
+
+        [SerializeField]
         public bool DrawDebugText = false;
     }
 }

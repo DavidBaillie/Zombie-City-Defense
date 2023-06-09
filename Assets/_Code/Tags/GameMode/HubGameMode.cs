@@ -1,6 +1,8 @@
 ﻿using Assets.Core.Controllers;
 using Assets.Core.StaticChannels;
 using Assets.Tags.Abstract;
+using Assets.Tags.Channels;
+using Assets.Tags.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -14,6 +16,9 @@ namespace Assets.Tags.GameMode
 
         [SerializeField, Required, InlineEditor, FoldoutGroup("Tags")]
         private AInputProcessor inputProcessor = null;
+
+        [SerializeField, Required, FoldoutGroup("Tags")]
+        private HubGameplayChannelTag gameplayChannel = null;
 
 
         private HubCanvasController canvasController = null;
@@ -30,8 +35,14 @@ namespace Assets.Tags.GameMode
             {
                 LogError($"Failed to Instanciate the hub canvas, please check that controller component exists on the prefab");
             }
+            else
+            {
+
+            }
 
             inputProcessor.InitializeTag();
+
+            gameplayChannel.OnUserSelectedPlayspaceWaypoint += OnPlayerSelectedWorldWaypoint;
         }
 
         /// <summary>
@@ -45,6 +56,14 @@ namespace Assets.Tags.GameMode
                 Destroy(canvasController.gameObject);
 
             inputProcessor.CleanupTag();
+
+            gameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnPlayerSelectedWorldWaypoint;
+        }
+
+
+        private void OnPlayerSelectedWorldWaypoint(CombatPlayspaceDataTag data)
+        {
+
         }
     }
 }

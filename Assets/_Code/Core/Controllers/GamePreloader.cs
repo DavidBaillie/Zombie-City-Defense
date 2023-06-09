@@ -21,21 +21,33 @@ namespace Assets.Core.Controllers
             base.Awake();
 
             if (preloadSettings == null)
+            {
                 LogError("Cannot initialize game, no settings have been provided!", gameObject);
+                return;
+            }
 
             SetupDependencies();
 
-            if (string.IsNullOrWhiteSpace(DevModeScene))
-            {
-                SceneManager.LoadScene(preloadSettings.MainGameScene);
-            }
-            else
-            {
-                string sceneName = DevModeScene;
-                DevModeScene = string.Empty;
+#if UNITY_EDITOR
 
-                SceneManager.LoadScene(sceneName);
+            //Check for dev preload scene
+            string devSceneName = GlobalSettingsTag.DevInstance.DevSceneOverride;
+            GlobalSettingsTag.DevInstance.DevSceneOverride = string.Empty;
+
+            //If dev mode, load it
+            if (!string.IsNullOrWhiteSpace(devSceneName))
+            {
+                LogInformation($"Preload detected Dev Mode, loading scene [{devSceneName}].");
+
+                SceneManager.LoadScene(devSceneName);
+                return;
             }
+
+#endif
+
+            //Load primary scene
+            LogInformation($"Preloading game with standards settings.");
+            SceneManager.LoadScene(preloadSettings.MainGameScene);
         }
 
         /// <summary>
