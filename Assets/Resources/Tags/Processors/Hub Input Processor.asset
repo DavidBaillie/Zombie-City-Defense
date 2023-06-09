@@ -24,8 +24,8 @@ MonoBehaviour:
     - Name: Id
       Entry: 2
       Data: f72426c051fe436a80524dc37140f148
-  cameraId: {fileID: 11400000, guid: 62d6e9178a9be674fbcbf68420ebbbd7, type: 2}
-  cameraMovementSpeed: 75
+  CameraId: {fileID: 11400000, guid: 62d6e9178a9be674fbcbf68420ebbbd7, type: 2}
+  CameraMovementSpeed: 75
   playspaceMask:
     serializedVersion: 2
     m_Bits: 256
