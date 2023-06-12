@@ -17,9 +17,6 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, InlineEditor, FoldoutGroup("Tags")]
         private AInputProcessor inputProcessor = null;
 
-        [SerializeField, Required, FoldoutGroup("Tags")]
-        private HubGameplayChannelTag gameplayChannel = null;
-
 
         private HubCanvasController canvasController = null;
 
@@ -36,10 +33,9 @@ namespace Assets.Tags.GameMode
                 LogError($"Failed to Instanciate the hub canvas, please check that controller component exists on the prefab");
             }
 
-            canvasController.Setup(gameplayChannel);
             inputProcessor.InitializeTag();
 
-            gameplayChannel.OnUserSelectedPlayspaceWaypoint += OnPlayerSelectedWorldWaypoint;
+            HubGameplayChannel.OnUserSelectedPlayspaceWaypoint += OnPlayerSelectedWorldWaypoint;
         }
 
         /// <summary>
@@ -54,7 +50,7 @@ namespace Assets.Tags.GameMode
 
             inputProcessor.CleanupTag();
 
-            gameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnPlayerSelectedWorldWaypoint;
+            HubGameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnPlayerSelectedWorldWaypoint;
         }
 
         /// <summary>

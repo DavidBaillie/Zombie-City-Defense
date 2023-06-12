@@ -11,9 +11,6 @@ namespace Assets.Core.Controllers
     public class CombatWaypointSelectionController : AExtendedMonobehaviour, ISceneInteractable
     {
         [SerializeField, Required]
-        private HubGameplayChannelTag hubChannel = null;
-
-        [SerializeField, Required]
         private CombatPlayspaceDataTag playspaceData = null;
 
 
@@ -22,7 +19,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         public void OnInteract()
         {
-            hubChannel.RaiseOnUserSelectedPlayspaceWaypoint(playspaceData);
+            HubGameplayChannel.RaiseOnUserSelectedPlayspaceWaypoint(playspaceData);
         }
     }
 }

@@ -11,9 +11,7 @@ using Assets.Tags.Processors;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Assets.Tags.GameMode.SurvivalGameMode;
 
 namespace Assets.Tags.GameMode
 {
@@ -34,9 +32,6 @@ namespace Assets.Tags.GameMode
 
         [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
         private AInputProcessor inputProcessor = null;
-
-        [SerializeField, Required, FoldoutGroup("Channels")]
-        private SurvivalGameplayChannelTag gameplayChannel = null;
 
 
         [ShowInInspector, ReadOnly]
@@ -70,8 +65,6 @@ namespace Assets.Tags.GameMode
 
             //Setup data
             playerUnitCollection.TryLoadUnitsFromStorage();
-
-            canvasControllerInstance.SetupReferences(gameplayChannel);
             canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
 
             selectedUnitFromCanvas = null;
@@ -84,13 +77,13 @@ namespace Assets.Tags.GameMode
             inputProcessor.InitializeTag();
 
             //Register events
-            gameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
+            SurvivalGameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
             PlayerActionChannel.OnPlayerSelectedWorldPosition += OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidWorldPosition;
 
             //Let others know we've set up
             LogInformation($"Started Game Mode [{name}]");
-            gameplayChannel.RaiseOnGameModeSetupComplete(this);
+            SurvivalGameplayChannel.RaiseOnGameModeSetupComplete(this);
         }
 
         /// <summary>
@@ -104,7 +97,7 @@ namespace Assets.Tags.GameMode
             playerUnitCollection.TrySaveUnitsToStorage();
 
             //Deregister events
-            gameplayChannel.OnUserSelectedEntityInGui -= OnUserSelectedEntityInGui;
+            SurvivalGameplayChannel.OnUserSelectedEntityInGui -= OnUserSelectedEntityInGui;
             PlayerActionChannel.OnPlayerSelectedWorldPosition -= OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
 
@@ -115,7 +108,7 @@ namespace Assets.Tags.GameMode
 
             //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");
-            gameplayChannel.RaiseOnGameModeCleanupComplete(this);
+            SurvivalGameplayChannel.RaiseOnGameModeCleanupComplete(this);
         }
 
         /// <summary>
@@ -156,18 +149,18 @@ namespace Assets.Tags.GameMode
                 //LogInformation($"Tapped position is not close enough to any coordinate");
                 gridVisuals.HideVisual();
                 selectedWorldPosition = null;
-                gameplayChannel.RaiseOnPlayerResetUnitSelection();
+                SurvivalGameplayChannel.RaiseOnPlayerResetUnitSelection();
             }
             //Clicked the same spot twice
             else if (selectedUnitFromCanvas != null && selectedUnitFromCanvas.Id != Guid.Empty 
                 && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 //Try to place the unit and process data if it could be placed
-                if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, gameplayChannel, out var controller))
+                if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
                 {
                     //Process event
                     spawnedUnits.Add(selectedUnitFromCanvas.Id, new(selectedUnitFromCanvas, controller));
-                    gameplayChannel.RaiseOnStaticEntitySpawned(controller, selectedUnitFromCanvas);
+                    SurvivalGameplayChannel.RaiseOnStaticEntitySpawned(controller, selectedUnitFromCanvas);
                 }
                 //Couldn't place the unit for some reason
                 else
@@ -179,7 +172,7 @@ namespace Assets.Tags.GameMode
                 selectedWorldPosition = null;
                 selectedUnitFromCanvas = null;
                 gridVisuals.HideVisual();
-                gameplayChannel.RaiseOnPlayerResetUnitSelection();
+                SurvivalGameplayChannel.RaiseOnPlayerResetUnitSelection();
             }
             //Player clicked a new location
             else

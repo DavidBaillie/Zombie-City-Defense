@@ -25,9 +25,26 @@ namespace Assets.Core.Controllers
 
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
-        private SurvivalGameplayChannelTag gameplayChannel = null;
 
         private Dictionary<Guid, UnitSelectionCanvasController> loadedControllers = new();
+
+        /// <summary>
+        /// Called when the component is enabled
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            SurvivalGameplayChannel.OnStaticEntitySpawned += OnEntitySpawned;
+        }
+
+        /// <summary>
+        /// Called when the component is disabled
+        /// </summary>
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            SurvivalGameplayChannel.OnStaticEntitySpawned -= OnEntitySpawned;
+        }
 
 
         /// <summary>
@@ -46,19 +63,7 @@ namespace Assets.Core.Controllers
         protected override void OnDestroy()
         {
             base.OnDestroy();
-
-            if (gameplayChannel != null)
-                gameplayChannel.OnStaticEntitySpawned -= OnEntitySpawned;
-        }
-
-        /// <summary>
-        /// Assigns a provided gameplay channel to this Canvas 
-        /// </summary>
-        /// <param name="channel">Channel to use</param>
-        public void SetupReferences(SurvivalGameplayChannelTag channel)
-        {
-            this.gameplayChannel = channel;
-            channel.OnStaticEntitySpawned += OnEntitySpawned;
+            SurvivalGameplayChannel.OnStaticEntitySpawned -= OnEntitySpawned;
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace Assets.Core.Controllers
         /// <param name="unit">Unit user selected</param>
         public void OnUserPressedUnitButton(AStaticUnitInstance unit)
         {
-            gameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
+            SurvivalGameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }
 
         /// <summary>

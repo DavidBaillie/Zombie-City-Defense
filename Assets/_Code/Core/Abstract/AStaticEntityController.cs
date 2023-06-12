@@ -17,9 +17,6 @@ namespace Assets.Core.Abstract
         [SerializeField, ReadOnly, FoldoutGroup("General")]
         public AStaticUnitInstance LocalInstance = null;
 
-        [SerializeField, ReadOnly, FoldoutGroup("General")]
-        protected SurvivalGameplayChannelTag GameplayChannel = null;
-
         /// <summary>
         /// Called when the entity is dying to handle cleanup and saving
         /// </summary>
@@ -34,11 +31,10 @@ namespace Assets.Core.Abstract
         /// <param name="unitInstance">Unit to represent</param>
         /// <param name="positionId">World position to use</param>
         /// <param name="gameplayChannel">Communication channel to use</param>
-        public virtual void AssignStateData(AStaticUnitInstance unitInstance, Guid positionId, SurvivalGameplayChannelTag gameplayChannel)
+        public virtual void AssignStateData(AStaticUnitInstance unitInstance, Guid positionId)
         {
             WorldPositionId = positionId;
             LocalInstance = unitInstance;
-            GameplayChannel = gameplayChannel;
 
             StaticEntityTracker.RegisterEntity(positionId, this);
         }

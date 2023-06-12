@@ -31,8 +31,7 @@ namespace Assets.Tags.Processors
         /// <param name="position">Where to place the entity</param>
         /// <param name="entity">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, SurvivalGameplayChannelTag unitChannel, 
-            out AStaticEntityController controller)
+        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, out AStaticEntityController controller)
         {
             controller = null;
 
@@ -45,12 +44,6 @@ namespace Assets.Tags.Processors
             if (entity.unitType == null)
             {
                 LogError($"Cannot try to place entity [{entity.DisplayName}] because it has no identifier!");
-            }
-
-            if (unitChannel == null)
-            {
-                LogError($"Cannot place a unit for entity {entity.DisplayName} because no channel was provided for the unit.");
-                return false;
             }
 
             //Check the spot is free
@@ -77,7 +70,7 @@ namespace Assets.Tags.Processors
             }
             else
             {
-                controller.AssignStateData(entity, position.Id, unitChannel);
+                controller.AssignStateData(entity, position.Id);
             }
 
             return true;

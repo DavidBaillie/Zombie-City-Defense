@@ -5,6 +5,7 @@ using Game.Tags.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Assets.Tags.Abstract;
+using Assets.Tags.Channels;
 
 namespace Assets.Core.Controllers
 {
@@ -49,7 +50,7 @@ namespace Assets.Core.Controllers
         {
             base.OnEntityDeath();
 
-            GameplayChannel.RaiseOnStaticUnitDeath(this, LocalInstance);
+            SurvivalGameplayChannel.RaiseOnStaticUnitDeath(this, LocalInstance);
             Destroy(gameObject);
         }
 

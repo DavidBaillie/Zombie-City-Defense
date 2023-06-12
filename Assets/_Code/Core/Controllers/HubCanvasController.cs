@@ -22,37 +22,24 @@ namespace Assets.Core.Controllers
         [SerializeField, Required, FoldoutGroup("Waypoint Selection")]
         private TextMeshProUGUI waypointSelectionText = null;
 
-
-        [SerializeField, ReadOnly]
-        private HubGameplayChannelTag gameplayChannel = null;
-
         private CombatPlayspaceDataTag selectedPlayspace = null;
 
 
-        /// <summary>
-        /// Sets up needed references for this component
-        /// </summary>
-        /// <param name="gameplayChannel">Gameplay channel to use</param>
-        public void Setup(HubGameplayChannelTag gameplayChannel)
+        protected override void OnEnable()
         {
+            base.OnEnable();
             waypointSelectionGroup.alpha = 0;
             waypointSelectionText.text = string.Empty;
 
-            this.gameplayChannel = gameplayChannel;
-            this.gameplayChannel.OnUserSelectedPlayspaceWaypoint += OnUserSelectedWorldWaypoint;
-
+            HubGameplayChannel.OnUserSelectedPlayspaceWaypoint += OnUserSelectedWorldWaypoint;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidWorldPosition;
         }
 
-
-        /// <summary>
-        /// Called when object destroyed
-        /// </summary>
-        protected override void OnDestroy()
+        protected override void OnDisable()
         {
-            if (gameplayChannel != null ) 
-                gameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnUserSelectedWorldWaypoint;
+            base.OnDisable();
 
+            HubGameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnUserSelectedWorldWaypoint;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
         }
 
