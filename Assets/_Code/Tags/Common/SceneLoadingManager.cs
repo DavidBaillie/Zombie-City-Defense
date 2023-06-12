@@ -44,5 +44,15 @@ namespace Assets.Tags.Common
             //TODO - Process loading screen
             SceneManager.LoadScene(sceneName);
         }
+
+        /// <summary>
+        /// Handles loading a scene correctly
+        /// </summary>
+        /// <param name="sceneName">Scene to load</param>
+        public override void LoadScene(SceneReference scene)
+        {
+            //TODO - Process loading screen
+            SceneManager.LoadScene(scene);
+        }
     }
 }

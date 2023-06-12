@@ -89,6 +89,7 @@ namespace Assets.Core.Controllers
                 return;
             }
 
+            LogInformation($"Calling scene manager to change scenes!");
             GameManagers.SceneManager.LoadScene(selectedPlayspace.combatScene);
         }
     }

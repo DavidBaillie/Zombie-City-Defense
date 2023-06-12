@@ -30,8 +30,10 @@ MonoBehaviour:
   PreloadPrefabs:
   - {fileID: 8286575644331526069, guid: 682705bbd9ca1ba48913ed511d47dc00, type: 3}
   - {fileID: 4770887385681108654, guid: 077289e289cbf9e4d8a2cbac6fbbaa02, type: 3}
-  InitializedTags:
+  InitializedTags: []
+  SingletonTags:
   - {fileID: 11400000, guid: 58263ee142ffc7f4aafed32ec663f287, type: 2}
   - {fileID: 11400000, guid: 29a91beaf64ca1743ab6a5990f38fef6, type: 2}
-  - {fileID: 11400000, guid: 293cd3b49f6e7664fac831e09bcf7a52, type: 2}
   - {fileID: 11400000, guid: 14fa33d2f1d7fe040a4d281e8c7932a7, type: 2}
+  - {fileID: 11400000, guid: 293cd3b49f6e7664fac831e09bcf7a52, type: 2}
+  - {fileID: 11400000, guid: 2edcd87849aa53a41bf69c8fdad0cdab, type: 2}

@@ -29,8 +29,6 @@ namespace Assets.Tags.Abstract
         {
             base.InitializeTag();
 
-            LogInformation($"Initialized input processesor [{name}]");
-
             GameplayInputChannel.OnPlayerTappedScreen += OnPlayerTappedScreen;
             GameplayInputChannel.OnPlayerStartedDragging += OnPlayerStartedDragging;
             GameplayInputChannel.OnPlayerIsDragging += OnPlayerIsDragging;
@@ -43,8 +41,6 @@ namespace Assets.Tags.Abstract
         public override void CleanupTag()
         {
             base.CleanupTag();
-
-            LogInformation($"Cleaned up input processesor [{name}]");
 
             GameplayInputChannel.OnPlayerTappedScreen -= OnPlayerTappedScreen;
             GameplayInputChannel.OnPlayerStartedDragging -= OnPlayerStartedDragging;
@@ -107,9 +103,6 @@ namespace Assets.Tags.Abstract
         /// Called when the user taps the screen
         /// </summary>
         /// <param name="screenPosition">Position the user tapped</param>
-        protected virtual void OnPlayerTappedScreen(Vector2 screenPosition)
-        {
-            LogInformation($"Player tapped {screenPosition} from processor [{name}]");
-        }
+        protected virtual void OnPlayerTappedScreen(Vector2 screenPosition) { }
     }
 }

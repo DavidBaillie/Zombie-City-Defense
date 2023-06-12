@@ -25,7 +25,7 @@ namespace Assets.Core.Controllers
             if (entityToSpawn == null)
                 return;
 
-            MEC.Timing.RunCoroutine(EntitySpawnLoop());
+            MEC.Timing.RunCoroutine(EntitySpawnLoop().CancelWith(gameObject));
         }
 
 

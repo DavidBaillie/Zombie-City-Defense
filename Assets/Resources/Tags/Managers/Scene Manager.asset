@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e3061c832f7bed4581e720d36abbb01, type: 3}
-  m_Name: Global Settings
+  m_Script: {fileID: 11500000, guid: f8cb0f29e4e488d4989389e1ec2f2df9, type: 3}
+  m_Name: Scene Manager
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,7 +23,4 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Id
       Entry: 2
-      Data: 28134f7e231a4c42ad34108f3ec7ce50
-  DevSceneOverride: 
-  DrawDebugLines: 0
-  DrawDebugText: 1
+      Data: eab09784217f4952b4b80d355ffbd7e2

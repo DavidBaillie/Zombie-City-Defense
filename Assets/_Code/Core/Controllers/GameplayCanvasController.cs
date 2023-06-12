@@ -1,4 +1,5 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Core.Managers.Static;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Assets.Utilities.Extensions;
@@ -19,6 +20,8 @@ namespace Assets.Core.Controllers
         [SerializeField, Required]
         private GameObject unitCardPrefab = null;
 
+        [SerializeField, Required]
+        private SceneReference fallbackScene = null;
 
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
@@ -117,7 +120,12 @@ namespace Assets.Core.Controllers
             gameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }
 
-
-
+        /// <summary>
+        /// Called from the canvas when the user presses the retreat button
+        /// </summary>
+        public void OnUserPressedRetreatButton()
+        {
+            GameManagers.SceneManager.LoadScene(fallbackScene);
+        }
     }
 }

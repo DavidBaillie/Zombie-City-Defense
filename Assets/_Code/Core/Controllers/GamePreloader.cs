@@ -10,7 +10,7 @@ namespace Assets.Core.Controllers
     {
         public static string DevModeScene = string.Empty;
 
-        [SerializeField, Required, InlineEditor(InlineEditorModes.FullEditor)]
+        [SerializeField, Required, InlineEditor]
         private PreloadSettingsTag preloadSettings = null;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Assets.Core.Controllers
                 return;
             }
 
-            SetupDependencies();
+            preloadSettings.InitializeTag();
 
 #if UNITY_EDITOR
 
@@ -48,23 +48,6 @@ namespace Assets.Core.Controllers
             //Load primary scene
             LogInformation($"Preloading game with standards settings.");
             SceneManager.LoadScene(preloadSettings.MainGameScene);
-        }
-
-        /// <summary>
-        /// Called to build the dependencies needed by the project
-        /// </summary>
-        private void SetupDependencies()
-        {
-            foreach (var prefab in preloadSettings.PreloadPrefabs)
-            {
-                var instance = Instantiate(prefab);
-                DontDestroyOnLoad(instance);
-            }
-
-            foreach (var tag in preloadSettings.InitializedTags)
-            {
-                try { tag.InitializeTag(); } catch (System.Exception e) { LogError($"Failed to initialize [{tag?.name}]: {e.GetType().Name}"); }
-            }
         }
     }
 }
