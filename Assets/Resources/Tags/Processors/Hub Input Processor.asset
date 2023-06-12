@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bda4bb6ed46bd2478696c4e807801ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 94dfb8ff517645b4d9e595a3a2ac319f, type: 3}
   m_Name: Hub Input Processor
   m_EditorClassIdentifier: 
   serializationData:
@@ -23,9 +23,9 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Id
       Entry: 2
-      Data: f72426c051fe436a80524dc37140f148
+      Data: 140b090bb4e045ef9711041badfcebad
   CameraId: {fileID: 11400000, guid: 62d6e9178a9be674fbcbf68420ebbbd7, type: 2}
   CameraMovementSpeed: 75
-  playspaceMask:
+  interactableMask:
     serializedVersion: 2
     m_Bits: 256

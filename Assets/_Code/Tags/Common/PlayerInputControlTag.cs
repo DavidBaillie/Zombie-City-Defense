@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Assets.Utilities.ExtendedClasses;
 using Assets.Core.StaticChannels;
+using System;
 
 namespace Game.Tags.Common
 {
@@ -21,12 +22,17 @@ namespace Game.Tags.Common
         private bool startedDragging = false;
 
 
+        private void LogIfEnabled(Action act) { if (enableLogging) act.Invoke(); }
+
+
         /// <summary>
         /// Called during preload to set up the tag
         /// </summary>
         public override void InitializeTag()
         {
             base.InitializeTag();
+
+            LogIfEnabled(() => LogInformation($"Initialized tag [{name}]"));
 
             //Subscribe to the central update loop for the game
             UnityEventPassthrough.Instance.OnUpdate += Update;
@@ -57,9 +63,7 @@ namespace Game.Tags.Common
             //If the user is dragging, raise an event each frame for listeners
             if (startedDragging)
             {
-                if (enableLogging)
-                    LogInformation($"Dragging: {touchPosition}");
-
+                LogIfEnabled(() => LogInformation($"Dragging: {touchPosition}"));
                 GameplayInputChannel.RaiseOnPlayerIsDragging(touchPosition);
             }
         }
@@ -70,11 +74,12 @@ namespace Game.Tags.Common
         private void PlayerTappedScreen(InputAction.CallbackContext context)
         {
             if (EventSystem.current.IsPositionOverElement(touchPosition))
+            {
+                LogIfEnabled(() => LogInformation($"Ignoring screen tap, over element: {touchPosition}"));
                 return;
+            }
 
-            if (enableLogging)
-                LogInformation($"Tapped Screen: {touchPosition}");
-
+            LogIfEnabled(() => LogInformation($"Tapped screen: {touchPosition}"));
             GameplayInputChannel.RaiseOnPlayerTappedScreen(touchPosition);
         }
 
@@ -86,8 +91,7 @@ namespace Game.Tags.Common
             if (EventSystem.current.IsPositionOverElement(touchPosition))
                 return;
 
-            if (enableLogging)
-                LogInformation($"Started Dragging: {touchPosition}");
+            LogIfEnabled(() => LogInformation($"Started Dragging: {touchPosition}"));
 
             GameplayInputChannel.RaiseOnPlayerStartedDragging(touchPosition);
             startedDragging = true;
@@ -101,8 +105,7 @@ namespace Game.Tags.Common
             if (!startedDragging)
                 return;
             
-            if (enableLogging)
-                LogInformation($"Stopped Dragging: {touchPosition}");
+            LogIfEnabled(() => LogInformation($"Stopped Dragging: {touchPosition}"));
 
             startedDragging = false;
             GameplayInputChannel.RaiseOnPlayerStoppedDragging(touchPosition);

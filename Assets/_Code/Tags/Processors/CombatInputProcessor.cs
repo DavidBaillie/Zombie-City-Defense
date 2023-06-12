@@ -17,6 +17,8 @@ namespace Assets.Tags.Processors
         /// <param name="screenPosition">Position the user tapped</param>
         protected override void OnPlayerTappedScreen(Vector2 screenPosition)
         {
+            base.OnPlayerTappedScreen(screenPosition);
+
             //Raycast from tap to world, if hit a collider then it's a valid tap
             if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPosition), out var hit, float.MaxValue, playspaceMask, QueryTriggerInteraction.Ignore))
             {

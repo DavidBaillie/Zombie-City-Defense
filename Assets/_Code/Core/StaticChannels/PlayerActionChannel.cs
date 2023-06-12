@@ -7,11 +7,9 @@ namespace Assets.Core.StaticChannels
     {
         public static event Action<Vector3> OnPlayerSelectedWorldPosition;
         public static event Action<Vector2> OnPlayerSelectedInvalidPosition;
-        public static event Action<GameObject> OnPlayerSelectedInteractableObject;
 
 
         public static void RaiseOnPlayerSelectedWorldPosition(Vector3 position) => OnPlayerSelectedWorldPosition?.Invoke(position);
         public static void RaiseOnPlayerSelectedInvalidPosition(Vector2 screenPosition) => OnPlayerSelectedInvalidPosition?.Invoke(screenPosition);
-        public static void RaiseOnPlayerSelectedInteractableObject(GameObject interactableObject) => OnPlayerSelectedInteractableObject?.Invoke(interactableObject);
     }
 }

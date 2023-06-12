@@ -12,5 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032ce54355476f740ba16754baf62c94, type: 3}
   m_Name: Player Input Control Tag
   m_EditorClassIdentifier: 
-  channel: {fileID: 11400000, guid: a3275bd02923e264e85147ae1821f59e, type: 2}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Id
+      Entry: 2
+      Data: 9ff7f1eca5fc42f6bc4b94dc243f4654
   enableLogging: 0

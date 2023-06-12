@@ -8,9 +8,9 @@ namespace Assets.Tags.Collections
     public class CombatPlayspaceDataTag : ACollectionTag
     {
         [SerializeField, Required]
-        private SceneReference combatScene = null;
+        public SceneReference combatScene = null;
 
         [SerializeField]
-        private string DisplayName = "";
+        public string DisplayName = "";
     }
 }

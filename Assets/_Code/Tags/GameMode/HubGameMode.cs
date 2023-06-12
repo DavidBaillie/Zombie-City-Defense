@@ -35,11 +35,8 @@ namespace Assets.Tags.GameMode
             {
                 LogError($"Failed to Instanciate the hub canvas, please check that controller component exists on the prefab");
             }
-            else
-            {
 
-            }
-
+            canvasController.Setup(gameplayChannel);
             inputProcessor.InitializeTag();
 
             gameplayChannel.OnUserSelectedPlayspaceWaypoint += OnPlayerSelectedWorldWaypoint;
@@ -60,10 +57,13 @@ namespace Assets.Tags.GameMode
             gameplayChannel.OnUserSelectedPlayspaceWaypoint -= OnPlayerSelectedWorldWaypoint;
         }
 
-
-        private void OnPlayerSelectedWorldWaypoint(CombatPlayspaceDataTag data)
+        /// <summary>
+        /// Called when the user taps on a world waypoint
+        /// </summary>
+        /// <param name="waypoint">Waypoint tapped</param>
+        private void OnPlayerSelectedWorldWaypoint(CombatPlayspaceDataTag waypoint)
         {
-
+            LogInformation($"Player selected waypoint [{waypoint.DisplayName}]");
         }
     }
 }
