@@ -32,7 +32,7 @@ namespace Game.Tags.Common
         {
             base.InitializeTag();
 
-            LogIfEnabled(() => LogInformation($"Initialized tag [{name}]"));
+            LogIfEnabled(() => LogInformation($"Initialized input tag [{name}]"));
 
             //Subscribe to the central update loop for the game
             UnityEventPassthrough.Instance.OnUpdate += Update;
@@ -49,11 +49,17 @@ namespace Game.Tags.Common
         /// <summary>
         /// Enables gameplay input for the game
         /// </summary>
-        public void EnableInput() => inputController.Enable();
+        public void EnableInput()
+        {
+            inputController.Enable();
+        }
         /// <summary>
         /// Disables gameplay input for the game
         /// </summary>
-        public void DisableInput() => inputController.Disable(); 
+        public void DisableInput()
+        {
+            inputController.Disable();
+        }
 
         /// <summary>
         /// Called each frame while the game is active
@@ -104,7 +110,7 @@ namespace Game.Tags.Common
         {
             if (!startedDragging)
                 return;
-            
+
             LogIfEnabled(() => LogInformation($"Stopped Dragging: {touchPosition}"));
 
             startedDragging = false;

@@ -12,6 +12,12 @@ namespace Assets.Tags.Processors
         [SerializeField, BoxGroup("Options")]
         private LayerMask interactableMask;
 
+        public override void InitializeTag()
+        {
+            base.InitializeTag();
+            LogInformation($"Initialized Hub Input Processor");
+        }
+
         /// <summary>
         /// Called when the user taps the screen
         /// </summary>

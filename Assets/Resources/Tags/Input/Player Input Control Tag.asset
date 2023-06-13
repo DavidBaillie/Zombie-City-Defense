@@ -24,4 +24,4 @@ MonoBehaviour:
     - Name: Id
       Entry: 2
       Data: 9ff7f1eca5fc42f6bc4b94dc243f4654
-  enableLogging: 0
+  enableLogging: 1

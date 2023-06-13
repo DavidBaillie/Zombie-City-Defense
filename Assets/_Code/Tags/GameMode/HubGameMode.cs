@@ -36,6 +36,8 @@ namespace Assets.Tags.GameMode
             inputProcessor.InitializeTag();
 
             HubGameplayChannel.OnUserSelectedPlayspaceWaypoint += OnPlayerSelectedWorldWaypoint;
+
+            LogInformation($"Initialized Hub Game Mode");
         }
 
         /// <summary>
