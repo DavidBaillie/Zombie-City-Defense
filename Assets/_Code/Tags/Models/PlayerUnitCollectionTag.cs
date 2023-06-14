@@ -17,7 +17,7 @@ namespace Assets.Tags.Models
         private bool fileNameIsInvalid => !string.IsNullOrEmpty(fileSaveName);
 
         [SerializeField]
-        public List<AStaticUnitInstance> availableUnits = new List<AStaticUnitInstance>();
+        public List<StaticUnitTag> availableUnits = new();
 
 
         public virtual bool TryLoadUnitsFromStorage()

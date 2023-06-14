@@ -1,9 +1,11 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Core.Controllers;
 using Assets.Core.DataTracking;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Collections;
+using Assets.Tags.Models;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
@@ -29,21 +31,16 @@ namespace Assets.Tags.Processors
         /// Attempts to place the provided unit at the given position in the game world.
         /// </summary>
         /// <param name="position">Where to place the entity</param>
-        /// <param name="entity">The entity to place</param>
+        /// <param name="unit">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceUnitAtWorldPosition(WorldPosition position, AStaticUnitInstance entity, out AStaticEntityController controller)
+        public bool TryPlaceHumanAtWorldPosition(WorldPosition position, StaticUnitTag unit, out HumanUnitController controller)
         {
             controller = null;
 
-            if (entity == null)
+            if (unit == null)
             {
                 LogError($"Cannot try to place a unit at the world positon when a null entity was passed!");
                 return false;
-            }
-
-            if (entity.unitType == null)
-            {
-                LogError($"Cannot try to place entity [{entity.DisplayName}] because it has no identifier!");
             }
 
             //Check the spot is free
@@ -53,26 +50,16 @@ namespace Assets.Tags.Processors
                 return false;
             }
 
-            //Grab the prefab
-            if (!prefabCollection.TryGetEntityPrefab(entity.unitType, out var prefab))
+            //Spawn the prefab at the position and run it's startup
+            var instance = Instantiate(unit.UnitPrefab, position.Coordinate, unit.UnitPrefab.transform.rotation, null);
+            if (!instance.TryGetComponent(out controller))
             {
-                LogError($"Could not spawn the desired static entity, none was found in the prefab collection!", entity.unitType);
+                LogError($"Static unit placement processor placed a unit that has no controller on it, please check prefab!", instance);
                 return false;
             }
 
-            //Spawn the prefab at the position and run it's startup
-            var instance = Instantiate(prefab, position.Coordinate, prefab.transform.rotation, null);
-            controller = instance.GetComponent<AStaticEntityController>();
-
-            if (controller == null)
-            {
-                LogError($"Static unit placement processor placed a unit that has no controller on it, please check prefab!", instance);
-            }
-            else
-            {
-                controller.AssignStateData(entity, position.Id);
-            }
-
+            controller.SetWorldPosition(position.Id);
+            controller.SetUnitTag(unit);
             return true;
         }
     }

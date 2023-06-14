@@ -42,10 +42,10 @@ namespace Assets.Tags.GameMode
 
 
         private GameplayCanvasController canvasControllerInstance = null;
-        private AStaticUnitInstance selectedUnitFromCanvas = null;
+        private StaticUnitTag selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
-        private Dictionary<Guid, Tuple<AStaticUnitInstance, AStaticEntityController>> spawnedUnits = new();
+        private Dictionary<StaticUnitTag, AStaticEntityController> spawnedUnits = new();
 
 
 
@@ -115,20 +115,17 @@ namespace Assets.Tags.GameMode
         /// Called when the user taps on a unit in the GUI
         /// </summary>
         /// <param name="unit">Unit selected</param>
-        private void OnUserSelectedEntityInGui(AStaticUnitInstance unit)
+        private void OnUserSelectedEntityInGui(StaticUnitTag unit)
         {
-            //Entity has been spawned into the game world
-            if (StaticEntityTracker.TryGetPositionByInstance(unit, out var position))
+            //Check to see if the player selected a spawned unit
+            if(spawnedUnits.ContainsKey(unit))
             {
                 LogInformation($"User selected a unit that has already been spawned -> {unit.DisplayName}");
-                //TODO - Player tapped a unit that has already been spawned
+                return;
             }
-            //Entity has not been spawned into game world
-            else
-            {
-                LogInformation($"User selected a unit that can be placed -> {unit.DisplayName}");
-                selectedUnitFromCanvas = unit;
-            }
+
+            LogInformation($"User selected a unit that can be placed -> {unit.DisplayName}");
+            selectedUnitFromCanvas = unit;
         }
 
         /// <summary>
@@ -156,10 +153,10 @@ namespace Assets.Tags.GameMode
                 && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 //Try to place the unit and process data if it could be placed
-                if (unitPlacementProcessor.TryPlaceUnitAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
+                if (unitPlacementProcessor.TryPlaceHumanAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
                 {
                     //Process event
-                    spawnedUnits.Add(selectedUnitFromCanvas.Id, new(selectedUnitFromCanvas, controller));
+                    spawnedUnits.Add(selectedUnitFromCanvas, controller);
                     SurvivalGameplayChannel.RaiseOnStaticEntitySpawned(controller, selectedUnitFromCanvas);
                 }
                 //Couldn't place the unit for some reason

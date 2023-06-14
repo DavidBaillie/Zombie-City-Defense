@@ -2,12 +2,10 @@
 using Assets.Core.Managers.Static;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
-using Assets.Utilities.Extensions;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
@@ -71,7 +69,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         /// <param name="sceneController">Scene controller for unit</param>
         /// <param name="unitData">Base data for the spawned unit</param>
-        private void OnEntitySpawned(AStaticEntityController sceneController, AStaticUnitInstance unitData)
+        private void OnEntitySpawned(AStaticEntityController sceneController, StaticUnitTag unitData)
         {
             if (sceneController == null)
             {
@@ -80,7 +78,7 @@ namespace Assets.Core.Controllers
                 return;
             }
 
-            LogInformation($"Detected entity spawn on the canvas for unit {unitData.DisplayName}");
+            //LogInformation($"Detected entity spawn on the canvas for unit {unitData.DisplayName}");
 
             if (!loadedControllers.ContainsKey(unitData.Id))
             {
@@ -120,7 +118,7 @@ namespace Assets.Core.Controllers
         /// Called from the sub-controller when a unit is selected
         /// </summary>
         /// <param name="unit">Unit user selected</param>
-        public void OnUserPressedUnitButton(AStaticUnitInstance unit)
+        public void OnUserPressedUnitButton(StaticUnitTag unit)
         {
             SurvivalGameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }

@@ -1,11 +1,11 @@
 ﻿using Drawing;
 using Assets.Core.Abstract;
 using Assets.Core.Interfaces;
-using Game.Tags.Models;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
+using Assets.Tags.Models;
 
 namespace Assets.Core.Controllers
 {
@@ -13,10 +13,10 @@ namespace Assets.Core.Controllers
     /// Component class that represents a unit in the game world. Contains the minimum logic for the entity to fight and act in the world.
     /// </summary>
     [SelectionBase]
-    public class BasicStaticEntityController : AStaticEntityController, IDamageReceiver, ILogicUpdateProcessor
+    public class HumanUnitController : AStaticEntityController, IDamageReceiver, ILogicUpdateProcessor
     {
-        [SerializeField, Required, InlineEditor, FoldoutGroup("Stats")]
-        private StaticUnitStatsTag unitStats = null;
+        [SerializeField, ReadOnly, FoldoutGroup("Stats")]
+        private StaticUnitTag unit = null;
 
         [SerializeField, ReadOnly, FoldoutGroup("Stats")]
         private float currentHealth;
@@ -30,27 +30,33 @@ namespace Assets.Core.Controllers
         {
             base.Start();
             
-            currentHealth = unitStats.MaxHealth;
+            currentHealth = unit.MaxHealth;
             ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
         }
 
         /// <summary>
-        /// Called when this object is destroyed
+        /// Not used by this class but allows for child types to receieve the tag associated with it
         /// </summary>
-        protected override void OnDestroy()
+        /// <param name="unitTag"></param>
+        public virtual void SetUnitTag(StaticUnitTag unitTag)
         {
-            base.OnDestroy();
+            unit = unitTag;
+        }
+
+
+        public override void OnEntityRemoved()
+        {
+            base.OnEntityRemoved();
             ALogicProcessor.Instance.DeregisterHighPriorityProcessor(this);
+            SurvivalGameplayChannel.RaiseOnStaticUnitDeath(this, unit);
         }
 
         /// <summary>
         /// Handles cleaning up the entity
         /// </summary>
-        protected override void OnEntityDeath()
+        protected virtual void OnEntityDeath()
         {
-            base.OnEntityDeath();
-
-            SurvivalGameplayChannel.RaiseOnStaticUnitDeath(this, LocalInstance);
+            OnEntityRemoved();
             Destroy(gameObject);
         }
 
@@ -58,12 +64,19 @@ namespace Assets.Core.Controllers
         /// Applies damage to the entity
         /// </summary>
         /// <param name="damage">Damage to take</param>
-        public void ApplyDamage(float damage)
+        /// <returns>If this entity died from the damage</returns>
+        public bool ApplyDamage(float damage)
         {
+            //Apply damage
             currentHealth -= damage;
 
-            if (currentHealth <= 0)
-                OnEntityDeath();
+            //Check if we're dead
+            if (currentHealth > 0)
+                return false;
+                
+            //We died...
+            OnEntityDeath();
+            return true;
         }
 
         /// <summary>
@@ -74,24 +87,23 @@ namespace Assets.Core.Controllers
             if (attackCooldown > 0)
                 return;
 
-            var collidersInRange = Physics.OverlapSphere(transform.position, unitStats.maxRange, unitStats.validTargetLayers);
+            var collidersInRange = Physics.OverlapSphere(transform.position, unit.AttackRange, unit.ValidTargetLayers);
+            
             foreach (var collider in collidersInRange)
             {
                 //Check if this collider is a valid target
-                var receiverComponent = collider.gameObject.GetComponent<IDamageReceiver>();
-                if (receiverComponent == null || !receiverComponent.IsHostile(TeamId))
-                {
+                if (!collider.gameObject.TryGetComponent(out IDamageReceiver receiver))
                     continue;
-                }
-
+                
                 //Apply damage to target and reset cooldown
-                receiverComponent.ApplyDamage(unitStats.AttackDamage);
-                attackCooldown = unitStats.AttackCooldown;
+                bool killedTarget = receiver.ApplyDamage(unit.AttackDamage);
+                attackCooldown = unit.AttackCooldown;
 
                 using (Draw.ingame.WithDuration(0.15f))
                 {
                     Draw.ingame.Line(transform.position, collider.gameObject.transform.position, Color.red);
                 }
+
                 break;
             }
         }
@@ -115,7 +127,7 @@ namespace Assets.Core.Controllers
             base.DrawGizmos();
 
             if (GizmoContext.InSelection(this))
-                Draw.WireSphere(transform.position, unitStats.maxRange, Color.white);
+                Draw.WireSphere(transform.position, unit.AttackRange, Color.red);
         }
     }
 }

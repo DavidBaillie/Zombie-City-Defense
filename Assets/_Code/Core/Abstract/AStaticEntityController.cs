@@ -1,8 +1,7 @@
 ﻿using Assets.Core.DataTracking;
-using Assets.Tags.Channels;
+using Assets.Tags.Models;
 using Sirenix.OdinInspector;
 using System;
-using UnityEngine;
 
 namespace Assets.Core.Abstract
 {
@@ -11,19 +10,8 @@ namespace Assets.Core.Abstract
     /// </summary>
     public abstract class AStaticEntityController : AEntityController
     {
-        [ShowInInspector, ReadOnly, FoldoutGroup("General")]
+        [ShowInInspector, ReadOnly, BoxGroup("General")]
         public Guid WorldPositionId = Guid.Empty;
-
-        [SerializeField, ReadOnly, FoldoutGroup("General")]
-        public AStaticUnitInstance LocalInstance = null;
-
-        /// <summary>
-        /// Called when the entity is dying to handle cleanup and saving
-        /// </summary>
-        protected virtual void OnEntityDeath()
-        {
-            WorldPositionId = Guid.Empty;
-        }
 
         /// <summary>
         /// Called when the unit is being set up
@@ -31,24 +19,19 @@ namespace Assets.Core.Abstract
         /// <param name="unitInstance">Unit to represent</param>
         /// <param name="positionId">World position to use</param>
         /// <param name="gameplayChannel">Communication channel to use</param>
-        public virtual void AssignStateData(AStaticUnitInstance unitInstance, Guid positionId)
+        public virtual void SetWorldPosition(Guid positionId)
         {
             WorldPositionId = positionId;
-            LocalInstance = unitInstance;
-
             StaticEntityTracker.RegisterEntity(positionId, this);
         }
 
         /// <summary>
-        /// Called when the unit is being removed from the game
+        /// Called when the entity needs to be removed from the game world
         /// </summary>
-        protected override void OnDestroy()
+        public virtual void OnEntityRemoved()
         {
-            base.OnDestroy();
-
-            //If the unit was set up, try to register it
             if (WorldPositionId != Guid.Empty)
-                StaticEntityTracker.DeregisterEntity(WorldPositionId);
+                StaticEntityTracker.RegisterEntity(WorldPositionId, this);
         }
     }
 }

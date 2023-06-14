@@ -1,4 +1,5 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Tags.Models;
 using Sirenix.Serialization.Internal;
 using System;
 using System.Collections.Generic;
@@ -93,25 +94,13 @@ namespace Assets.Core.DataTracking
         }
 
         /// <summary>
-        /// Attempts to return the world coordinate id of the entity with a matching instance object
+        /// Determines if a given entity is being tracked as spawned in the world
         /// </summary>
-        /// <param name="instance">Instance to match</param>
-        /// <param name="position">out for position value</param>
-        /// <returns>If a match was found</returns>
-        public static bool TryGetPositionByInstance(AStaticUnitInstance instance, out Guid position)
+        /// <param name="entity">Entity to see if spawned</param>
+        /// <returns>If the given controller has been placed in the game world</returns>
+        public static bool EntityHasBeenSpawned(AStaticEntityController entity)
         {
-            position = Guid.Empty;
-
-            foreach (var pair in staticEntities)
-            {
-                if (pair.Value.LocalInstance.Id != Guid.Empty && pair.Value.LocalInstance.Id == instance.Id)
-                {
-                    position = pair.Key;
-                    return true;
-                }
-            }
-
-            return false;
+            return staticEntities.Any(x => x.Value == entity);
         }
     }
 }
