@@ -1,12 +1,14 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Interfaces;
 using Assets.Core.Models;
+using Assets.Debug;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Drawing;
 using Sirenix.OdinInspector;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
@@ -27,15 +29,31 @@ namespace Assets.Core.Controllers
         [SerializeField, ReadOnly, FoldoutGroup("Stats")]
         private float attackCooldown = 0;
 
+        private StaticEntityTarget targetData = new();
+
         /// <summary>
-        /// Called each physics update to process timer
+        /// Called each frame
         /// </summary>
-        protected override void FixedUpdate()
+        protected override void Update()
         {
             base.Update();
 
+            //Update attack state
             if (attackCooldown > 0)
-                attackCooldown -= Time.fixedDeltaTime;
+                attackCooldown -= Time.deltaTime;
+
+            //Check for a valid target
+            if (!targetData.HasTarget || attackCooldown > 0)
+                return;
+
+            //Attack target
+            using (Draw.WithDuration(0.15f)) { Draw.ingame.Line(transform.position, targetData.TargetGameObject.transform.position, Color.red); }
+            var killedTarget = targetData.DamageReceiver.ApplyDamage(StaticUnit.AttackDamage);
+            attackCooldown = StaticUnit.AttackCooldown;
+
+            //Wipe data if we killed it
+            if (killedTarget)
+                targetData = new();
         }
 
         /// <summary>
@@ -85,28 +103,31 @@ namespace Assets.Core.Controllers
         /// <summary>
         /// Handles taking the call from orchestrator to perform a logical update
         /// </summary>
-        public void ProcessLogic()
+        public virtual void ProcessLogic()
         {
-            if (attackCooldown > 0)
+            if (targetData.HasTarget)
                 return;
 
-            var collidersInRange = Physics.OverlapSphere(transform.position, StaticUnit.AttackRange, StaticUnit.ValidTargetLayers);
+            //Check for all targets in range
+            var collidersInRange = Physics
+                .OverlapSphere(transform.position, StaticUnit.AttackRange, StaticUnit.ValidTargetLayers)
+                .OrderBy(x => Vector3.Distance(x.transform.position, transform.position));
 
+            //Find the closest valid target
+            RaycastHit[] hits = new RaycastHit[0];
             foreach (var collider in collidersInRange)
             {
                 //Check if this collider is a valid target
                 if (!collider.gameObject.TryGetComponent(out IDamageReceiver receiver))
                     continue;
 
-                //Apply damage to target and reset cooldown
-                bool killedTarget = receiver.ApplyDamage(StaticUnit.AttackDamage);
-                attackCooldown = StaticUnit.AttackCooldown;
+                //Check for a line of sight blocker
+                if (Physics.RaycastNonAlloc(transform.position, collider.transform.position - transform.position, hits, 
+                    Vector3.Distance(transform.position, collider.transform.position), (int)StaticUnit.SightBlockingLayers) > 0)
+                    continue;
 
-                using (Draw.ingame.WithDuration(0.15f))
-                {
-                    Draw.ingame.Line(transform.position, collider.gameObject.transform.position, Color.red);
-                }
-
+                //Save valid target for attack
+                targetData = new(collider.gameObject, receiver);
                 break;
             }
         }

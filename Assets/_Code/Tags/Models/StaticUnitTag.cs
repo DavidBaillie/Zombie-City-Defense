@@ -23,6 +23,9 @@ namespace Assets.Tags.Models
         [SerializeField, BoxGroup("Stats")]
         public LayerMask ValidTargetLayers;
 
+        [SerializeField, BoxGroup("Stats")]
+        public LayerMask SightBlockingLayers;
+
         [SerializeField, MinValue(1), BoxGroup("Base Stats")]
         private float BaseHealth = 100f;
 
