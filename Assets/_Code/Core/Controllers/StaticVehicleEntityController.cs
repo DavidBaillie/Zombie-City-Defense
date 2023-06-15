@@ -14,9 +14,10 @@ namespace Assets.Core.Controllers
         /// Called when the entity takes damage
         /// </summary>
         /// <param name="damage"></param>
-        public void ApplyDamage(float damage)
+        public bool ApplyDamage(float damage)
         {
 
+            return false;
         }
     }
 }

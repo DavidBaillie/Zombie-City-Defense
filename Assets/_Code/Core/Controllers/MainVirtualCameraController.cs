@@ -8,16 +8,16 @@ namespace Assets.Core.Controllers
     public class MainVirtualCameraController : AExtendedMonobehaviour
     {
         [SerializeField, Required]
-        private ObjectTypeIdentifier id = null;
+        private CameraTypeIdentifier cameraType = null;
 
         ///Called when object created
         protected override void Start()
         {
             base.Start();
 
-            if (id != null)
+            if (cameraType != null)
             {
-                SceneObjectRegistry.RegisterObject(id, gameObject);
+                SceneObjectRegistry.RegisterObject(cameraType, gameObject);
             }
         }
     }

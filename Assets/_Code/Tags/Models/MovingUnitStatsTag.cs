@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Game.Tags.Models
 {
-    [CreateAssetMenu(menuName = AssetMenuBaseName + "Stats/Moving Unit", fileName = "Moving Unit Stats")]
-    public class MovingUnitStatsTag : ATag
+    [CreateAssetMenu(menuName = UnitAssetMenuBaseName + "Moving Unit", fileName = "Moving Unit Stats")]
+    public class MovingUnitStatsTag : AUnitTag
     {
         [SerializeField, MinValue(1)]
         public float MaxHealth = 1f;
@@ -26,6 +26,9 @@ namespace Game.Tags.Models
         public float sightRange = 8f;
 
         [SerializeField]
-        public LayerMask validTargetLayers;
+        public LayerMask ValidTargetLayers;
+
+        [SerializeField]
+        public LayerMask SightBlockingLayers;
     }
 }

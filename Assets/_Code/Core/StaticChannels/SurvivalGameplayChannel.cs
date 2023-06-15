@@ -25,12 +25,12 @@ namespace Assets.Tags.Channels
         /// <summary>
         /// Raised when a static entity has been spawned into the game world during gameplay
         /// </summary>
-        public static event Action<AStaticEntityController, StaticUnitTag> OnStaticEntitySpawned;
+        public static event Action<StaticEntityController, StaticUnitTag> OnStaticEntitySpawned;
 
         /// <summary>
         /// Raised when an instanced unit has died during gameplay
         /// </summary>
-        public static event Action<AStaticEntityController, StaticUnitTag> OnStaticUnitDeath;
+        public static event Action<StaticEntityController, StaticUnitTag> OnStaticUnitDeath;
 
         /// <summary>
         /// Raised when the player takes an action that will reset any selected unit they previous interacted with
@@ -42,8 +42,8 @@ namespace Assets.Tags.Channels
         public static void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
         public static void RaiseOnGameModeCleanupComplete(SurvivalGameMode mode) => OnGameModeCleanupComplete?.Invoke(mode);
         public static void RaiseOnUserSelectedEntityInGui(StaticUnitTag unit) => OnUserSelectedEntityInGui?.Invoke(unit);
-        public static void RaiseOnStaticEntitySpawned(AStaticEntityController entity, StaticUnitTag unit) => OnStaticEntitySpawned?.Invoke(entity, unit);
-        public static void RaiseOnStaticUnitDeath(AStaticEntityController spawnedEntity, StaticUnitTag unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
+        public static void RaiseOnStaticEntitySpawned(StaticEntityController entity, StaticUnitTag unit) => OnStaticEntitySpawned?.Invoke(entity, unit);
+        public static void RaiseOnStaticUnitDeath(StaticEntityController spawnedEntity, StaticUnitTag unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
         public static void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();  
     }
 }

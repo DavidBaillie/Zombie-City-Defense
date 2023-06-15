@@ -9,7 +9,7 @@ namespace Assets.Core.DataTracking
 {
     public static class StaticEntityTracker
     {
-        private static Dictionary<Guid, AStaticEntityController> staticEntities = new Dictionary<Guid, AStaticEntityController>();
+        private static Dictionary<Guid, StaticEntityController> staticEntities = new Dictionary<Guid, StaticEntityController>();
 
         /// <summary>
         /// In case anything was left after being destroyed, clean up the dictionary
@@ -28,7 +28,7 @@ namespace Assets.Core.DataTracking
         /// </summary>
         /// <param name="placementId">World Position Id entity has been placed on</param>
         /// <param name="entity">Entity that was placed</param>
-        public static void RegisterEntity(Guid placementId, AStaticEntityController entity)
+        public static void RegisterEntity(Guid placementId, StaticEntityController entity)
         {
             CleanUpEntities();
 
@@ -66,7 +66,7 @@ namespace Assets.Core.DataTracking
         /// <param name="placementId">World position Id</param>
         /// <param name="entity">Entity to return data through</param>
         /// <returns>If an entity could be found at the given Id</returns>
-        public static bool TryGetEntityById(Guid placementId, out AStaticEntityController entity)
+        public static bool TryGetEntityById(Guid placementId, out StaticEntityController entity)
         {
             CleanUpEntities();
 
@@ -98,7 +98,7 @@ namespace Assets.Core.DataTracking
         /// </summary>
         /// <param name="entity">Entity to see if spawned</param>
         /// <returns>If the given controller has been placed in the game world</returns>
-        public static bool EntityHasBeenSpawned(AStaticEntityController entity)
+        public static bool EntityHasBeenSpawned(StaticEntityController entity)
         {
             return staticEntities.Any(x => x.Value == entity);
         }

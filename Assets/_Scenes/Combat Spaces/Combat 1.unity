@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -286,11 +286,19 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262157284}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 3
+  m_Size: {x: 3.955415, y: 4.225439, z: 8.788388}
+  m_Center: {x: 0, y: 2.07728, z: -0.2738061}
 --- !u!23 &262157286
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -368,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b2f7c7a7940d64ebd8dd6a64f9fa68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TeamId: 0
+  TeamId: 1
 --- !u!1 &348756636
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,14 +532,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 1
+  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
+  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
   m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 1
 --- !u!1 &363122339
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,6 +775,7 @@ Transform:
   - {fileID: 199719049}
   - {fileID: 1101162582}
   - {fileID: 1676106570}
+  - {fileID: 1160033504}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -779,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5ec64a3b58c9d4686b5d10e5451fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypointVariantThreshold: 0.35
+  waypointVariantThreshold: 0.163
   waypoints:
   - {fileID: 1235604329}
   - {fileID: 1807895306}
@@ -801,6 +813,7 @@ MonoBehaviour:
   - {fileID: 199719050}
   - {fileID: 1101162583}
   - {fileID: 1676106569}
+  - {fileID: 1160033503}
   renderDuration: 1
 --- !u!1 &823520199
 GameObject:
@@ -1139,9 +1152,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122303579}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1493761762}
@@ -1492,6 +1513,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &1160033502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160033504}
+  - component: {fileID: 1160033503}
+  m_Layer: 0
+  m_Name: Waypoint (21)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1160033503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160033502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a0ce2afb08e6408ac140e7553b389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingWidth: 4.05
+--- !u!4 &1160033504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160033502}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -66.53, y: 1, z: 7.1600075}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 757256147}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1235604327
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1639,7 @@ MonoBehaviour:
   raycastMask:
     serializedVersion: 2
     m_Bits: 8
-  showGridView: 1
+  showGridView: 0
 --- !u!4 &1239162944
 Transform:
   m_ObjectHideFlags: 0
@@ -1734,7 +1800,7 @@ Mesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: um_664034
-  serializedVersion: 10
+  serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
@@ -1881,6 +1947,7 @@ Mesh:
     m_Center: {x: 6.000001, y: 0.5, z: 46.375668}
     m_Extent: {x: 5.5010014, y: 0.50100005, z: 60.37533}
   m_MeshUsageFlags: 0
+  m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshMetrics[0]: 1
@@ -1966,7 +2033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a0ce2afb08e6408ac140e7553b389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackingWidth: 1.01
+  trackingWidth: 4.05
 --- !u!4 &1676106570
 Transform:
   m_ObjectHideFlags: 0
@@ -1975,7 +2042,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676106568}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -45.320007, y: 1, z: 7.1600075}
+  m_LocalPosition: {x: -45.99, y: 1, z: 7.1600075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2329,7 +2396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91116fceba73d6347b3708b9fe6c4e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: {fileID: 11400000, guid: 2661598ce8a07cf42b5113e6ab4876d7, type: 2}
+  cameraType: {fileID: 11400000, guid: dea5960d683ed1c4e85f4e77253b55b0, type: 2}
 --- !u!114 &2121318874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2359,6 +2426,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
+    FocusDistance: 10
     m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
@@ -2375,12 +2443,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121318872}
-  m_LocalRotation: {x: 0.56417567, y: 0.0018898173, z: 0.0009854205, w: 0.8256521}
-  m_LocalPosition: {x: -27.288012, y: 28.610294, z: -2.1724138}
+  m_LocalRotation: {x: 0.67559016, y: 0, z: 0, w: 0.7372774}
+  m_LocalPosition: {x: -25.16, y: 28.610294, z: -1.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1779630280}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 85, y: 0, z: 0}

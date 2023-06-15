@@ -11,7 +11,7 @@ namespace Assets.Tags.Abstract
     public abstract class AMovementInputProcessor : AInputProcessor
     {
         [SerializeField, Required, BoxGroup("Data")]
-        protected ObjectTypeIdentifier CameraId = null;
+        protected CameraTypeIdentifier CameraType = null;
 
         [SerializeField, MinValue(0), BoxGroup("Options")]
         protected float CameraMovementSpeed = 2f;
@@ -55,7 +55,7 @@ namespace Assets.Tags.Abstract
         protected virtual void OnPlayerStartedDragging(Vector2 screenPosition)
         {
             //Try to find the current camera
-            if (!SceneObjectRegistry.TryGetObjectById(CameraId, out var cameraObject))
+            if (!SceneObjectRegistry.TryGetObjectById(CameraType, out var cameraObject))
                 return;
 
             //Grab initial data

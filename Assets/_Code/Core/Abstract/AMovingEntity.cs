@@ -44,13 +44,13 @@ namespace Assets.Core.Abstract
         /// Moves this entity towards a given position
         /// </summary>
         /// <param name="position">Target to seek</param>
-        /// <param name="timeMultiplier">Time delta for movement speed</param>
-        protected virtual void MoveTowards(Vector3 position, float timeMultiplier = -1)
+        /// <param name="timeDelta">Time delta for movement speed</param>
+        protected virtual void MoveTowards(Vector3 position, float timeDelta = -1)
         {
-            if (timeMultiplier < 0)
-                timeMultiplier = Time.deltaTime;
+            if (timeDelta < 0)
+                timeDelta = Time.deltaTime;
 
-            transform.position = Vector3.MoveTowards(transform.position, position, UnitStats.MovementSpeed * timeMultiplier);
+            transform.position = Vector3.MoveTowards(transform.position, position, UnitStats.MovementSpeed * timeDelta);
         }
     }
 }

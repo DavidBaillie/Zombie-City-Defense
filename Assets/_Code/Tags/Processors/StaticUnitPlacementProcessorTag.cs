@@ -1,13 +1,8 @@
 ﻿using Assets.Core.Abstract;
-using Assets.Core.Controllers;
 using Assets.Core.DataTracking;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
-using Assets.Tags.Channels;
-using Assets.Tags.Collections;
 using Assets.Tags.Models;
-using Sirenix.OdinInspector;
-using System;
 using UnityEngine;
 
 namespace Assets.Tags.Processors
@@ -15,10 +10,6 @@ namespace Assets.Tags.Processors
     [CreateAssetMenu(menuName = ProcessorAssetBaseName + "Static Unit Placement")]
     public class StaticUnitPlacementProcessorTag : AProcessorTag
     {
-        [SerializeField, InlineEditor, Required]
-        private EntityPrefabCollectionTag prefabCollection = null;
-
-
         /// <summary>
         /// Called when the game is loaded to initialize state data
         /// </summary>
@@ -33,7 +24,7 @@ namespace Assets.Tags.Processors
         /// <param name="position">Where to place the entity</param>
         /// <param name="unit">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceHumanAtWorldPosition(WorldPosition position, StaticUnitTag unit, out HumanUnitController controller)
+        public bool TryPlaceEntityAtWorldPosition(WorldPosition position, StaticUnitTag unit, out StaticEntityController controller)
         {
             controller = null;
 
@@ -58,8 +49,7 @@ namespace Assets.Tags.Processors
                 return false;
             }
 
-            controller.SetWorldPosition(position.Id);
-            controller.SetUnitTag(unit);
+            controller.SetupController(position.Id, unit);
             return true;
         }
     }

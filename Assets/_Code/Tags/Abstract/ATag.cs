@@ -6,7 +6,7 @@ namespace Assets.Tags.Abstract
 {
     public abstract class ATag : AExtendedScriptableObject
     {
-        [ShowInInspector, ReadOnly, FoldoutGroup("Tag")]
+        [ShowInInspector, FoldoutGroup("Tag")]
         public Guid Id = Guid.NewGuid();
 
         [ShowInInspector, ReadOnly, FoldoutGroup("Tag")]

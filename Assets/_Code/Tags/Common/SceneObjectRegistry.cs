@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Tags.Abstract;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Tags.Common
 {
     public static class SceneObjectRegistry
     {
-        private static Dictionary<ObjectTypeIdentifier, List<GameObject>> collectionRegistry = new Dictionary<ObjectTypeIdentifier, List<GameObject>>();
-        private static Dictionary<ObjectTypeIdentifier, GameObject> singleObjectRegistry = new Dictionary<ObjectTypeIdentifier, GameObject>();
+        private static Dictionary<AObjectTypeIdentifier, List<GameObject>> collectionRegistry = new Dictionary<AObjectTypeIdentifier, List<GameObject>>();
+        private static Dictionary<AObjectTypeIdentifier, GameObject> singleObjectRegistry = new Dictionary<AObjectTypeIdentifier, GameObject>();
 
         /// <summary>
         /// Registers an object under the provided Id object
         /// </summary>
         /// <param name="id">Id to save under</param>
         /// <param name="gameObject">Object to add</param>
-        public static void RegisterObjectInCollection(ObjectTypeIdentifier id, GameObject gameObject)
+        public static void RegisterObjectInCollection(AObjectTypeIdentifier id, GameObject gameObject)
         {
             if (!collectionRegistry.ContainsKey(id))
                 collectionRegistry.Add(id, new List<GameObject>());
@@ -26,7 +27,7 @@ namespace Assets.Tags.Common
         /// </summary>
         /// <param name="id">Id to remove under</param>
         /// <param name="gameObject">object to remove</param>
-        public static void DeregisterObjectFromCollection(ObjectTypeIdentifier id, GameObject gameObject)
+        public static void DeregisterObjectFromCollection(AObjectTypeIdentifier id, GameObject gameObject)
         {
             if (!collectionRegistry.ContainsKey(id))
                 return;
@@ -39,7 +40,7 @@ namespace Assets.Tags.Common
         /// </summary>
         /// <param name="id">Id to save under</param>
         /// <param name="gameObject">Object to save</param>
-        public static void RegisterObject(ObjectTypeIdentifier id, GameObject gameObject)
+        public static void RegisterObject(AObjectTypeIdentifier id, GameObject gameObject)
         {
             if (singleObjectRegistry.ContainsKey(id))
                 singleObjectRegistry[id] = gameObject;
@@ -52,7 +53,7 @@ namespace Assets.Tags.Common
         /// </summary>
         /// <param name="id">Object Id</param>
         /// <param name="gameObject">GameObject to save</param>
-        public static void DeregisterObject(ObjectTypeIdentifier id, GameObject gameObject)
+        public static void DeregisterObject(AObjectTypeIdentifier id, GameObject gameObject)
         {
             singleObjectRegistry.Remove(id);
         }
@@ -63,7 +64,7 @@ namespace Assets.Tags.Common
         /// <param name="id">Id to load by</param>
         /// <param name="objects">Objects available, returns as out param</param>
         /// <returns>If objects were returned</returns>
-        public static bool TryGetObjectsById(ObjectTypeIdentifier id, out List<GameObject> objects)
+        public static bool TryGetObjectsById(AObjectTypeIdentifier id, out List<GameObject> objects)
         {
             if (collectionRegistry.ContainsKey(id))
             {
@@ -83,7 +84,7 @@ namespace Assets.Tags.Common
         /// <param name="id">Id to lookup</param>
         /// <param name="gameObject">returned object</param>
         /// <returns>If the object was found</returns>
-        public static bool TryGetObjectById(ObjectTypeIdentifier id, out GameObject gameObject)
+        public static bool TryGetObjectById(AObjectTypeIdentifier id, out GameObject gameObject)
         {
             if (singleObjectRegistry.ContainsKey(id))
             {

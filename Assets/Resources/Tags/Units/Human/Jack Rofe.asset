@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ea6e52f7148234fb1bec31c05952d9, type: 3}
+  m_Name: Jack Rofe
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Id
+      Entry: 2
+      Data: 6c9374867b254cf484dc3050778684b0
+  DisplayName: Jack Rofe
+  Level: 1
+  UnitPrefab: {fileID: 6772970999693106886, guid: 498e73fb44f36a147a749ba704deebf8,
+    type: 3}
+  ValidTargetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  BaseHealth: 100
+  BaseAttackDamage: 2
+  BaseAttackCooldown: 0.3
+  BaseAttackRange: 15
+  HealthGrowthFactor: 0.1
+  DamageGrowthFactor: 0.1
+  CooldownGrowthFactor: 0.1
+  RangeGrowthFactor: 0.1

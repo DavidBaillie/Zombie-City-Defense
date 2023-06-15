@@ -6,6 +6,7 @@ using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Core.Controllers
@@ -69,7 +70,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         /// <param name="sceneController">Scene controller for unit</param>
         /// <param name="unitData">Base data for the spawned unit</param>
-        private void OnEntitySpawned(AStaticEntityController sceneController, StaticUnitTag unitData)
+        private void OnEntitySpawned(StaticEntityController sceneController, StaticUnitTag unitData)
         {
             if (sceneController == null)
             {
@@ -97,6 +98,8 @@ namespace Assets.Core.Controllers
         /// <param name="collection">Collection to represent</param>
         public void SetupUnitCollection(PlayerUnitCollectionTag collection)
         {
+            //LogInformation($"Canvas controller setting up collection:\n{string.Join("\n", collection.availableUnits.Select(x => x.DisplayName))}");
+
             UnitCollection = collection;
             UnitSelectionCanvasController controller = null;
 

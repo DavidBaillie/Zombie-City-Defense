@@ -20,14 +20,11 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Id
+      Entry: 2
+      Data: 79c8e63bc501437c8d38daecf06017f7
   fileSaveName: survivalModeUnits
   availableUnits:
-  - DisplayName: Jack
-    Level: 1
-    unitStats: {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
-    unitType: {fileID: 11400000, guid: 19069086a5806c34cbc2e217513f7989, type: 2}
-  - DisplayName: Ryan
-    Level: 2
-    unitStats: {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
-    unitType: {fileID: 11400000, guid: 19069086a5806c34cbc2e217513f7989, type: 2}
+  - {fileID: 11400000, guid: d754c7fc36af88346a9dc323a2604a47, type: 2}
+  - {fileID: 11400000, guid: 3f413d44d9408094fa2ff1a59614aba5, type: 2}

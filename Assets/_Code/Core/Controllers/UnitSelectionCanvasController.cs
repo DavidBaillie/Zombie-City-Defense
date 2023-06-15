@@ -1,5 +1,6 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Tags.Models;
+using Assets.Utilities.ExtendedClasses;
 using Game.Utilities.BaseObjects;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -26,6 +27,9 @@ namespace Assets.Core.Controllers
 
         public void AssignUnit(StaticUnitTag unit, GameplayCanvasController parent)
         {
+            unit.ThrowIfNull("Cannot assign unit to the UnitSelectionController because the provided unit is null!");
+            parent.ThrowIfNull("Cannot assign unit to the UnitSelectionController because the provided parent controller is null!");
+
             //TODO - build unit visual here
             this.unit = unit;
             fieldText.text = unit.DisplayName;

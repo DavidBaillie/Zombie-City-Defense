@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6772970999693106875}
   - component: {fileID: 6772970999693106874}
   - component: {fileID: 6772970999693106872}
-  - component: {fileID: 6772970999693106887}
+  - component: {fileID: 6669311571135115913}
   m_Layer: 7
   m_Name: Static Entity
   m_TagString: Untagged
@@ -51,12 +51,20 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6772970999693106886}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &6772970999693106887
+--- !u!114 &6669311571135115913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,11 +73,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6772970999693106886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5afecb07a1f0aa498cdd9e87b0152bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 8981480559e6c3448b1fa62498edd45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TeamId: 1
-  unitStats: {fileID: 11400000, guid: de1e7927870ab9948bd1fc293b408a72, type: 2}
+  StaticUnit: {fileID: 0}
   currentHealth: 0
   attackCooldown: 0
 --- !u!1 &6772970999932231672

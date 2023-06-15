@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - PlayspaceFloor
+  - Playspace Floor
   - Water
   - UI
-  - HostileEntity
-  - FriendlyEntity
+  - Hostile Entity
+  - Friendly Entity
   - Interactable
-  - 
+  - Sight Blocker
   - 
   - 
   - 

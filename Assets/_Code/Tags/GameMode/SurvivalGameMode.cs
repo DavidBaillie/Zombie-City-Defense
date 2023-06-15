@@ -45,7 +45,7 @@ namespace Assets.Tags.GameMode
         private StaticUnitTag selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
-        private Dictionary<StaticUnitTag, AStaticEntityController> spawnedUnits = new();
+        private Dictionary<StaticUnitTag, StaticEntityController> spawnedUnits = new();
 
 
 
@@ -93,7 +93,7 @@ namespace Assets.Tags.GameMode
         {
             GameplayInputChannel.DisableInput();
 
-            Destroy(canvasControllerInstance);
+            DestroyImmediate(canvasControllerInstance);
             playerUnitCollection.TrySaveUnitsToStorage();
 
             //Deregister events
@@ -153,7 +153,7 @@ namespace Assets.Tags.GameMode
                 && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 //Try to place the unit and process data if it could be placed
-                if (unitPlacementProcessor.TryPlaceHumanAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
+                if (unitPlacementProcessor.TryPlaceEntityAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
                 {
                     //Process event
                     spawnedUnits.Add(selectedUnitFromCanvas, controller);

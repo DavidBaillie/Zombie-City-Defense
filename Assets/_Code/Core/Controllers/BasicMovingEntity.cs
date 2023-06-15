@@ -2,10 +2,11 @@
 using Assets.Core.Abstract;
 using Assets.Core.Interfaces;
 using Sirenix.OdinInspector;
-using System;
-using UnityEditor;
 using UnityEngine;
 using Assets.Tags.Abstract;
+using Assets.Core.Models;
+using Assets.Debug;
+using Assets.Utilities.Definitions;
 
 namespace Assets.Core.Controllers
 {
@@ -19,7 +20,7 @@ namespace Assets.Core.Controllers
         private float attackCooldown = 0;
 
 
-        private Tuple<GameObject, IDamageReceiver> currentTarget = null;
+        private MovingEntityTarget currentTarget;
 
         /// <summary>
         /// Called when scene starts
@@ -41,46 +42,109 @@ namespace Assets.Core.Controllers
             ALogicProcessor.Instance.DeregisterLowPriorityProcessor(this);
         }
 
+        /// <summary>
+        /// Called each frame
+        /// </summary>
         protected override void Update()
         {
             base.Update();
+            GameplayDebugHandler.HandleRenderCall(() => DrawDevDebug(), true, false);
 
-            if (currentTarget != null)
+
+            if (attackCooldown > 0)
+                attackCooldown -= Time.deltaTime;
+
+            //We have a target, seek it
+            if (currentTarget.HasTarget)
             {
-                //Target died
-                if (currentTarget.Item1 == null)
+                //Can attack 
+                if (Vector3.Distance(transform.position, currentTarget.TargetPosition) < UnitStats.attackRange)
                 {
-                    currentTarget = null;
+                    if (attackCooldown <= 0)
+                        currentTarget.DamageReceiver.ApplyDamage(UnitStats.AttackDamage);
                 }
-                //Target out of range
-                else if (Vector3.Distance(transform.position, currentTarget.Item1.transform.position) > UnitStats.attackRange)
+                //Need to seek
+                else
                 {
-                    MoveTowards(currentTarget.Item1.transform.position);
-                }
-                //Target in range and can attack
-                else if (attackCooldown <= 0)
-                {
-                    currentTarget.Item2.ApplyDamage(UnitStats.AttackDamage);
-                    attackCooldown = UnitStats.AttackCooldown;
+                    MoveTowards(currentTarget.TargetPosition);
                 }
             }
-            else if (AssignedPath == null || PathIndex >= AssignedPath.Count)
+            //No target, walk forwards
+            else
             {
-                Destroy(gameObject);
-                this.enabled = false;
-            }
-            else if (AssignedPath != null && PathIndex < AssignedPath.Count)
-            {
-                MoveTowardsNextWaypoint();
-
-                if (Vector3.Distance(AssignedPath[PathIndex], transform.position) < 0.1f)
+                if (AssignedPath == null || PathIndex >= AssignedPath.Count)
                 {
-                    PathIndex++;
+                    Destroy(gameObject);
+                    this.enabled = false;
+                }
+                else if (AssignedPath != null && PathIndex < AssignedPath.Count)
+                {
+                    MoveTowardsNextWaypoint();
+
+                    if (Vector3.Distance(AssignedPath[PathIndex], transform.position) < 0.1f)
+                    {
+                        PathIndex++;
+                    }
                 }
             }
         }
 
-        public void ApplyDamage(float damage)
+        /// <summary>
+        /// Code called by the logic processor to compute more complex actions
+        /// </summary>
+        public void ProcessLogic()
+        {
+            if (currentTarget.HasTarget)
+                return;
+
+            Collider bestTarget = null;
+            float bestDistance = float.MaxValue;
+            float newDistance = 0;
+            RaycastHit[] raycastData = new RaycastHit[1];
+
+            foreach (Collider collider in Physics.OverlapSphere(transform.position, UnitStats.sightRange, UnitStats.ValidTargetLayers))
+            {
+                //Check if this collider is a valid target
+                if (!collider.gameObject.TryGetComponent(out IDamageReceiver receiver) || !receiver.IsHostile(TeamId))
+                    continue;
+
+                //Check if there's a line of sight blocker
+                if (Physics.RaycastNonAlloc(transform.position, collider.transform.position - transform.position, raycastData,
+                    Vector3.Distance(transform.position, collider.transform.position), (int)UnitStats.SightBlockingLayers) > 0)
+                {
+                    GameplayDebugHandler.HandleRenderCall(() => 
+                        Draw.Line(transform.position + new Vector3(0, 0.5f, 0), collider.transform.position, Color.red), 1f, true, false);
+                    continue;
+                }
+                else
+                {
+                    GameplayDebugHandler.HandleRenderCall(() =>
+                        Draw.Line(transform.position + new Vector3(0, 0.5f, 0), collider.transform.position, Color.green), 1f, true, false);
+                }
+
+                //Save it if this collider is closer than the last one
+                newDistance = Vector3.Distance(transform.position, collider.gameObject.transform.position);
+                if (newDistance < bestDistance)
+                {
+                    bestDistance = newDistance;
+                    bestTarget = collider;
+                }
+            }
+
+            //If we found a target, save it
+            if (bestTarget != null)
+                currentTarget = new MovingEntityTarget(
+                    bestTarget.gameObject, 
+                    bestTarget.gameObject.GetComponent<IDamageReceiver>(), 
+                    bestTarget.ClosestPoint(transform.position));
+        }
+
+        /// <summary>
+        /// Applies damage to the entity
+        /// </summary>
+        /// <param name="damage">Damage applied</param>
+        /// <returns>If the damage killed this entity</returns>
+        public bool ApplyDamage(float damage)
         {
             currentHealth -= damage;
 
@@ -88,37 +152,32 @@ namespace Assets.Core.Controllers
             {
                 Destroy(gameObject);
             }
+
+            return currentHealth <= 0;
         }
 
-        public void ProcessLogic()
-        {
-            if (currentTarget != null)
-                return;
-
-            var collidersInRange = Physics.OverlapSphere(transform.position, UnitStats.sightRange, UnitStats.validTargetLayers);
-            foreach (var collider in collidersInRange)
-            {
-                //Check if this collider is a valid target
-                var receiverComponent = collider.gameObject.GetComponent<IDamageReceiver>();
-                if (receiverComponent == null || !receiverComponent.IsHostile(TeamId))
-                {
-                    continue;
-                }
-
-                currentTarget = new(collider.gameObject, receiverComponent);
-                break;
-            }
-        }
-
-
+        /// <summary>
+        /// ALINE plugin for rendering debug in editor
+        /// </summary>
         public override void DrawGizmos()
         {
             base.DrawGizmos();
+            DrawDevDebug(true);
+        }
 
-            if (GizmoContext.InSelection(this))
+        /// <summary>
+        /// Draws the developer debug visuals
+        /// </summary>
+        /// <param name="requireEditorSelection">If the dev must have them selected in editor to render</param>
+        private void DrawDevDebug(bool requireEditorSelection = false)
+        {
+            if (UnitStats != null && (!requireEditorSelection || GizmoContext.InSelection(this)))
             {
-                Draw.WireSphere(transform.position, UnitStats.sightRange, Color.white);
-                Draw.WireSphere(transform.position, UnitStats.attackRange, Color.red);
+                Draw.ingame.WireSphere(transform.position, UnitStats.sightRange, CustomColours.SoftWhite);
+                Draw.ingame.WireSphere(transform.position, UnitStats.attackRange, CustomColours.SoftRed);
+
+                if (currentTarget.HasTarget)
+                    Draw.ingame.Line(transform.position, currentTarget.TargetPosition, Color.red);
             }
         }
     }

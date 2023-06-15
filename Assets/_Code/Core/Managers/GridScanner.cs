@@ -112,7 +112,7 @@ namespace Assets.Core.Managers
             GameplayDebugHandler.HandleRenderCall(() =>
             {
                 //Draw nodes based on local data
-                if (gridData != null || gridData.WorldPositionsArray != null)
+                if (showGridView && gridData != null && gridData.WorldPositionsArray != null)
                 {
                     foreach (var position in gridData.WorldPositionsArray)
                     {
