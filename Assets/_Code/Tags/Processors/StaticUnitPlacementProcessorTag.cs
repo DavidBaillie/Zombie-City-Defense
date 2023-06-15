@@ -1,4 +1,5 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Core.Controllers;
 using Assets.Core.DataTracking;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
@@ -14,7 +15,7 @@ namespace Assets.Tags.Processors
         /// Called when the game is loaded to initialize state data
         /// </summary>
         public override void InitializeTag()
-        {
+        { 
             base.InitializeTag();
         }
 

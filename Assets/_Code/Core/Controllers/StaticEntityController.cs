@@ -1,4 +1,5 @@
-﻿using Assets.Core.Interfaces;
+﻿using Assets.Core.Abstract;
+using Assets.Core.Interfaces;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
@@ -8,7 +9,7 @@ using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
-namespace Assets.Core.Abstract
+namespace Assets.Core.Controllers
 {
     /// <summary>
     /// Controller class designed to manage state data for static entities in the game
@@ -69,7 +70,8 @@ namespace Assets.Core.Abstract
         public bool ApplyDamage(float damage)
         {
             //Apply damage
-            currentHealth -= damage;
+            currentHealth = Mathf.Max(0, currentHealth - damage);
+            SurvivalGameplayChannel.RaiseOnUnitHealthChanged(StaticUnit, currentHealth, StaticUnit.MaxHealth);
 
             //Check if we're dead
             if (currentHealth > 0)

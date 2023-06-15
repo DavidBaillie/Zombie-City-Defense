@@ -103,7 +103,7 @@ namespace Assets.Core.Controllers
             UnitCollection = collection;
             UnitSelectionCanvasController controller = null;
 
-            foreach (var unit in collection.availableUnits)
+            foreach (var unit in collection.LivingUnits)
             {
                 if (Instantiate(unitCardPrefab, unitPlacementSelectionView.transform).TryGetComponent(out controller))
                 {

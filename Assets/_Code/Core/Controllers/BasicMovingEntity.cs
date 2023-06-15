@@ -61,7 +61,10 @@ namespace Assets.Core.Controllers
                 if (Vector3.Distance(transform.position, currentTarget.TargetPosition) < UnitStats.attackRange)
                 {
                     if (attackCooldown <= 0)
+                    {
                         currentTarget.DamageReceiver.ApplyDamage(UnitStats.AttackDamage);
+                        attackCooldown = UnitStats.AttackCooldown;
+                    }
                 }
                 //Need to seek
                 else

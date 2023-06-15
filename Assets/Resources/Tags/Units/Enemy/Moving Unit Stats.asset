@@ -26,8 +26,8 @@ MonoBehaviour:
       Data: 07e9b84581284af6a634851d998eadeb
   MaxHealth: 1
   MovementSpeed: 3.5
-  AttackDamage: 1
-  AttackCooldown: 1
+  AttackDamage: 7.5
+  AttackCooldown: 1.5
   attackRange: 0.6
   sightRange: 8
   ValidTargetLayers:

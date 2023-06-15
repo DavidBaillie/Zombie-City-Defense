@@ -1,5 +1,4 @@
-﻿using Assets.Core.Abstract;
-using Assets.Tags.Abstract;
+﻿using Assets.Tags.Abstract;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +16,13 @@ namespace Assets.Tags.Models
         private bool fileNameIsInvalid => !string.IsNullOrEmpty(fileSaveName);
 
         [SerializeField]
-        public List<StaticUnitTag> availableUnits = new();
+        public List<StaticUnitTag> AvailableUnits = new();
+
+        [SerializeField]
+        public List<StaticUnitTag> LivingUnits = new();
+
+        [SerializeField]
+        public List<StaticUnitTag> DeadUnits = new();
 
 
         public virtual bool TryLoadUnitsFromStorage()

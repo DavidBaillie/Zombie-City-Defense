@@ -1,7 +1,9 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Core.Controllers;
 using Assets.Tags.GameMode;
 using Assets.Tags.Models;
 using System;
+using UnityEditor.ShaderGraph.Internal;
 
 namespace Assets.Tags.Channels
 {
@@ -37,6 +39,12 @@ namespace Assets.Tags.Channels
         /// </summary>
         public static event Action OnPlayerResetUnitSelection;
 
+        /// <summary>
+        /// Called when the health on a deployed entity changes
+        /// Unit / Current / Max
+        /// </summary>
+        public static event Action<StaticUnitTag, float, float> OnUnitHealthChanged;
+
 
 
         public static void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
@@ -44,6 +52,7 @@ namespace Assets.Tags.Channels
         public static void RaiseOnUserSelectedEntityInGui(StaticUnitTag unit) => OnUserSelectedEntityInGui?.Invoke(unit);
         public static void RaiseOnStaticEntitySpawned(StaticEntityController entity, StaticUnitTag unit) => OnStaticEntitySpawned?.Invoke(entity, unit);
         public static void RaiseOnStaticUnitDeath(StaticEntityController spawnedEntity, StaticUnitTag unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
-        public static void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();  
+        public static void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();
+        public static void RaiseOnUnitHealthChanged(StaticUnitTag unit, float currentHealth, float maxHealth) => OnUnitHealthChanged?.Invoke(unit, currentHealth, maxHealth);
     }
 }

@@ -25,6 +25,8 @@ MonoBehaviour:
       Entry: 2
       Data: 79c8e63bc501437c8d38daecf06017f7
   fileSaveName: survivalModeUnits
-  availableUnits:
+  AvailableUnits: []
+  LivingUnits:
   - {fileID: 11400000, guid: d754c7fc36af88346a9dc323a2604a47, type: 2}
   - {fileID: 11400000, guid: 3f413d44d9408094fa2ff1a59614aba5, type: 2}
+  DeadUnits: []
