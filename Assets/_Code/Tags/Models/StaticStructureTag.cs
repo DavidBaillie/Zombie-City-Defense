@@ -10,17 +10,5 @@ namespace Assets.Tags.Models
     public class StaticStructureTag : AUnitTag
     {
         public float MaxHealth => BaseHealth;
-
-        public override AEntityController SetupController(WorldPosition worldPosition, GameObject spawnedEntity)
-        {
-            if (spawnedEntity.TryGetComponent(out StaticStructureEntityController controller))
-            {
-                controller.SetupController(worldPosition.Id, this);
-                return controller;
-            }
-
-            LogError($"Failed to setup entity controller for {name} because it does not have the required {nameof(StaticStructureEntityController)}");
-            return null;
-        }
     }
 }

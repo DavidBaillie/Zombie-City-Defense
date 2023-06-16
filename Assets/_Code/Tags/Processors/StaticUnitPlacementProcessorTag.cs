@@ -1,6 +1,7 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Controllers;
 using Assets.Core.DataTracking;
+using Assets.Core.Interfaces;
 using Assets.Core.Models;
 using Assets.Tags.Abstract;
 using Assets.Tags.Models;
@@ -44,14 +45,22 @@ namespace Assets.Tags.Processors
 
             //Spawn prefab and try to setup
             GameObject prefabInstance = Instantiate(unit.UnitPrefab, position.Coordinate, unit.UnitPrefab.transform.rotation, null);
-            controller = unit.SetupController(position, prefabInstance);
+            if (!prefabInstance.TryGetComponent(out IDeployableEntity entity))
+            {
+                LogError($"Unit placement processor failed to place a unit because it does not have the required IDeployableEntity interface!");
+                Destroy(prefabInstance); 
+                return false;  
+            }
 
-            //Failed, kill prefab
+            controller = entity.SetupController(position, unit);
             if (controller == null)
+            {
+                LogError($"Unit placement processor failed to place a unit because the setupController returned null!");
                 Destroy(prefabInstance);
+                return false;
+            }
 
-            //Return result
-            return controller != null;
+            return true;
         }
     }
 }

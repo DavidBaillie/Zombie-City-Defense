@@ -33,16 +33,5 @@ namespace Game.Tags.Models
 
         [SerializeField]
         public LayerMask SightBlockingLayers;
-
-        public override AEntityController SetupController(WorldPosition position, GameObject spawnedEntity)
-        {
-            if (spawnedEntity.TryGetComponent(out BasicMovingEntity controller))
-            {
-                return controller;
-            }
-
-            LogError($"Unit Stats Tag [{name}] cannot setup controller because it does not have a {nameof(BasicMovingEntity)}");
-            return null;
-        }
     }
 }

@@ -6,6 +6,7 @@ using Assets.Debug;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
+using Assets.Utilities.ExtendedClasses;
 using Drawing;
 using Sirenix.OdinInspector;
 using System;
@@ -17,7 +18,7 @@ namespace Assets.Core.Controllers
     /// <summary>
     /// Controller class designed to manage state data for static entities in the game
     /// </summary>
-    public class StaticEntityController : AEntityController, IDamageReceiver, ILogicUpdateProcessor
+    public class StaticEntityController : AEntityController, IDamageReceiver, ILogicUpdateProcessor, IDeployableEntity
     {
         [ShowInInspector, ReadOnly, BoxGroup("General")]
         public Guid WorldPositionId = Guid.Empty;
@@ -142,6 +143,16 @@ namespace Assets.Core.Controllers
 
             if (GizmoContext.InSelection(this))
                 Draw.WireSphere(transform.position, StaticUnit.AttackRange, Color.red);
+        }
+
+        public AEntityController SetupController(WorldPosition position, AUnitTag tag)
+        {
+            StaticUnitTag localTag = tag as StaticUnitTag;
+            localTag.ThrowIfNull("Cannot setup the static entity controller because the provided unit tag is not a static unit tag!");
+
+            StaticUnit = localTag;
+            WorldPositionId = position.Id;
+            return this;
         }
     }
 }

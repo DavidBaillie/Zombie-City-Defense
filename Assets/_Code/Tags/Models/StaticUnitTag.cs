@@ -48,18 +48,5 @@ namespace Assets.Tags.Models
         public float AttackCooldown => BaseAttackCooldown + (Level * CooldownGrowthFactor);
         public float AttackDamage => BaseAttackDamage + (Level * DamageGrowthFactor);
         public float AttackRange => BaseAttackRange + (Level * RangeGrowthFactor);
-
-
-        public override AEntityController SetupController(WorldPosition worldPosition, GameObject spawnedEntity)
-        {
-            if (spawnedEntity.TryGetComponent(out StaticEntityController controller))
-            {
-                controller.SetupController(worldPosition.Id, this);
-                return controller;
-            }
-
-            LogError($"Failed to setup entity controller for {name} because it does not have the required {nameof(StaticEntityController)}");
-            return null;
-        }
     }
 }
