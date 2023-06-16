@@ -1,4 +1,7 @@
-﻿using Assets.Tags.Abstract;
+﻿using Assets.Core.Abstract;
+using Assets.Core.Controllers;
+using Assets.Core.Models;
+using Assets.Tags.Abstract;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -30,5 +33,16 @@ namespace Game.Tags.Models
 
         [SerializeField]
         public LayerMask SightBlockingLayers;
+
+        public override AEntityController SetupController(WorldPosition position, GameObject spawnedEntity)
+        {
+            if (spawnedEntity.TryGetComponent(out BasicMovingEntity controller))
+            {
+                return controller;
+            }
+
+            LogError($"Unit Stats Tag [{name}] cannot setup controller because it does not have a {nameof(BasicMovingEntity)}");
+            return null;
+        }
     }
 }

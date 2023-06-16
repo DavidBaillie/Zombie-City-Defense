@@ -1,6 +1,7 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Interfaces;
 using Assets.Core.Models;
+using Assets.Core.StaticChannels;
 using Assets.Debug;
 using Assets.Tags.Abstract;
 using Assets.Tags.Channels;

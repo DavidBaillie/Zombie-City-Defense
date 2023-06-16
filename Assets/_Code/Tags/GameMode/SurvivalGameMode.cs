@@ -42,10 +42,10 @@ namespace Assets.Tags.GameMode
 
 
         private GameplayCanvasController canvasControllerInstance = null;
-        private StaticUnitTag selectedUnitFromCanvas = null;
+        private AUnitTag selectedUnitFromCanvas = null;
         private WorldPosition? selectedWorldPosition = null;
 
-        private Dictionary<StaticUnitTag, StaticEntityController> spawnedUnits = new();
+        private Dictionary<AUnitTag, AEntityController> spawnedUnits = new();
 
 
 
@@ -115,7 +115,7 @@ namespace Assets.Tags.GameMode
         /// Called when the user taps on a unit in the GUI
         /// </summary>
         /// <param name="unit">Unit selected</param>
-        private void OnUserSelectedEntityInGui(StaticUnitTag unit)
+        private void OnUserSelectedEntityInGui(AUnitTag unit)
         {
             //Check to see if the player selected a spawned unit
             if(spawnedUnits.ContainsKey(unit))
@@ -153,7 +153,8 @@ namespace Assets.Tags.GameMode
                 && selectedWorldPosition != null && selectedWorldPosition.Value == closestPosition)
             {
                 //Try to place the unit and process data if it could be placed
-                if (unitPlacementProcessor.TryPlaceEntityAtWorldPosition(selectedWorldPosition.Value, selectedUnitFromCanvas, out var controller))
+                if (selectedUnitFromCanvas is StaticUnitTag && 
+                    unitPlacementProcessor.TryPlaceStaticUnitAtWorldPosition(selectedWorldPosition.Value, (StaticUnitTag)selectedUnitFromCanvas, out var controller))
                 {
                     //Process event
                     spawnedUnits.Add(selectedUnitFromCanvas, controller);

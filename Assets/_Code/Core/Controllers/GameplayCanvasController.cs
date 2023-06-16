@@ -1,5 +1,7 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Managers.Static;
+using Assets.Core.StaticChannels;
+using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Game.Utilities.BaseObjects;
@@ -25,7 +27,7 @@ namespace Assets.Core.Controllers
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
 
-        private Dictionary<Guid, UnitSelectionCanvasController> loadedControllers = new();
+        private Dictionary<AUnitTag, UnitSelectionCanvasController> loadedControllers = new();
 
         /// <summary>
         /// Called when the component is enabled
@@ -70,7 +72,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         /// <param name="sceneController">Scene controller for unit</param>
         /// <param name="unitData">Base data for the spawned unit</param>
-        private void OnEntitySpawned(StaticEntityController sceneController, StaticUnitTag unitData)
+        private void OnEntitySpawned(AEntityController sceneController, AUnitTag unitData)
         {
             if (sceneController == null)
             {
@@ -81,13 +83,13 @@ namespace Assets.Core.Controllers
 
             //LogInformation($"Detected entity spawn on the canvas for unit {unitData.DisplayName}");
 
-            if (!loadedControllers.ContainsKey(unitData.Id))
+            if (!loadedControllers.ContainsKey(unitData))
             {
                 LogWarning($"Could not find a unit canvas controller for the provided unit!");
                 return;
             }
 
-            var controller = loadedControllers[unitData.Id];
+            var controller = loadedControllers[unitData];
             LogInformation($"Marking visual as used for controller {controller}");
             controller.MarkVisualAsUsed();
         }
@@ -108,7 +110,7 @@ namespace Assets.Core.Controllers
                 if (Instantiate(unitCardPrefab, unitPlacementSelectionView.transform).TryGetComponent(out controller))
                 {
                     controller.AssignUnit(unit, this);
-                    loadedControllers.Add(unit.Id, controller);
+                    loadedControllers.Add(unit, controller);
                 }
                 else
                 {
@@ -121,7 +123,7 @@ namespace Assets.Core.Controllers
         /// Called from the sub-controller when a unit is selected
         /// </summary>
         /// <param name="unit">Unit user selected</param>
-        public void OnUserPressedUnitButton(StaticUnitTag unit)
+        public void OnUserPressedUnitButton(AUnitTag unit)
         {
             SurvivalGameplayChannel.RaiseOnUserSelectedEntityInGui(unit);
         }

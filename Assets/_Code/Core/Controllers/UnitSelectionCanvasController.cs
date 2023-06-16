@@ -1,4 +1,6 @@
 ﻿using Assets.Core.Abstract;
+using Assets.Core.StaticChannels;
+using Assets.Tags.Abstract;
 using Assets.Tags.Channels;
 using Assets.Tags.Models;
 using Assets.Utilities.ExtendedClasses;
@@ -24,7 +26,7 @@ namespace Assets.Core.Controllers
         private Image healthBarImage = null;
 
         private GameplayCanvasController parentController = null;
-        private StaticUnitTag representedUnit = null;
+        private AUnitTag representedUnit = null;
 
         /// <summary>
         /// Called when the component is enabled
@@ -50,7 +52,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         /// <param name="unit">Unit to represent</param>
         /// <param name="parent">Parent controller</param>
-        public void AssignUnit(StaticUnitTag unit, GameplayCanvasController parent)
+        public void AssignUnit(AUnitTag unit, GameplayCanvasController parent)
         {
             unit.ThrowIfNull("Cannot assign unit to the UnitSelectionController because the provided unit is null!");
             parent.ThrowIfNull("Cannot assign unit to the UnitSelectionController because the provided parent controller is null!");
@@ -91,7 +93,7 @@ namespace Assets.Core.Controllers
         /// <param name="unit">Unit with change</param>
         /// <param name="currentHealth">Current health value</param>
         /// <param name="maxHealth">Max unit health</param>
-        private void OnUnitHealthChanged(StaticUnitTag unit, float currentHealth, float maxHealth)
+        private void OnUnitHealthChanged(AUnitTag unit, float currentHealth, float maxHealth)
         {
             if (unit == null || unit != representedUnit)
                 return;

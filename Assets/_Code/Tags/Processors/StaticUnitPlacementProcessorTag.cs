@@ -25,7 +25,7 @@ namespace Assets.Tags.Processors
         /// <param name="position">Where to place the entity</param>
         /// <param name="unit">The entity to place</param>
         /// <returns>If a unit could be placed</returns>
-        public bool TryPlaceEntityAtWorldPosition(WorldPosition position, StaticUnitTag unit, out StaticEntityController controller)
+        public bool TryPlaceStaticUnitAtWorldPosition(WorldPosition position, AUnitTag unit, out AEntityController controller)
         {
             controller = null;
 
@@ -42,16 +42,16 @@ namespace Assets.Tags.Processors
                 return false;
             }
 
-            //Spawn the prefab at the position and run it's startup
-            var instance = Instantiate(unit.UnitPrefab, position.Coordinate, unit.UnitPrefab.transform.rotation, null);
-            if (!instance.TryGetComponent(out controller))
-            {
-                LogError($"Static unit placement processor placed a unit that has no controller on it, please check prefab!", instance);
-                return false;
-            }
+            //Spawn prefab and try to setup
+            GameObject prefabInstance = Instantiate(unit.UnitPrefab, position.Coordinate, unit.UnitPrefab.transform.rotation, null);
+            controller = unit.SetupController(position, prefabInstance);
 
-            controller.SetupController(position.Id, unit);
-            return true;
+            //Failed, kill prefab
+            if (controller == null)
+                Destroy(prefabInstance);
+
+            //Return result
+            return controller != null;
         }
     }
 }
