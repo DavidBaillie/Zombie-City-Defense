@@ -33,6 +33,20 @@ namespace Assets.Core.Controllers
 
         private StaticEntityTarget targetData = new();
 
+        public AEntityController SetupController(WorldPosition position, AUnitTag tag)
+        {
+            StaticUnitTag localTag = tag as StaticUnitTag;
+            localTag.ThrowIfNull("Cannot setup the static entity controller because the provided unit tag is not a static unit tag!");
+
+            StaticUnit = localTag;
+            WorldPositionId = position.Id;
+
+            currentHealth = StaticUnit.MaxHealth;
+            ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
+
+            return this;
+        }
+
         /// <summary>
         /// Called each frame
         /// </summary>
@@ -49,26 +63,14 @@ namespace Assets.Core.Controllers
                 return;
 
             //Attack target
-            using (Draw.WithDuration(0.15f)) { Draw.ingame.Line(transform.position, targetData.TargetGameObject.transform.position, Color.red); }
+            using (Draw.ingame.WithDuration(0.15f)) { Draw.ingame.Line(transform.position + Vector3.up, targetData.TargetGameObject.transform.position, Color.red); }
+            
             var killedTarget = targetData.DamageReceiver.ApplyDamage(StaticUnit.AttackDamage);
             attackCooldown = StaticUnit.AttackCooldown;
 
             //Wipe data if we killed it
             if (killedTarget)
                 targetData = new();
-        }
-
-        /// <summary>
-        /// Not used by this class but allows for child types to receieve the tag associated with it
-        /// </summary>
-        /// <param name="unitTag"></param>
-        public virtual void SetupController(Guid positionId, StaticUnitTag unitTag)
-        {
-            WorldPositionId = positionId;
-            StaticUnit = unitTag;
-
-            currentHealth = StaticUnit.MaxHealth;
-            ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
         }
 
         /// <summary>
@@ -143,16 +145,6 @@ namespace Assets.Core.Controllers
 
             if (GizmoContext.InSelection(this))
                 Draw.WireSphere(transform.position, StaticUnit.AttackRange, Color.red);
-        }
-
-        public AEntityController SetupController(WorldPosition position, AUnitTag tag)
-        {
-            StaticUnitTag localTag = tag as StaticUnitTag;
-            localTag.ThrowIfNull("Cannot setup the static entity controller because the provided unit tag is not a static unit tag!");
-
-            StaticUnit = localTag;
-            WorldPositionId = position.Id;
-            return this;
         }
     }
 }

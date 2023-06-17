@@ -16,7 +16,7 @@ namespace Assets.Tags.Abstract
 
         [SerializeField, AssetsOnly, ValidateInput(nameof(prefabIsValid), "Prefab is required and must have a valid controller with the IDeployableEntity interface."), BoxGroup("Stats")]
         public GameObject UnitPrefab = null;
-        private bool prefabIsValid => UnitPrefab != null && UnitPrefab.TryGetComponent<IDeployableEntity>(out _);
+        protected virtual bool prefabIsValid { get => UnitPrefab != null && UnitPrefab.TryGetComponent<IDeployableEntity>(out _); }
 
         [SerializeField, MinValue(1), BoxGroup("Base")]
         protected float BaseHealth = 100f;

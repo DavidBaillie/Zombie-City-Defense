@@ -1,7 +1,4 @@
-﻿using Assets.Core.Abstract;
-using Assets.Core.Controllers;
-using Assets.Core.Models;
-using Assets.Tags.Abstract;
+﻿using Assets.Tags.Abstract;
 using UnityEngine;
 
 namespace Assets.Tags.Models
@@ -10,5 +7,6 @@ namespace Assets.Tags.Models
     public class ObjectiveUnitTag : AUnitTag
     {
         public float MaxHealth => BaseHealth;
+        protected override bool prefabIsValid => UnitPrefab != null;
     }
 }

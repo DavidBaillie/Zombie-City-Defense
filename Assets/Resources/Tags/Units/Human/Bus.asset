@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0ea6e52f7148234fb1bec31c05952d9, type: 3}
-  m_Name: Joe Daniels
+  m_Script: {fileID: 11500000, guid: 158844d4276458640a6792226fc60563, type: 3}
+  m_Name: Bus
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,22 +23,8 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Id
       Entry: 2
-      Data: 0fe1c896e8e34dc0983d697d1d44c24e
-  DisplayName: Joe Daniels
-  UnitPrefab: {fileID: 6772970999693106886, guid: 498e73fb44f36a147a749ba704deebf8,
+      Data: e134eb5398f8499da928ab03b2871049
+  DisplayName: Bus
+  UnitPrefab: {fileID: 1731488392494068773, guid: 906e94b3af9ad0b46af3b4b85ff44e91,
     type: 3}
   BaseHealth: 100
-  Level: 1
-  ValidTargetLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  SightBlockingLayers:
-    serializedVersion: 2
-    m_Bits: 512
-  BaseAttackDamage: 2
-  BaseAttackCooldown: 0.35
-  BaseAttackRange: 18
-  HealthGrowthFactor: 0.1
-  DamageGrowthFactor: 0.1
-  CooldownGrowthFactor: 0.1
-  RangeGrowthFactor: 0.1

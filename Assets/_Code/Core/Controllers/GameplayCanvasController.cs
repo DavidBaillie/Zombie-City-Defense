@@ -10,19 +10,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Core.Controllers
 {
     public class GameplayCanvasController : AExtendedMonobehaviour
     {
-        [SerializeField, Required]
+        [SerializeField, Required, BoxGroup("Visuals")]
         private CanvasGroup unitPlacementSelectionView = null;
 
-        [SerializeField, Required]
+        [SerializeField, Required, AssetsOnly, BoxGroup("Reference")]
         private GameObject unitCardPrefab = null;
 
-        [SerializeField, Required]
+        [SerializeField, Required, AssetsOnly, BoxGroup("References")]
         private SceneReference fallbackScene = null;
+
+        [SerializeField, Required, BoxGroup("Visuals")]
+        private Image objectiveHealth = null;
 
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
@@ -36,6 +40,7 @@ namespace Assets.Core.Controllers
         {
             base.OnEnable();
             SurvivalGameplayChannel.OnStaticEntitySpawned += OnEntitySpawned;
+            SurvivalGameplayChannel.OnUnitHealthChanged += OnObjectiveHealthChanged;
         }
 
         /// <summary>
@@ -134,6 +139,22 @@ namespace Assets.Core.Controllers
         public void OnUserPressedRetreatButton()
         {
             GameManagers.SceneManager.LoadScene(fallbackScene);
+        }
+
+        /// <summary>
+        /// Called whenever a unit's health changes, only processes objective healths
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="currentHealth"></param>
+        /// <param name="maxHealth"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void OnObjectiveHealthChanged(AUnitTag tag, float currentHealth, float maxHealth)
+        {
+            if (!(tag is ObjectiveUnitTag))
+                return;
+
+            //Assign value to UI
+            objectiveHealth.fillAmount = currentHealth / maxHealth;
         }
     }
 }

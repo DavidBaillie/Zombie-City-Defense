@@ -25,13 +25,16 @@ MonoBehaviour:
       Entry: 2
       Data: 6c9374867b254cf484dc3050778684b0
   DisplayName: Jack Rofe
-  Level: 1
   UnitPrefab: {fileID: 6772970999693106886, guid: 498e73fb44f36a147a749ba704deebf8,
     type: 3}
+  BaseHealth: 100
+  Level: 1
   ValidTargetLayers:
     serializedVersion: 2
     m_Bits: 64
-  BaseHealth: 100
+  SightBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 512
   BaseAttackDamage: 2
   BaseAttackCooldown: 0.3
   BaseAttackRange: 15
