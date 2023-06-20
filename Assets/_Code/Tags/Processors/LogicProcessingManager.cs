@@ -1,8 +1,11 @@
 ﻿using Assets.Core.Interfaces;
+using Assets.Core.Managers.Static;
 using Assets.Tags.Abstract;
 using Game.Utilities.Worker;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -38,17 +41,32 @@ namespace Game.Tags.Core.Managers
             base.InitializeTag();
             UnityEventPassthrough.Instance.OnUpdate += Update;
 
-            if (Instance == null)
+            if (GameManagers.LogicProcessor == null)
             {
-                Instance = this;
+                GameManagers.LogicProcessor = this;
             }
             else
             {
-                DestroyImmediate(this);
+                LogError($"Failed to initialize tag {name} because another processor has been assigned to the static reference!");
             }
 
             highPriorityProcessors = new List<ILogicUpdateProcessor>(collectionPreallocationSize);
             lowPriorityProcessors = new List<ILogicUpdateProcessor>(collectionPreallocationSize);
+        }
+
+        /// <summary>
+        /// Cleans up the processor tag when it's no longer needed
+        /// </summary>
+        public override void CleanupTag()
+        {
+            base.CleanupTag();
+
+            if (GameManagers.LogicProcessor == this)
+                GameManagers.LogicProcessor = null;
+
+            UnityEventPassthrough.Instance.OnUpdate -= Update;
+            highPriorityProcessors.Clear();
+            lowPriorityProcessors.Clear();
         }
 
         /// <summary>
@@ -117,6 +135,17 @@ namespace Game.Tags.Core.Managers
         public override void RegisterLowPriorityProcessor(ILogicUpdateProcessor processor)
         {
             lowPriorityProcessors.Add(processor);
+        }
+
+        public override void BroadcastGameModeFailState()
+        {
+            List<ILogicUpdateProcessor> processors = new List<ILogicUpdateProcessor>(highPriorityProcessors);
+            processors.AddRange(lowPriorityProcessors);
+
+            foreach (var proc in processors)
+            {
+                try { proc.OnGameModeFailure(); } catch (Exception e) { LogError($"Failed to process failure event with processor: {e}"); }
+            }
         }
     }
 }

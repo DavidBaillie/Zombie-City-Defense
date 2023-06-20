@@ -1,5 +1,6 @@
 ﻿using Assets.Core.Abstract;
 using Assets.Core.Interfaces;
+using Assets.Core.Managers.Static;
 using Assets.Core.Models;
 using Assets.Core.StaticChannels;
 using Assets.Debug;
@@ -42,9 +43,18 @@ namespace Assets.Core.Controllers
             WorldPositionId = position.Id;
 
             currentHealth = StaticUnit.MaxHealth;
-            ALogicProcessor.Instance.RegisterHighPriorityProcessor(this);
+            GameManagers.LogicProcessor.RegisterHighPriorityProcessor(this);
 
             return this;
+        }
+
+        /// <summary>
+        /// Called from the logic processor when the associated game mode enters a fail state
+        /// </summary>
+        public void OnGameModeFailure()
+        {
+            GameManagers.LogicProcessor.DeregisterHighPriorityProcessor(this);
+            this.enabled = false;
         }
 
         /// <summary>
@@ -78,7 +88,7 @@ namespace Assets.Core.Controllers
         /// </summary>
         protected virtual void OnEntityDeath()
         {
-            ALogicProcessor.Instance.DeregisterHighPriorityProcessor(this);
+            GameManagers.LogicProcessor.DeregisterHighPriorityProcessor(this);
             SurvivalGameplayChannel.RaiseOnStaticUnitDeath(this, StaticUnit);
 
             Destroy(gameObject);

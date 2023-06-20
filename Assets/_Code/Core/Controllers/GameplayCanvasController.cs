@@ -16,17 +16,24 @@ namespace Assets.Core.Controllers
 {
     public class GameplayCanvasController : AExtendedMonobehaviour
     {
-        [SerializeField, Required, BoxGroup("Visuals")]
-        private CanvasGroup unitPlacementSelectionView = null;
+        [SerializeField, Required, AssetsOnly]
+        private SceneReference fallbackScene = null;
 
         [SerializeField, Required, AssetsOnly, BoxGroup("Reference")]
         private GameObject unitCardPrefab = null;
 
-        [SerializeField, Required, AssetsOnly, BoxGroup("References")]
-        private SceneReference fallbackScene = null;
-
         [SerializeField, Required, BoxGroup("Visuals")]
         private Image objectiveHealth = null;
+
+        [SerializeField, Required, BoxGroup("Visuals")]
+        private CanvasGroup unitPlacementSelectionView = null;
+
+        [SerializeField, Required, BoxGroup("Visuals/Groups")]
+        private CanvasGroup gameOverGroup = null;
+
+        [SerializeField, Required, BoxGroup("Visuals/Groups")]
+        private CanvasGroup fallbackButtonGroup = null;
+
 
         private bool isShowingUnitOptions = false;
         private PlayerUnitCollectionTag UnitCollection = null;
@@ -41,6 +48,7 @@ namespace Assets.Core.Controllers
             base.OnEnable();
             SurvivalGameplayChannel.OnStaticEntitySpawned += OnEntitySpawned;
             SurvivalGameplayChannel.OnUnitHealthChanged += OnObjectiveHealthChanged;
+            SurvivalGameplayChannel.OnGameModeObjectiveFailed += OnGameModeFailed;
         }
 
         /// <summary>
@@ -50,8 +58,18 @@ namespace Assets.Core.Controllers
         {
             base.OnDisable();
             SurvivalGameplayChannel.OnStaticEntitySpawned -= OnEntitySpawned;
+            SurvivalGameplayChannel.OnUnitHealthChanged += OnObjectiveHealthChanged;
+            SurvivalGameplayChannel.OnGameModeObjectiveFailed -= OnGameModeFailed;
         }
 
+        /// <summary>
+        /// Called when the player fails the current objective for the gamemode 
+        /// </summary>
+        private void OnGameModeFailed()
+        {
+            gameOverGroup.alpha = 1;
+            unitPlacementSelectionView.alpha = 0;
+        }
 
         /// <summary>
         /// Called when the GameObject is created
@@ -142,12 +160,11 @@ namespace Assets.Core.Controllers
         }
 
         /// <summary>
-        /// Called whenever a unit's health changes, only processes objective healths
+        /// Called whenever a unit's health changes, only processes objective health values
         /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="currentHealth"></param>
-        /// <param name="maxHealth"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="tag">Unit with change</param>
+        /// <param name="currentHealth">Current unit health</param>
+        /// <param name="maxHealth">Current unit max health</param>
         private void OnObjectiveHealthChanged(AUnitTag tag, float currentHealth, float maxHealth)
         {
             if (!(tag is ObjectiveUnitTag))

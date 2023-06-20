@@ -78,6 +78,8 @@ namespace Assets.Tags.GameMode
 
             //Register events
             SurvivalGameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
+            SurvivalGameplayChannel.OnStaticUnitDeath += OnStaticEntityDeath;
+
             PlayerActionChannel.OnPlayerSelectedWorldPosition += OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidWorldPosition;
 
@@ -85,6 +87,8 @@ namespace Assets.Tags.GameMode
             LogInformation($"Started Game Mode [{name}]");
             SurvivalGameplayChannel.RaiseOnGameModeSetupComplete(this);
         }
+
+        
 
         /// <summary>
         /// Called to cleanup actions from mode
@@ -98,6 +102,7 @@ namespace Assets.Tags.GameMode
 
             //Deregister events
             SurvivalGameplayChannel.OnUserSelectedEntityInGui -= OnUserSelectedEntityInGui;
+            SurvivalGameplayChannel.OnStaticUnitDeath -= OnStaticEntityDeath;
             PlayerActionChannel.OnPlayerSelectedWorldPosition -= OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
 
@@ -109,6 +114,67 @@ namespace Assets.Tags.GameMode
             //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");
             SurvivalGameplayChannel.RaiseOnGameModeCleanupComplete(this);
+        }
+
+        /// <summary>
+        /// Called whenever a static entity dies to process the event and update state correctly
+        /// </summary>
+        /// <param name="unitController">Controller instance representing entity</param>
+        /// <param name="tag">Entity tag with data</param>
+        private void OnStaticEntityDeath(AEntityController unitController, AUnitTag tag)
+        {
+            switch (tag)
+            {
+                case ObjectiveUnitTag objectiveTag:
+                    if (objectiveTag.isPrimaryObjective)
+                        OnPrimaryObjectiveDeath(unitController, objectiveTag);
+                    else 
+                        OnOptionalObjectiveDeath(unitController, objectiveTag);
+                    break;
+                case StaticUnitTag unitTag:
+                    OnUnitDeath(unitController, unitTag);
+                    break;
+                default:
+                    LogWarning($"Survival Game Mode failed to process a static entity death because it is not a known type!");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Called when a primary objective dies
+        /// </summary>
+        /// <param name="unitController">Scene controller</param>
+        /// <param name="objectiveTag">Unit tag</param>
+        private void OnPrimaryObjectiveDeath(AEntityController unitController, ObjectiveUnitTag objectiveTag)
+        {
+            //Only process fail objectives
+            if (!objectiveTag.isPrimaryObjective)
+                return;
+
+            GameManagers.LogicProcessor.BroadcastGameModeFailState();
+            SurvivalGameplayChannel.RaiseOnGameModeObjectiveFailed();
+        }
+
+        /// <summary>
+        /// Called when an optional objective is killed
+        /// </summary>
+        /// <param name="unitController">Controller in scene</param>
+        /// <param name="objectiveTag">Objective killed</param>
+        private void OnOptionalObjectiveDeath(AEntityController unitController, ObjectiveUnitTag objectiveTag)
+        {
+            //TODO
+        }
+
+        /// <summary>
+        /// Called when a static unit dies
+        /// </summary>
+        /// <param name="unitController">Scene controller</param>
+        /// <param name="unitTag">Unit tag</param>
+        private void OnUnitDeath(AEntityController unitController, StaticUnitTag unitTag)
+        {
+            playerUnitCollection.AvailableUnits.Remove(unitTag);
+            playerUnitCollection.DeadUnits.Add(unitTag);
+            //playerUnitCollection.TrySaveUnitsToStorage();
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using Assets.Tags.Abstract;
 using Assets.Core.Models;
 using Assets.Debug;
 using Assets.Utilities.Definitions;
+using Assets.Core.Managers.Static;
 
 namespace Assets.Core.Controllers
 {
@@ -22,6 +23,7 @@ namespace Assets.Core.Controllers
 
         private MovingEntityTarget currentTarget;
 
+
         /// <summary>
         /// Called when scene starts
         /// </summary>
@@ -29,7 +31,7 @@ namespace Assets.Core.Controllers
         {
             base.Awake();
 
-            ALogicProcessor.Instance.RegisterLowPriorityProcessor(this);
+            GameManagers.LogicProcessor.RegisterLowPriorityProcessor(this);
             currentHealth = UnitStats.MaxHealth;
         }
 
@@ -39,7 +41,16 @@ namespace Assets.Core.Controllers
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            ALogicProcessor.Instance.DeregisterLowPriorityProcessor(this);
+            GameManagers.LogicProcessor.DeregisterLowPriorityProcessor(this);
+        }
+
+        /// <summary>
+        /// Called from the logic processor when the associated game mode enters a fail state
+        /// </summary>
+        public void OnGameModeFailure()
+        {
+            GameManagers.LogicProcessor.DeregisterLowPriorityProcessor(this);
+            this.enabled = false;
         }
 
         /// <summary>

@@ -21,6 +21,11 @@ namespace Assets.Core.StaticChannels
         public static event Action<SurvivalGameMode> OnGameModeCleanupComplete;
 
         /// <summary>
+        /// Raised when the player has failed the objective(s) for the current gamemode/scene
+        /// </summary>
+        public static event Action OnGameModeObjectiveFailed;
+
+        /// <summary>
         /// Raised when the player has selected a unit from their UI to interact with
         /// </summary>
         public static event Action<AUnitTag> OnUserSelectedEntityInGui;
@@ -55,5 +60,6 @@ namespace Assets.Core.StaticChannels
         public static void RaiseOnStaticUnitDeath(AEntityController spawnedEntity, AUnitTag unit) => OnStaticUnitDeath?.Invoke(spawnedEntity, unit);
         public static void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();
         public static void RaiseOnUnitHealthChanged(AUnitTag unit, float currentHealth, float maxHealth) => OnUnitHealthChanged?.Invoke(unit, currentHealth, maxHealth);
+        public static void RaiseOnGameModeObjectiveFailed() => OnGameModeObjectiveFailed?.Invoke();
     }
 }

@@ -2,6 +2,7 @@
 {
     public interface ILogicUpdateProcessor
     {
-        public void ProcessLogic();
+        void ProcessLogic();
+        void OnGameModeFailure();
     }
 }
