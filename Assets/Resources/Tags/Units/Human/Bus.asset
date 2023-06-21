@@ -28,4 +28,4 @@ MonoBehaviour:
   UnitPrefab: {fileID: 1731488392494068773, guid: 906e94b3af9ad0b46af3b4b85ff44e91,
     type: 3}
   BaseHealth: 100
-  isPrimaryObjective: 0
+  isPrimaryObjective: 1

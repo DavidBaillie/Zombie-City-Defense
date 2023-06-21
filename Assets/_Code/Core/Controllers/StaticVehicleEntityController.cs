@@ -13,7 +13,7 @@ namespace Assets.Core.Controllers
     [SelectionBase]
     public class StaticVehicleEntityController : AEntityController, IDamageReceiver
     {
-        [SerializeField, Required]
+        [SerializeField, Required, InlineEditor]
         private ObjectiveUnitTag objectiveTag = null;
 
 
