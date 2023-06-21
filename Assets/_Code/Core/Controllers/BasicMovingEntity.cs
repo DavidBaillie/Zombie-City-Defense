@@ -8,6 +8,7 @@ using Assets.Core.Models;
 using Assets.Debug;
 using Assets.Utilities.Definitions;
 using Assets.Core.Managers.Static;
+using Sirenix.Utilities;
 
 namespace Assets.Core.Controllers
 {
@@ -22,6 +23,7 @@ namespace Assets.Core.Controllers
 
 
         private MovingEntityTarget currentTarget;
+        private bool hadTargetLastUpdate = false;
 
 
         /// <summary>
@@ -73,8 +75,15 @@ namespace Assets.Core.Controllers
                 {
                     if (attackCooldown <= 0)
                     {
-                        currentTarget.DamageReceiver.ApplyDamage(UnitStats.AttackDamage);
+                        //Apply damage and reset cooldown
+                        var killedTarget = currentTarget.DamageReceiver.ApplyDamage(UnitStats.AttackDamage);
                         attackCooldown = UnitStats.AttackCooldown;
+                        
+                        //Handle target dying from our attack
+                        if (killedTarget)
+                        {
+                            currentTarget = new();
+                        }
                     }
                 }
                 //Need to seek
@@ -127,7 +136,7 @@ namespace Assets.Core.Controllers
                     Vector3.Distance(transform.position, collider.transform.position), (int)UnitStats.SightBlockingLayers) > 0)
                 {
                     GameplayDebugHandler.HandleRenderCall(() => 
-                        Draw.Line(transform.position + new Vector3(0, 0.5f, 0), collider.transform.position, Color.red), 1f, true, false);
+                        Draw.Line(transform.position + new Vector3(0, 0.25f, 0), collider.transform.position, Color.red), 1f, true, false);
                     continue;
                 }
                 else
@@ -147,10 +156,26 @@ namespace Assets.Core.Controllers
 
             //If we found a target, save it
             if (bestTarget != null)
+            {
+                hadTargetLastUpdate = true;
                 currentTarget = new MovingEntityTarget(
-                    bestTarget.gameObject, 
-                    bestTarget.gameObject.GetComponent<IDamageReceiver>(), 
+                    bestTarget.gameObject,
+                    bestTarget.gameObject.GetComponent<IDamageReceiver>(),
                     bestTarget.ClosestPoint(transform.position));
+            }
+            //If we had a target last time we were here
+            else if (hadTargetLastUpdate)
+            {
+                hadTargetLastUpdate = false;
+                //If there is a path, and the index + 1 is on the path, and when we raycast from here to waypoint there is no sight blocker
+                if (AssignedPath != null && PathIndex < AssignedPath.Count - 1 && 
+                    Physics.RaycastNonAlloc(transform.position, AssignedPath[PathIndex + 1] - transform.position, new RaycastHit[0], 
+                    Vector3.Distance(transform.position, AssignedPath[PathIndex]), UnitStats.SightBlockingLayers, QueryTriggerInteraction.Ignore) < 1)
+                {
+                    //Increment path by 1 to prevent going backwards
+                    PathIndex++;
+                }
+            }
         }
 
         /// <summary>
