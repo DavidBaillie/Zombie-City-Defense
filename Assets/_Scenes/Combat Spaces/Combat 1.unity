@@ -753,9 +753,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cadfdae7db8a3f4cb1dd1efd13a93b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoint1: {fileID: 156718726}
-  waypoint2: {fileID: 1744185909}
-  movementSpeed: 3
+  economySettings: {fileID: 11400000, guid: b7fcd61fe593f004a8998e81633bfae0, type: 2}
+  depotPosition: {fileID: 156718726}
+  resourcePosition: {fileID: 1744185909}
+  movementSpeed: 3.5
 --- !u!23 &564673328
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2402,8 +2403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cadfdae7db8a3f4cb1dd1efd13a93b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoint1: {fileID: 778525904}
-  waypoint2: {fileID: 1270136689}
+  economySettings: {fileID: 11400000, guid: b7fcd61fe593f004a8998e81633bfae0, type: 2}
+  depotPosition: {fileID: 778525904}
+  resourcePosition: {fileID: 1270136689}
   movementSpeed: 3
 --- !u!23 &1848972724
 MeshRenderer:

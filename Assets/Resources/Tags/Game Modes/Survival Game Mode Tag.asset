@@ -28,8 +28,8 @@ MonoBehaviour:
     type: 3}
   playerUnitCollection: {fileID: 11400000, guid: ca3715b213f8f9c4abcfb78bada22551,
     type: 2}
+  economyTag: {fileID: 11400000, guid: b3f52e439c4f7244eb0d5dbd809630b3, type: 2}
   gridVisuals: {fileID: 11400000, guid: 757c7aac67dcfc4499da30297653216d, type: 2}
   unitPlacementProcessor: {fileID: 11400000, guid: f52840c4373052346a76f769df3e2a18,
     type: 2}
   inputProcessor: {fileID: 11400000, guid: 054775f3475271f4cb785b64ba8c2f86, type: 2}
-  gameplayChannel: {fileID: 11400000, guid: 6f3755c0ff7aabe489583b22731a80bb, type: 2}

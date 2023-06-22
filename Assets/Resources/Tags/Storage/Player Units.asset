@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b8b4975ad38b64aa8537a88dffbecb, type: 3}
+  m_Name: Player Units
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Id
+      Entry: 2
+      Data: 79c8e63bc501437c8d38daecf06017f7
+  FileSaveName: surv1_units
+  AvailableUnits: []
+  LivingUnits:
+  - {fileID: 11400000, guid: d754c7fc36af88346a9dc323a2604a47, type: 2}
+  - {fileID: 11400000, guid: 3f413d44d9408094fa2ff1a59614aba5, type: 2}
+  DeadUnits: []

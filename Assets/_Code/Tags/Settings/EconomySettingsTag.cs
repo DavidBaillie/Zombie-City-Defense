@@ -1,4 +1,5 @@
-﻿using Assets.Tags.Abstract;
+﻿using Assets.Core.Managers.Static;
+using Assets.Tags.Abstract;
 using UnityEngine;
 
 namespace Assets.Tags.Settings

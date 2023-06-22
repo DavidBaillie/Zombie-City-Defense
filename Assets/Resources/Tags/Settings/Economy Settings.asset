@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39b8b4975ad38b64aa8537a88dffbecb, type: 3}
-  m_Name: Player Units
+  m_Script: {fileID: 11500000, guid: ca2bc9e7dc2b8494382dd6eb44bffa00, type: 3}
+  m_Name: Economy Settings
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,10 +23,5 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Id
       Entry: 2
-      Data: 79c8e63bc501437c8d38daecf06017f7
-  fileSaveName: survivalModeUnits
-  AvailableUnits: []
-  LivingUnits:
-  - {fileID: 11400000, guid: d754c7fc36af88346a9dc323a2604a47, type: 2}
-  - {fileID: 11400000, guid: 3f413d44d9408094fa2ff1a59614aba5, type: 2}
-  DeadUnits: []
+      Data: d4392127856b4a5299a5cea004675ef2
+  GatherResourceRange: {x: 1, y: 2}
