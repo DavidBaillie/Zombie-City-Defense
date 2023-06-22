@@ -1,33 +1,25 @@
 ﻿using Assets.Tags.Abstract;
-using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Tags.Models
 {
-    /// <summary>
-    /// Class represents the collection of user owned units they have access to during gameplay
-    /// </summary>
-    [CreateAssetMenu(menuName = StorageAssetMenuBaseName + "Player Units", fileName = "Player Units")]
-    public class PlayerUnitCollectionTag : ADataStorageTag
+    [CreateAssetMenu(menuName = StorageAssetMenuBaseName + "Economy", fileName = "Economy Storage")]
+    public class PlayerEconomyTag : ADataStorageTag
     {
-        [SerializeField]
-        public List<StaticUnitTag> AvailableUnits = new();
+        private bool hasLoadedFromMemory = false;
 
         [SerializeField]
-        public List<StaticUnitTag> LivingUnits = new();
+        public int AvailableScrap = 0;
 
-        [SerializeField]
-        public List<StaticUnitTag> DeadUnits = new();
 
         /// <summary>
-        /// Handles setting the tag up for use
+        /// Handles setting up the tag for use
         /// </summary>
         public override void InitializeTag()
         {
             base.InitializeTag();
 
-            if (!HasLoadedFromStorage)
+            if (!hasLoadedFromMemory)
                 TryLoadFromStorage();
         }
 
@@ -40,26 +32,25 @@ namespace Assets.Tags.Models
             TrySaveToStorage();
         }
 
-
         /// <summary>
-        /// Tries to load data from the local storage device
+        /// Tries to load the data from local storage
         /// </summary>
         /// <returns>If the load worked</returns>
         public override bool TryLoadFromStorage()
         {
-            HasLoadedFromStorage = true;
+            hasLoadedFromMemory = true;
 
-            //TODO - Load data from file
+            //TODO
             return true;
         }
 
         /// <summary>
-        /// Tries to save data to the local storage device
+        /// Tries to save the data to local storage
         /// </summary>
         /// <returns>If the save worked</returns>
         public override bool TrySaveToStorage()
         {
-            //TODO - Save units to storage
+            //TODO
             return true;
         }
     }

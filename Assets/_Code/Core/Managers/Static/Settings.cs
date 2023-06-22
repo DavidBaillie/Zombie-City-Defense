@@ -8,5 +8,6 @@ namespace Assets.Core.Managers.Static
     public static class GameSettings
     {
         public static InputSettingsTag InputSettings = null;
+        public static EconomySettingsTag EconomySettings = null;
     }
 }

@@ -21,8 +21,11 @@ namespace Assets.Tags.GameMode
         [SerializeField, Required, AssetsOnly]
         private GameObject gameplayCanvas = null;
 
-        [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Data Store")]
         private PlayerUnitCollectionTag playerUnitCollection = null;
+
+        [SerializeField, Required, InlineEditor, FoldoutGroup("Data Store")]
+        private PlayerEconomyTag economyTag = null;
 
         [SerializeField, Required, InlineEditor, FoldoutGroup("Processors")]
         private GridVisualsProcessorTag gridVisuals = null;
@@ -64,7 +67,6 @@ namespace Assets.Tags.GameMode
             }
 
             //Setup data
-            playerUnitCollection.TryLoadUnitsFromStorage();
             canvasControllerInstance.SetupUnitCollection(playerUnitCollection);
 
             selectedUnitFromCanvas = null;
@@ -72,9 +74,11 @@ namespace Assets.Tags.GameMode
             spawnedUnits = new();
 
             //Setup Tags
+            playerUnitCollection.InitializeTag();
             gridVisuals.InitializeTag();
             unitPlacementProcessor.InitializeTag();
             inputProcessor.InitializeTag();
+            economyTag.InitializeTag();
 
             //Register events
             SurvivalGameplayChannel.OnUserSelectedEntityInGui += OnUserSelectedEntityInGui;
@@ -82,13 +86,12 @@ namespace Assets.Tags.GameMode
 
             PlayerActionChannel.OnPlayerSelectedWorldPosition += OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition += OnPlayerSelectedInvalidWorldPosition;
+            SurvivalGameplayChannel.OnResourceGathered += OnPlayerCollectedScrap;
 
             //Let others know we've set up
             LogInformation($"Started Game Mode [{name}]");
             SurvivalGameplayChannel.RaiseOnGameModeSetupComplete(this);
         }
-
-        
 
         /// <summary>
         /// Called to cleanup actions from mode
@@ -98,18 +101,20 @@ namespace Assets.Tags.GameMode
             GameplayInputChannel.DisableInput();
 
             DestroyImmediate(canvasControllerInstance);
-            playerUnitCollection.TrySaveUnitsToStorage();
 
             //Deregister events
             SurvivalGameplayChannel.OnUserSelectedEntityInGui -= OnUserSelectedEntityInGui;
             SurvivalGameplayChannel.OnStaticUnitDeath -= OnStaticEntityDeath;
+            SurvivalGameplayChannel.OnResourceGathered -= OnPlayerCollectedScrap;
             PlayerActionChannel.OnPlayerSelectedWorldPosition -= OnPlayerSelectedWorldPosition;
             PlayerActionChannel.OnPlayerSelectedInvalidPosition -= OnPlayerSelectedInvalidWorldPosition;
-
+            
             //Cleanup tags
+            playerUnitCollection.CleanupTag();
             gridVisuals.CleanupTag();
             unitPlacementProcessor.CleanupTag();
             inputProcessor.CleanupTag();
+            economyTag.CleanupTag();
 
             //Let others know where done
             LogInformation($"Ended Game Mode [{name}]");
@@ -254,6 +259,15 @@ namespace Assets.Tags.GameMode
         {
             selectedWorldPosition = null;
             gridVisuals.HideVisual();
+        }
+
+        /// <summary>
+        /// Called when scrap/resources need to be added during gameplay
+        /// </summary>
+        /// <param name="amount">Amount of resource added</param>
+        private void OnPlayerCollectedScrap(int amount)
+        {
+            economyTag.AvailableScrap += amount;
         }
     }
 }

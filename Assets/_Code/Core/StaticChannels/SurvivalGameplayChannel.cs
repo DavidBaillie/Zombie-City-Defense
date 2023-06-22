@@ -51,6 +51,11 @@ namespace Assets.Core.StaticChannels
         /// </summary>
         public static event Action<AUnitTag, float, float> OnUnitHealthChanged;
 
+        /// <summary>
+        /// Called when an amount of resources is gathered during gameplay
+        /// </summary>
+        public static event Action<int> OnResourceGathered;
+
 
 
         public static void RaiseOnGameModeSetupComplete(SurvivalGameMode mode) => OnGameModeSetupComplete?.Invoke(mode);
@@ -61,5 +66,6 @@ namespace Assets.Core.StaticChannels
         public static void RaiseOnPlayerResetUnitSelection() => OnPlayerResetUnitSelection?.Invoke();
         public static void RaiseOnUnitHealthChanged(AUnitTag unit, float currentHealth, float maxHealth) => OnUnitHealthChanged?.Invoke(unit, currentHealth, maxHealth);
         public static void RaiseOnGameModeObjectiveFailed() => OnGameModeObjectiveFailed?.Invoke();
+        public static void RaiseOnResourceGathered(int amount) => OnResourceGathered?.Invoke(amount);
     }
 }
